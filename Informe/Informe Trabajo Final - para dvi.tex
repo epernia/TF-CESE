@@ -1,0 +1,43 @@
+\documentclass[11pt,a4paper]{article}
+\usepackage[latin1]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=2cm,bmargin=2cm,lmargin=2cm,rmargin=2cm}
+\usepackage[usenames,dvipsnames,table]{xcolor}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{graphicx}
+
+%\usepackage{hyperref}
+\newcommand{\url}[1]{\\{\tt #1}}
+
+\author{Eric N. Pernia}
+\title{Trabajo Final de la carrera Ingeniería en Automatización y Control Industrial}
+
+\renewcommand{\contentsname}{\'INDICE}
+\renewcommand{\partname}{Parte}
+\renewcommand{\appendixname}{Ap\'endice}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabla}
+\renewcommand{\abstractname}{RESUMEN}
+\renewcommand{\refname}{REFERENCIA BIBLIOGR\'AFICA}
+\renewcommand{\chaptername}{Cap\'{\i}tulo}
+
+\input{macrosDeEric}
+\input{macrosDeCarlos}
+
+\begin{document}
+
+	\include{Caratula} \pagebreak 
+
+	\input{Resumen} \pagebreak 
+
+	% Indice
+	\tableofcontents \pagebreak 
+
+	\input{contenido}	
+
+	\newpage 
+	\input{Bibliografia}
+\end{document}

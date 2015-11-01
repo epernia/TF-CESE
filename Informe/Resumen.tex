@@ -1,0 +1,46 @@
+\chapter*{RESUMEN}
+
+%En una página explicar la idea del proyecto:
+%\\
+%\\Qué se hizo 
+%\\Por qué
+%\\Cómo
+%\\Resultado
+%\\
+%Es un diseño y prueba de concepto, no un producto. Actualmente los entornos gráficos de programación de PLC son software propietarios provistos pro cada fabricante de PLC. 
+
+\thispagestyle{empty}
+
+%\begin{abstract} %abstract Funciona solo en article
+
+%En este trabajo final se presenta el diseño de un PLC y su entorno de programación. Se eligió freeRTOS como sistema operativo del PLC que posee "ports" \footnote{En freeRTOS se refiere como "ports" a la capa del software dependiente del Hardware, es decir, del microcontroaldor.} para la mayoría de los microcontroladores del mercado. El Entorno de programación del PLC está diseñado en base a un estricto seguimento de la Norma IEC 61131 2da edición, puede ser fácilmente adaptable a cualquier arquitectura de controlador y puede correr en múltiples sistemas operativos. Para lograrlo, se utiliza como entorno de programación el Pharo-Smalltalk el cual funciona en Windows, Linux y MAC. Ambos software (Pharo y freeRTOS) son herramientas libres minimizando los costos de desarrollo. En consecuencia, se obtiene un diseño de software de PLC y su entorno de programación los cuales se independizan del Hardware logrando una gran compatibilidad. 
+%Para demostrar la validez del diseño se desarrolló un prototipo electrónico de PLC (hardware) en el cual sólo se consideran entradas y salidas booleanas y sin funciones de comunicación. 
+
+
+En este trabajo final se presenta el diseño de un PLC y su entorno de programación. Los principios generales de este diseño son: el estricto seguimiento de la Norma IEC 61131, la posibilidad de construir un PLC de bajo costo de Hardware, el uso de herramientas que puedan correr en múltiples sistemas operativos, la adaptabilidad del software generado desde el entorno de programación a cualquier arquitectura de controlador, y la inclusión de facilidades de edición de programas (en particular en lenguajes gráficos) que se correspondan con el estado del arte reflejado en las herramientas comerciales de uso más extendido.
+
+De esta forma, se se obtiene un diseño de PLC y de su entorno de programación los cuales se independizan del Hardware logrando una gran compatibilidad, permitiendo al mismo tiempo la edición ágil de los programas a ser ejecutados en el controlador.
+
+\medskip
+
+Se incluyen en esta propuesta: 
+
+\begin{itemize}
+\item 
+Un diseño general del hardware para un micro PLC que favorece implementaciones de bajo costo y adecuadas prestaciones.
+\item 
+Un diseño de interfaz de usuario del entorno de programación, con formatos de pantalla, interacciones entre los distintas pantallas, e indicaciones generales de usabilidad.
+\item 
+Una especificación del modelo computacional de los conceptos de programación PLC incluidos en la norma IEC 61131, concebida a partir de los principios fundamentales de la programación con objetos.
+\item 
+La definición del entorno de software de ejecución a montar sobre el hardware, de forma tal que los programas generados desde el entorno de programación se ejecuten sobre el entorno de ejecución definido.
+\end{itemize}
+
+
+Para demostrar la validez del diseño se desarrollaron: un prototipo electrónico de PLC (Hardware) en el cual sólo se consideran entradas y salidas booleanas y sin funciones de comunicación, un entorno de programación desarrolado de acuerdo al diseño propuesto, y una implementación del entorno de ejecución de software en el PLC sobre el que se montan los programas desarrollados desde el entorno de programación.
+Esta implementación cumple con las pautas incluidas en el diseño, respetando los principios generales anteriormente descriptos.
+
+En particular, para garantizar independencia de Hardware se eligió freeRTOS como sistema operativo del PLC que posee "ports"\footnote{En freeRTOS se refiere como "ports" a la capa del software dependiente del Hardware, es decir, del microcontroaldor.} para la mayoría de los microcontroladores del mercado. El entorno de programación se implementó sobre Pharo-Smalltalk, que es un ambiente de desarrollo que permite que el software construido funcione en Windows, Linux y MAC OS X; de esta forma se logra también la independencia del sistema operativo del equipo en el que se ejecuta dicho entorno. Ambos software (Pharo y freeRTOS) son herramientas libres minimizando los costos de desarrollo. 
+
+
+%\end{abstract}

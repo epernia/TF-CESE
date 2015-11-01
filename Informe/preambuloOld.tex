@@ -1,0 +1,160 @@
+\documentclass[11pt,a4paper]{book}
+\usepackage[spanish]{babel} % lo incluí 20-08-2013
+\usepackage[latin1]{inputenc}
+%\usepackage[utf8]{inputenc}
+\usepackage[a4paper]{geometry}
+\geometry{verbose,tmargin=3cm,bmargin=2cm,lmargin=2.25cm,rmargin=2.25cm}
+
+\usepackage[usenames,dvipsnames,table]{xcolor}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{enumerate}
+\usepackage{graphicx}
+%\usepackage{times}
+%\usepackage{mathptmx}
+
+% Para alterar los caption de las figuras
+\usepackage[margin=2cm,font=footnotesize,labelfont=bf]{caption} 
+
+% Encabezado y pie de página personalizado
+%\usepackage{fancyhdr} 
+
+% Para sacar los encabezados y pies de página en páginas en blanco
+\usepackage{emptypage}
+
+% Paquete para código en algún lenguaje de programación
+\usepackage{listings} % Include the listings-package, lo incluí 20-08-2013
+\lstdefinestyle{customc}{
+	frame=Ltb,
+    framerule=0pt,
+    aboveskip=0.5cm,
+    framextopmargin=3pt,
+    framexbottommargin=3pt,
+    framexleftmargin=0.4cm,
+    framesep=0pt,
+    rulesep=.4pt,
+    %backgroundcolor=\color{gray97},
+    rulesepcolor=\color{black},
+    %
+    %stringstyle=\ttfamily,
+    showstringspaces = false,
+    basicstyle=\small\ttfamily,
+    %commentstyle=\color{gray45},
+    %keywordstyle=\bfseries,
+    %
+    numbers=left,
+    numbersep=15pt,
+    numberstyle=\tiny,
+    numberfirstline = false,
+    breaklines=true,
+    %
+    %     
+  belowcaptionskip=1\baselineskip,
+  %breaklines=true,
+  %frame=L,
+  xleftmargin=\parindent,
+  language=C,
+  %showstringspaces=false,
+  %basicstyle=\footnotesize\ttfamily,
+  keywordstyle=\bfseries\color{purple!80!black},
+  commentstyle=\itshape\color{green!40!black},
+  identifierstyle=\color{blue},
+  stringstyle=\color{orange},
+  %numbers=left, % where to put the line-numbers; values are (none, left, right)
+  %numbersep=10pt,   % how far the line-numbers are from the code
+  %numberstyle=\tiny % the style that is used for the line-numbers
+}	
+\lstset{escapechar=@,style=customc}	
+
+
+% Paquete para links dentro del pdf
+\usepackage{hyperref}
+%\hypersetup{colorlinks=true}
+\hypersetup{
+    colorlinks,
+    citecolor=cyan,
+    filecolor=orange,
+    linkcolor=red,	%black
+    urlcolor=blue
+}
+
+
+% Renombro Comandos, es por si no está BABEL
+\renewcommand{\contentsname}{\'INDICE}
+\renewcommand{\partname}{Parte}
+\renewcommand{\appendixname}{Ap\'endice}
+\renewcommand{\figurename}{Figura}
+\renewcommand{\tablename}{Tabla}
+%\renewcommand{\abstractname}{RESUMEN}
+%\renewcommand{\refname}{REFERENCIA BIBLIOGR\'AFICA}
+\renewcommand{\chaptername}{Cap\'{\i}tulo}
+
+
+
+% Encabezado y pie de página personalizado
+%\pagestyle{fancy}
+%\lhead{Trabajo Final}
+%\chead{}
+%\rhead{\textbf{\thepage}}
+%\lfoot{Eric Nicolás Pernia}
+%\cfoot{}
+%\rfoot{UNQ}
+%\renewcommand{\footrulewidth}{0.04pt}
+%\fancyhfoffset{0.2cm} %ancho del header/foot
+
+
+% Caratula 1 - Caratula con \title
+%\title{
+%	Trabajo Final - Ingeniería en Automatización y Control Industrial
+%	\begin{center}
+%	\includegraphics[width=55mm,height=60mm]{figuras/unq.png}
+%	\end{center}
+%	\author{Apellido: Pernia\\Nombre: Eric\\Número de legajo: 15925}
+%	\date{\empty}
+%}
+
+
+
+
+% CONTADORES DE PAGINAS Y SUB SUB SUB SECCIONES
+
+\setcounter{secnumdepth}{4}
+\setcounter{tocdepth}{4}
+
+\makeatletter
+
+\newcounter {subsubsubsection}[subsubsection]
+
+\renewcommand\thesubsubsubsection{\thesubsubsection .\@alph\c@subsubsubsection}
+
+\newcommand
+\subsubsubsection{\@startsection{subsubsubsection}{4}{\z@}%
+	{-3.25ex\@plus -1ex \@minus -.2ex}%
+	{1.5ex \@plus .2ex}%
+	{\normalfont\normalsize\bfseries}}
+
+\renewcommand\paragraph{\@startsection{paragraph}{5}{\z@}%
+	{3.25ex \@plus1ex \@minus.2ex}%
+	{-1em}%
+	{\normalfont\normalsize\bfseries}}
+
+\renewcommand\subparagraph{\@startsection{subparagraph}{6}{\parindent}%
+	{3.25ex \@plus1ex \@minus .2ex}%
+	{-1em}%
+	{\normalfont\normalsize\bfseries}}
+
+\newcommand*\l@subsubsubsection{\@dottedtocline{4}{10.0em}{4.1em}}
+
+\renewcommand*\l@paragraph{\@dottedtocline{5}{10em}{5em}}
+\renewcommand*\l@subparagraph{\@dottedtocline{6}{12em}{6em}}
+\newcommand*{\subsubsubsectionmark}[1]{}
+\makeatother
+
+
+
+% MACROS
+\input{MacrosDeEric}
+%\eric{.} Mi macro, pone el texto azul
+\input{MacrosDeCarlos}

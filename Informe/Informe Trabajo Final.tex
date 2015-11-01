@@ -1,0 +1,124 @@
+\input{preambulo}
+
+\begin{document}
+
+\pagestyle{empty}
+% Caratula 2 - con \begin{titilepage}
+\include{Caratula} 
+\thispagestyle{empty}
+\include{Licencia} 
+%\maketitle - Estas 3 lineas van con caratula 1
+%\thispagestyle{empty}
+%\newpage
+
+%Resumen
+\thispagestyle{empty}
+\input{Resumen}
+
+\newpage
+% Agradecimientos
+\thispagestyle{empty}
+\input{Agradecimientos}
+
+% Indice general
+\thispagestyle{empty}
+\tableofcontents 
+
+% Indice de figuras
+\thispagestyle{empty}
+\listoffigures 
+
+% Indice de tablas
+\thispagestyle{empty}
+\listoftables
+\newpage
+
+%\caption[Corto para índice de figuras o tablas]{Laaaaaaarrrrrrrggooooo para abajo de la figura o tabla}	
+
+
+% Seteo el contador de páginas y capítulos a 0
+\pagestyle{fancy}
+\setcounter{page}{0}
+\setcounter{chapter}{0}	
+
+%Todo el Contenido
+\input{Contenido}	
+
+% Bibliografía
+\input{Bibliografia}
+	
+	
+		
+% Ejemplo de comillas
+%<<El lobo dijo: ``soplaré y soplaré, y la `casa' derribaré''.>>
+
+
+% Ejemplo básico de código C
+%\begin{lstlisting}[language=C, numbers=left, numberstyle=tiny]
+%// Este es el programa C más pequeño
+%// Este código está en el fichero \LaTeX{} (inline)
+%#include <stdio.h>
+%int main(int argc, char* argv[]) {
+%  puts("Hola mundo!");
+%}
+%\end{lstlisting}
+
+
+% Ejemplo con colores de código C
+%\begin{lstlisting}
+%#include <stdio.h>
+%#define N 10
+%/* Block
+% * comment */
+% 
+%int main()
+%{
+%    int i;
+% 
+%    // Line comment.
+%    puts("Hello world!");
+% 
+%    for (i = 0; i < N; i++)
+%    {
+%        puts("LaTeX is also great for programmers!");
+%    }
+% 
+%    return 0;
+%}
+%\end{lstlisting}
+
+
+
+
+% Introducción (escibir al final, es una intro a la tesis no al tema de ella)
+% Planteamiento del Problema
+% Situación Problemática//Justificación//Fundamentación
+% Objetivos
+% Hipótesis
+% Estado del Arte//Antecedentes//Estado Actual de los conocimientos sobre el tema
+	% cómo ha sido tratado el tema,
+	% cómo se encuentra en el momento de realizar la investigación
+	% cuáles son las tendencias
+	% qué avances se han registrado en ese campo
+	% qué aportes pueden servir para el desarrollo de la presente investigación
+	% qué nuevos aportes y/o líneas de investigación pueden realizarse
+
+% Diferencias entre Marco teórico y Estado del Arte
+
+% Estado del arte es una actualización o una revisión del tema, una recopilación crítica de las investigaciones fundamentales existentes en torno a una temática o disciplina, un recurso que utiliza el investigador para describir el nivel de desarrollo que se ha alcanzado en el tema. Es por ello que cada investigación/estudio mencionado debe presentar su objetivo, la metodología empleada y los resultados alcanzados.
+
+% Por su parte, en el marco teórico se establece la perspectiva, el modelo de pensamiento y teorías a las que adhiere el investigador para desarrollar la investigación. Se trata de su posicionamiento teórico, donde presenta los aportes teóricos que ha escogido y con los que coincide para fundamentar su perspectiva.
+
+%  Marco Teórico
+
+% El marco teórico, marco referencial o marco conceptual tiene el propósito de situar nuestro problema dentro de un conjunto de conocimientos, que permita orientar nuestra búsqueda y nos ofrezca una conceptualización adecuada de los términos que utilizaremos. Se trata de integrar al problema dentro de un sistema teórico donde éste cobre sentido, incorporando los conocimientos previos relativos al mismo y ordenándolos de modo tal que resulten útil a nuestra tarea
+
+% Diseño Metodológico//Materiales y Método//Metodología
+% Análisis de la información o Presentación e Interpretación de resultados o Desarrollo
+% Conclusiones o Reflexiones Finales o Discusión Final
+% Líneas Futuras
+% Bibliografía
+% Anexos	
+
+
+\end{document}
