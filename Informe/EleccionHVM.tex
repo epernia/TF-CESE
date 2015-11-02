@@ -1,4 +1,14 @@
 \section{Elección de la VM de Java, HVM} \label{sec:eleccionHvm}
 
-Elección de la VM de Java, HVM.
+HVM\footnote{Significa que se ejecuta directamente sobre el hardware, sin necesidad de un sistema operativo.} son las siglas de Hardware Virtual Machine. Es una máquina virtual (VM) de Java libre, diseñada para ejecutarse bare metal sobre microcontroladores y portable a diferentes arquitecturas. Su implementación de referencia fue realizada por Stephan Erbs Korsholm (Icelab, Dinamarca) para su tesis doctoral. Esta VM cumple con la especificación Safety-Critical Java (SCJ) Level 0, 1 y 2 permitiendo realizar aplicaciones en tiempo real para sistemas críticos. Provee tres formas de acceso al hardware:
 
+\begin{itemize}
+\item 
+Variables Bindeadas.
+\item 
+Hardware Objects.
+\item 
+Métodos nativos.
+\end{itemize}
+
+La última forma, métodos nativos, se elige como alternativa para proveer al programa de usuario en lenguaje Java el acceso al hardware.

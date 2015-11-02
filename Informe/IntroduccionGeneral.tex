@@ -5,13 +5,22 @@
 
 Marco temático: Programación Orientada a Objetos en Sistemas embebidos para aplicaciones industriales.
 
-\section{Plataforma CIAA-NXP}
+\section{Plataforma CIAA}
 
 Plataforma CIAA-NXP.
 
+%http://proyecto-ciaa.com.ar/devwiki/doku.php?id=desarrollo:hardware:ciaa_nxp:ciaa_nxp_inicio
+
+Plataforma EDU-CIAA-NXP.
+
+%http://proyecto-ciaa.com.ar/devwiki/doku.php?id=desarrollo:edu-ciaa:edu-ciaa-nxp
+
 \section{Lenguaje Java}
 
-Lenguaje Java.
+Se elije Java debido a que es uno de lenguajes de POO más utilizados en la actualidad. Es un lenguaje moderno, con manejo de memoria automático y sintaxis similar a C++. A diferencia de otros, en lugar de compilarse para la arquitectura del controlador objetivo, se compila a un lenguaje similar al assembler (bytecodes) que se ejecuta mediante una Máquina Virtual, o VM, por sus siglas en inglés (Virtual Machine). Esta máquina virtual corre habitualmente sobre un sistema operativo.
+
+
+
 
 \section{Máquinas Virtuales de Java para sistemas embebidos}
 
@@ -23,12 +32,25 @@ Especificación SCJ.
 
 \section{Justificación}
 
-Justificación.
+Con la creciente complejidad de las aplicaciones a realizar sobre sistemas embebidos en entornos industriales, y el aumento de las capacidades de memoria y procesamiento de los mismos, se desea poder aplicar técnicas avanzadas de programación para realizar programas fácilmente mantenibles, extensibles y reconfigurables. El paradigma de Programación Orientada a Objetos (POO) cumple con estos requisitos.
+
+Para aplicaciones industriales es requerimiento fundamental cumplir con especificaciones de tiempo real. Es por esto que se debe elegir un lenguaje POO que soporte de manejo de threads real-time. Ejemplos de aplicaciones con estos requerimientos son, control a lazo cerrado, etc.
 
 \section{Objetivos}
 
-Objetivos.
+Los objetivos del presente trabajo final son:
 
-\section{Alcance}
+\begin{itemize}
+\item 
+Realizar el \textit{porting} de HVM para que corra sobre el microcontrolador NXP LPC4337 que contienen las plataformas CIAA-NXP y EDU-CIAA-NXP para permitir correr aplicaciones Java sobre la CIAA.
+\item 
+Diseñar e implementar una HAL para controlar el Hardware desde una aplicación Java mediante una API establecida.
+\item 
+Realizar el \textit{porting} de la capa SCJ de HVM para que corra sobre el microcontrolador NXP LPC4337 permitiendo aplicaciones Java SCJ sobre la CIAA.
+\item 
+Integrar en Icecaptools el \textit{porting} de HVM para completar el IDE de Java SCJ sobre la CIAA.
+\end{itemize}
+
+%\section{Alcance}
 
 Alcance.
