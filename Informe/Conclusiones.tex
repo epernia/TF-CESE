@@ -2,59 +2,59 @@
 
 \section{Conclusiones}
 
-
-En este trabajo se ha logrado llevar a cabo un diseño completo de un micro PLC, incluyendo especificaciones de Hardware, Software base (sistema operativo, drivers, implementaciones de funciones standard, etc.), y formato que debe respetar el resultado de la compilación de programas definidos en los lenguajes de la norma IEC61131-3, para poder ejecutarse en equipos que se correspondan con el modelo diseñado.
-
-\medskip
-
-Por otra parte, se definen en detalle los siguientes aspectos salientes para la implementación de un entorno de edición de programas para PLC: comportamiento esperado de la interfaz de usuario, y requisitos que debe cumplir un modelo computacional de los conceptos y lenguajes de programación descriptos en la norma citada.
-
-\medskip
-
-Se buscó generar especificaciones que no dependieran de determinados componentes o fabricantes para el Hardware, ni de un Sistema Operativo específico para el entorno de edición de programas. Permitiendo así, construir un PLC de bajo costo de Hardware, de forma tal que pueda ser utilizado en ámbitos académicos y que, al mismo tiempo, permitan la edición de programas en forma ágil y cómoda, en particular para los lenguajes gráficos (Ladder y FBD) incluidos en la norma.
-
-\medskip
-
-Como parte del trabajo, se desarrolló una implementación que cumple con las pautas y definiciones incluidas en las distintas partes del diseño, utilizando componentes de Hardware económicos y fácilmente obtenibles; y un entorno de programación (para desarrollar el entorno de edición de programas) que puede obtenerse desde Internet en forma gratuita.
-
-\medskip
-
-Por lo tanto, se llega a la conclusión que los objetivos planteados al comenzar el trabajo han sido alcanzados satisfactoriamente.
-
-\medskip
-
-La definición del diseño fue llevada a cabo en conjunto, y en muchos casos influida por la construcción de implementaciones de referencia. Se culmina este Trabajo Final con la férrea convicción que esta manera de realizarlo, permitió llegar a diseños más acabados, brindando pautas concretas y realmente útiles para el desarrollo de futuras implementaciones.
-
-\medskip
-
-Por otro lado, el trabajo resultó sumamente arduo en varios aspectos; entre los se destacan: 
-
-\begin{itemize}
-\item 
-La gran cantidad de iteraciones y versiones preliminares que culminaron en la especificación presentada del modelo computacional referente a los conceptos y lenguajes de programación incluidos en la norma IEC61131-3.
-\item 
-La complejidad inherente a algunos detalles de la implementación de la interfaz de usuario para lenguajes gráficos, en particular el recálculo de las posiciones ante distintas acciones que puede llevar a cabo el usuario en un segmento de programa en lenguaje Ladder. 
-\end{itemize}
-
-Considerando este último aspecto, si bien algunas características del Framework Morphic ayudaron en la implementación de referencia de la GUI, la poca documentación existente sobre esta herramienta, hizo que en muchas oportunidades fuera necesario revisar el código de sus clases constituyentes, recurriendo a las capacidades avanzadas de depuración de Pharo, que permiten examinar y modificar el código de su propia interfaz en tiempo de ejecución.
-
-\medskip
-
-Cabe resaltar que la utilización de los conceptos principales del paradigma de programación orientada a objetos, facilitó el desarrollo del diseño y su implementación de referencia. 
-En particular, contribuyó a manejar la gran complejidad del modelo computacional de una Configuración de Software y de los programas incluidos, permitiendo la obtención de componentes bien definidos e interfaces claras entre los mismos, logrando que componentes de distintas características (como por ejemplo, los segmentos que corresponden a distintos lenguajes de programación IEC61131-3) puedan ensamblarse en forma sencilla dentro de un mismo diseño general.
-
-\medskip
-
-Además, el desarrollo de un modelo computacional adecuado referente a los conceptos de distintos lenguajes de programación, involucró investigar y adquirir conocimientos avanzados de programación, por ejemplo; tipos de datos, definiciones, declaraciones, parseo, compilación, etc. 
-
-
-\medskip
-
-Otra herramienta clave para llevar a cabo esta labor, fue la experiencia adquirida en programación de Microcontroladores, siendo, el autor de este trabajo, alumno y auxiliar académico en las materias correspondientes, hecho que contribuyó en la investigación de uno de los Microcontroladores (y su IDE de desarrollo) más novedosos disponible en el mercado, utilizado para la implementación de referencia del Hardware.
-
-\medskip
-
-Concluyendo, la realización de este Trabajo Final demandó la articulación entre los conocimientos adquiridos a lo largo de la carrera y los aprendizajes incorporados, habilitando su puesta en práctica.
+En este trabajo se ha logrado llevar a cabo...
+%En este trabajo se ha logrado llevar a cabo un diseño completo de un micro PLC, incluyendo especificaciones de Hardware, Software base (sistema operativo, drivers, implementaciones de funciones standard, etc.), y formato que debe respetar el resultado de la compilación de programas definidos en los lenguajes de la norma IEC61131-3, para poder ejecutarse en equipos que se correspondan con el modelo diseñado.
+%
+%\medskip
+%
+%Por otra parte, se definen en detalle los siguientes aspectos salientes para la implementación de un entorno de edición de programas para PLC: comportamiento esperado de la interfaz de usuario, y requisitos que debe cumplir un modelo computacional de los conceptos y lenguajes de programación descriptos en la norma citada.
+%
+%\medskip
+%
+%Se buscó generar especificaciones que no dependieran de determinados componentes o fabricantes para el Hardware, ni de un Sistema Operativo específico para el entorno de edición de programas. Permitiendo así, construir un PLC de bajo costo de Hardware, de forma tal que pueda ser utilizado en ámbitos académicos y que, al mismo tiempo, permitan la edición de programas en forma ágil y cómoda, en particular para los lenguajes gráficos (Ladder y FBD) incluidos en la norma.
+%
+%\medskip
+%
+%Como parte del trabajo, se desarrolló una implementación que cumple con las pautas y definiciones incluidas en las distintas partes del diseño, utilizando componentes de Hardware económicos y fácilmente obtenibles; y un entorno de programación (para desarrollar el entorno de edición de programas) que puede obtenerse desde Internet en forma gratuita.
+%
+%\medskip
+%
+%Por lo tanto, se llega a la conclusión que los objetivos planteados al comenzar el trabajo han sido alcanzados satisfactoriamente.
+%
+%\medskip
+%
+%La definición del diseño fue llevada a cabo en conjunto, y en muchos casos influida por la construcción de implementaciones de referencia. Se culmina este Trabajo Final con la férrea convicción que esta manera de realizarlo, permitió llegar a diseños más acabados, brindando pautas concretas y realmente útiles para el desarrollo de futuras implementaciones.
+%
+%\medskip
+%
+%Por otro lado, el trabajo resultó sumamente arduo en varios aspectos; entre los se destacan: 
+%
+%\begin{itemize}
+%\item 
+%La gran cantidad de iteraciones y versiones preliminares que culminaron en la especificación presentada del modelo computacional referente a los conceptos y lenguajes de programación incluidos en la norma IEC61131-3.
+%\item 
+%La complejidad inherente a algunos detalles de la implementación de la interfaz de usuario para lenguajes gráficos, en particular el recálculo de las posiciones ante distintas acciones que puede llevar a cabo el usuario en un segmento de programa en lenguaje Ladder. 
+%\end{itemize}
+%
+%Considerando este último aspecto, si bien algunas características del Framework Morphic ayudaron en la implementación de referencia de la GUI, la poca documentación existente sobre esta herramienta, hizo que en muchas oportunidades fuera necesario revisar el código de sus clases constituyentes, recurriendo a las capacidades avanzadas de depuración de Pharo, que permiten examinar y modificar el código de su propia interfaz en tiempo de ejecución.
+%
+%\medskip
+%
+%Cabe resaltar que la utilización de los conceptos principales del paradigma de programación orientada a objetos, facilitó el desarrollo del diseño y su implementación de referencia. 
+%En particular, contribuyó a manejar la gran complejidad del modelo computacional de una Configuración de Software y de los programas incluidos, permitiendo la obtención de componentes bien definidos e interfaces claras entre los mismos, logrando que componentes de distintas características (como por ejemplo, los segmentos que corresponden a distintos lenguajes de programación IEC61131-3) puedan ensamblarse en forma sencilla dentro de un mismo diseño general.
+%
+%\medskip
+%
+%Además, el desarrollo de un modelo computacional adecuado referente a los conceptos de distintos lenguajes de programación, involucró investigar y adquirir conocimientos avanzados de programación, por ejemplo; tipos de datos, definiciones, declaraciones, parseo, compilación, etc. 
+%
+%
+%\medskip
+%
+%Otra herramienta clave para llevar a cabo esta labor, fue la experiencia adquirida en programación de Microcontroladores, siendo, el autor de este trabajo, alumno y auxiliar académico en las materias correspondientes, hecho que contribuyó en la investigación de uno de los Microcontroladores (y su IDE de desarrollo) más novedosos disponible en el mercado, utilizado para la implementación de referencia del Hardware.
+%
+%\medskip
+%
+%Concluyendo, la realización de este Trabajo Final demandó la articulación entre los conocimientos adquiridos a lo largo de la carrera y los aprendizajes incorporados, habilitando su puesta en práctica.
 
 
 \section{Trabajo a futuro}
@@ -62,16 +62,18 @@ Concluyendo, la realización de este Trabajo Final demandó la articulación entre 
 \noindent Como labor a futuro, pueden realizarse las siguientes tareas:
 
 \begin{itemize}
-\item 
-Modelado del lenguaje ST (Structured Text) y de los elementos SFC (Secuencial Function Charts), definidos en la norma IEC 61131-3.  
-\item  
-Modelado de la opción Retenibilidad de variables como indica la norma IEC61131-3. Este tipo de variables se mantienen en memoria del PLC incluso luego de la pérdida de alimentación del equipo PLC.
-\item 
-Diseño de Entradas y Salidas Analógicas. 
-\item 
-Diseño de módulos de comunicaciones industriales compatibles, siguiendo las pautas expuestas en la norma IEC 61131-5.
-\item 
-Diseño de un simulador de PLC para ensayar el programa de usuario sin necesidad de poseer el Hardware específico.
-\item 
-Diseño de un sistema de depuración en caliente y observación de variables internas del PLC desde la computadora, mientras el programa de usuario se ejecuta en el PLC.
+\item fdfdf
+\item fdfdf
+%\item 
+%Modelado del lenguaje ST (Structured Text) y de los elementos SFC (Secuencial Function Charts), definidos en la norma IEC 61131-3.  
+%\item  
+%Modelado de la opción Retenibilidad de variables como indica la norma IEC61131-3. Este tipo de variables se mantienen en memoria del PLC incluso luego de la pérdida de alimentación del equipo PLC.
+%\item 
+%Diseño de Entradas y Salidas Analógicas. 
+%\item 
+%Diseño de módulos de comunicaciones industriales compatibles, siguiendo las pautas expuestas en la norma IEC 61131-5.
+%\item 
+%Diseño de un simulador de PLC para ensayar el programa de usuario sin necesidad de poseer el Hardware específico.
+%\item 
+%Diseño de un sistema de depuración en caliente y observación de variables internas del PLC desde la computadora, mientras el programa de usuario se ejecuta en el PLC.
 \end{itemize} 

@@ -1,14 +1,14 @@
 \section{Elección de la VM de Java, HVM} \label{sec:eleccionHvm}
 
-HVM\footnote{Significa que se ejecuta directamente sobre el hardware, sin necesidad de un sistema operativo.} son las siglas de Hardware Virtual Machine. Es una máquina virtual (VM) de Java libre, diseñada para ejecutarse bare metal sobre microcontroladores y portable a diferentes arquitecturas. Su implementación de referencia fue realizada por Stephan Erbs Korsholm (Icelab, Dinamarca) para su tesis doctoral. Esta VM cumple con la especificación Safety-Critical Java (SCJ) Level 0, 1 y 2 permitiendo realizar aplicaciones en tiempo real para sistemas críticos. Provee tres formas de acceso al hardware:
+HVM son las siglas de \textit{Hardware Virtual Machine}. Es una máquina virtual (en adelante VM) de Java, libre, diseñada para ejecutarse \textit{bare-metal}\footnote{Significa que se ejecuta directamente sobre el hardware, sin necesidad de un sistema operativo.} sobre microcontroladores y portable a diferentes arquitecturas. Su implementación de referencia fue realizada por Stephan Erbs Korsholm (Icelab, Dinamarca) para su tesis doctoral y puede ejecutarse sobre Posix o AVR. Esta VM cumple con la especificación Safety-Critical Java (SCJ) Level 0, 1 y 2 permitiendo realizar aplicaciones en tiempo real para sistemas críticos. Provee tres formas de acceso al hardware:
 
 \begin{itemize}
 \item 
-Variables Bindeadas.
+\textbf{Variables Bindeadas.} Es una variable que puedo utilizar en lenguaje Java y tiene correspondencia directa con una variable en otro lenguaje (en este caso particular, lenguaje C).
 \item 
-Hardware Objects.
+\textbf{\textit{Hardware Objects}.} Es una abstracción que permite acceder a registros del microcontrolador mapeados en memoria para manipularlos desde el programa en lenguaje Java. De esta forma se puede crear una biblioteca completa dependiente del microcontrolador que maneje un periférico a nivel de registros directamente en Java.
 \item 
-Métodos nativos.
+\textbf{Métodos nativos.} Esta alternativa permite utilizar funciones realizadas en otro lenguaje como métodos en lenguaje Java. De esta manera permite ejecutar código \textit{legacy} dando la posibilidad de utilizar bibliotecas completas realizadas en otro lenguaje. Para conectar un método con una función en lenguaje C, deben respetarse ciertan convenciones de nombres y de pasajes de parámetros en las funciones realizadas para que el compilador de Java puede asociarlas.
 \end{itemize}
 
-La última forma, métodos nativos, se elige como alternativa para proveer al programa de usuario en lenguaje Java el acceso al hardware.
+Se elije métodos nativos como alternativa para proveer al programa de usuario en lenguaje Java el acceso a los periféricos del microcontrolador. Esto es porque ya existen bibliotecas completas de manejo de periféricos y además \textit{stacks} y \textit{file systems} entre otras.
