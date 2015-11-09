@@ -13,34 +13,41 @@
 
 %\begin{abstract} %abstract Funciona solo en article
 
-El propósito de este Trabajo Final es la incorporación de nuevas tecnologías en ambientes industriales mediante el desarrollo de arquitecturas de sistemas embebidos novedosas. En particular, permitir crear aplicaciones Real-Time para entornos industriales, utilizando un lenguaje de programación orientado a objetos (POO), sobre la Computadora Industrial Abierta Argentina (CIAA). Además, se espera acercar a programadores informáticos a la disciplina de programación de sistemas embebidos, permitiéndoles aplicar técnicas avanzadas de programación. 
+El propósito de este Trabajo Final es la incorporación de nuevas tecnologías en ambientes industriales mediante el desarrollo de arquitecturas de sistemas embebidos novedosas. En particular, permitir crear aplicaciones \textit{Real-Time} para entornos industriales, utilizando un lenguaje de programación orientado a objetos (en adelante POO), sobre la Computadora Industrial Abierta Argentina (CIAA). Además, se espera acercar a programadores informáticos a la disciplina de programación de sistemas embebidos, permitiéndoles aplicar técnicas avanzadas de programación.
 
 \medskip
 
-Para llevarlo a cabo se ha escogido Java como lenguaje POO y Icecaptools. Icecaptools es un plug-in de Eclipse realizado por Stephan Erbs Korsholm, que convierte al Eclipse en un IDE para la programación en lenguaje Java y permite compilar el programa de usuario para HVM. HVM es una máquina virtual de Java, libre, escrita en lenguaje C, diseñada para correr directamente sobre el hardware. Además, HVM cumple con la especificación Safety-Critical Java (SCJ), permitiendo realizar aplicaciones críticas Real-Time.
+Para llevarlo a cabo se ha escogido Java como lenguaje POO, y HVM\footnote{HVM desarrollado por Stephan Erbs Korsholm.}, que es un entorno de ejecución de \textit{Safety Critical Java}\footnote{La especificación \textit{Safety Critica Java} es una extensión a la especificación RTSJ, una especificación de java para aplicaciones en tiempo real.} (SCJ)[\ref{bib:HVMref}], de código abierto, diseñado para plataformas embebidas de bajos recursos. Este trabajo consiste entonces, en la implementación y validación de un ambiente de Firmware y Software, basado en HVM, para programar las plataformas CIAA-NXP y EDU-CIAA-NXP en lenguaje Java SCJ. 
 
 \medskip
-
-Se incluye en este trabajo la implementación y validación de un ambiente de Firmware y Software, basado en Icecaptools y HVM, para programar la Computadora Industrial Abierta Argentina (CIAA) en lenguaje Java, para aplicaciones industriales en tiempo real. Esta consiste en:
+\noindent En particular, la implementación consiste en:
 
 \begin{itemize}
 \item 
-La realización del \textit{porting} de HVM para que corra sobre el microcontrolador NXP LPC4337 que contienen las plataformas CIAA-NXP y EDU-CIAA-NXP.
+La realización del \textit{port} de la máquina virtual de HVM para que corra sobre el microcontrolador NXP LPC4337, que contienen las plataformas CIAA-NXP y EDU-CIAA-NXP, permitiendo la programación de aplicaciones Java.
 \item 
-Un diseño e implementación de una HAL con API sencilla para permitir controlar el Hardware desde una aplicación Java.
+Un diseño e implementación de una API\footnote{\textit{Application Programming Interface}, es decir, una interfaz de programación de aplicaciones.} sencilla para permitir controlar el Hardware desde una aplicación Java, que funciona además, como HAL\footnote{\textit{Hardware Abstraction Layer}, significa: capa de abstracción de hardware.}.
 \item 
-La realización del \textit{porting} de la capa SCJ de HVM para que corra sobre el microcontrolador NXP LPC4337 permitiendo aplicaciones SCJ.
+El \textit{port} de la capa SCJ de la máquina virtual de HVM, para permitir desarrollar aplicaciones Java SCJ.
 \item 
-El desarrollo de la integración en Icecaptools del \textit{porting} de HVM para completar el IDE de Java SCJ sobre la CIAA.
+La integración del \textit{port} para la CIAA al IDE de HVM, para completar un IDE de Java SCJ sobre la CIAA.
 \end{itemize}
 
-Para validar el IDE desarrollado se presentan:
+\noindent Para validar el IDE desarrollado se presentan:
 
 \begin{itemize}
 \item
-Ejemplos de aplicaciones Java utilizando periféricos de la CIAA y EDU-CIAA.
+Ejemplos de aplicaciones Java utilizando periféricos de la CIAA-NXP y EDU-CIAA-NXP mediante la API desarrollada.
+\item
+Un ejemplo de aplicación Java SCJ utilizando el concepto de Proceso SCJ para demostrar el funcionamiento del cambio de contexto.
+\item
+Otro ejemplo de aplicación Java SCJ utilizando el concepto de Planificador SCJ.
 \item 
-Una aplicación Real-Time (SCJ) de referencia para demostrar el funcionamiento real-time del sistema.
+Una aplicación SCJ completa.
 \end{itemize}
+
+%% Faltarían poner los resultados , que creo que sería la validación
+
+Finalmente, se obtiene de este Trabajo Final un entorno de desarrollo para aplicaciones Java SCJ sobre las plataformas CIAA-NXP y EDU-CIAA-NXP, que además de ser software libre, cubre las necesidades planteadas, tanto al ofrecer programación orientada a objetos, así como funcionalidades de tiempo real para entornos industriales, sobre sistemas embebidos.
 
 %\end{abstract}

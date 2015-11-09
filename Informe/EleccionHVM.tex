@@ -1,14 +1,18 @@
-\section{Elección de la VM de Java, HVM} \label{sec:eleccionHvm}
+\subsection{Elección de HVM} \label{sec:eleccionHvm}
 
-HVM son las siglas de \textit{Hardware Virtual Machine}. Es una máquina virtual (en adelante VM) de Java, libre, diseñada para ejecutarse \textit{bare-metal}\footnote{Significa que se ejecuta directamente sobre el hardware, sin necesidad de un sistema operativo.} sobre microcontroladores y portable a diferentes arquitecturas. Su implementación de referencia fue realizada por Stephan Erbs Korsholm (Icelab, Dinamarca) para su tesis doctoral y puede ejecutarse sobre Posix o AVR. Esta VM cumple con la especificación Safety-Critical Java (SCJ) Level 0, 1 y 2 permitiendo realizar aplicaciones en tiempo real para sistemas críticos. Provee tres formas de acceso al hardware:
 
+\textit{Hardware near Virtual Machine} (HVM)\footnote{HVM desarrollado por Stephan Erbs Korsholm.} es un entorno de ejecución de \textit{Safety Critical} Java (SCJ) nivel 1 y 2, código abierto diseñado par plataformas embebidas de bajos recursos.
+
+Corre directamente sobre el hardware sin necesidad de un sistema operativo (\textit{bare-metall}). Su diseño y documentación facilita la portabilidad a nuevas arquitecturas.
+
+Se compone de las siguientes partes:
 \begin{itemize}
-\item 
-\textbf{Variables Bindeadas.} Es una variable que puedo utilizar en lenguaje Java y tiene correspondencia directa con una variable en otro lenguaje (en este caso particular, lenguaje C).
-\item 
-\textbf{\textit{Hardware Objects}.} Es una abstracción que permite acceder a registros del microcontrolador mapeados en memoria para manipularlos desde el programa en lenguaje Java. De esta forma se puede crear una biblioteca completa dependiente del microcontrolador que maneje un periférico a nivel de registros directamente en Java.
-\item 
-\textbf{Métodos nativos.} Esta alternativa permite utilizar funciones realizadas en otro lenguaje como métodos en lenguaje Java. De esta manera permite ejecutar código \textit{legacy} dando la posibilidad de utilizar bibliotecas completas realizadas en otro lenguaje. Para conectar un método con una función en lenguaje C, deben respetarse ciertan convenciones de nombres y de pasajes de parámetros en las funciones realizadas para que el compilador de Java puede asociarlas.
+\item Icecaptools 
+\item HVM SDK
 \end{itemize}
 
-Se elije métodos nativos como alternativa para proveer al programa de usuario en lenguaje Java el acceso a los periféricos del microcontrolador. Esto es porque ya existen bibliotecas completas de manejo de periféricos y además \textit{stacks} y \textit{file systems} entre otras.
+Para desarrollar aplicaciones sobre HVM se utiliza Icecaptools, el cual es un \textit{plugin} de Eclipse, que convierte a Eclipse en un IDE para la programación en lenguaje Java para HVM sobre sistemas embebidos. 
+
+Icecaptools genera código C a partir de la aplicación Java de usuario para correr sobre la máquina virtual de Java de HVM, así como los proprios archivos que implementan a la máquina virtual.
+
+HVM SDK - El Software Development Kit de HVM que incluye las clases que implementan SCJ.

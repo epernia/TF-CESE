@@ -1,6 +1,24 @@
-\chapter{DISEÑO} \label{cap:diseno}
+\chapter{DISEÑO - (8 pag)} \label{cap:diseno}
 
-\input{EleccionHVM}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\noindent En particular, la implementación consiste en:
+
+\begin{itemize}
+\item 
+La realización del \textit{port} de la máquina virtual de HVM para que corra sobre el microcontrolador NXP LPC4337, que contienen las plataformas CIAA-NXP y EDU-CIAA-NXP, permitiendo la programación de aplicaciones Java.
+\item 
+Un diseño e implementación de una API\footnote{\textit{Application Programming Interface}, es decir, una interfaz de programación de aplicaciones.} sencilla para permitir controlar el Hardware desde una aplicación Java, que funciona además, como HAL\footnote{\textit{Hardware Abstraction Layer}, significa: capa de abstracción de hardware.}.
+\item 
+El \textit{port} de la capa SCJ de la máquina virtual de HVM, para permitir desarrollar aplicaciones Java SCJ.
+\item 
+La integración del \textit{port} para la CIAA al IDE de HVM, para completar un IDE de Java SCJ sobre la CIAA.
+\end{itemize}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+
 \input{Icecaptools}
 \input{Porting}
 \input{HalPerifericos}

@@ -2,7 +2,79 @@
 
 \section{Conclusiones}
 
-En este trabajo se ha logrado llevar a cabo...
+% Que se logoro realizar (de objetivos) --> implementacion.
+% Que se logoro realizar (no planeado inicialmente) --> implementacion.
+% Que se diseño --> Diseño.
+	% Metodología aplicada 
+		% --> Diseño iterativo con implementaciones de referencia.
+	% Desafios a lo largo del proyecto.
+% Que conocimientos puse en práctica de la Especializacion.
+% Conocimientos adquiridos.
+% Reflexion final.
+
+En el presente Trabajo Final se ha logrado obtener un entorno de desarrollo para aplicaciones Java SCJ sobre las plataformas CIAA-NXP y EDU-CIAA-NXP, que además de ser software libre, cubre las necesidades planteadas, tanto al ofrecer programación orientada a objetos, así como funcionalidades de tiempo real para entornos industriales, sobre sistemas embebidos.
+
+\medskip
+
+Como subproducto, se obtiene además una API sencilla para el manejo de periféricos de las plataformas CIAA-NXP y EDU-CIAA-NXP, que puede utilizarse en aplicaciones Java, o directamente en lenguaje C, debido a su diseño como módulo de Firmware de la CIAA. Se ha tenido especial cuidado en el diseño de esta API para que la misma sea lo más genérica posible logrando que además se comporte como una HAL.
+
+% Metodología aplicada 
+	% --> Diseño iterativo con implementaciones de referencia.
+
+% Desafios a lo largo del proyecto.
+
+\medskip
+
+El desarrollo de este Trabajo Final demandó la articulación de conocimientos  adquiridos a lo largo de la Carrera de Especialización en Sistemas Embebidos, en particular, las asignaturas:
+
+\begin{itemize}
+\item
+\textbf{Arquitectura de microprocesadores}. Se utilizaron de esta asignatura los conocimientos adquiridos sobre la arquitectura ARM Cortex M necesarios para implementar en lenguaje \textit{assembler} las funciones que realizan el cambio de contexto, necesarias para que funcione el concepto de Proceso SCJ. 
+\item
+\textbf{Programación de microprocesadores}. De esta asignatura se aprovecha la experiencia sobre lenguaje C para microcontroladores de 32 bits y el manejo de sus periféricos. Fue de especial importancia, debido a que, a excepción de unas pocas, todas las funciones para portar HVM a la CIAA debían realizarse en lenguaje C. Este lenguaje también se utilizó en la creación de  la API para el manejo de periféricos.
+\item
+\textbf{Ingeniería de software en sistemas embebidos}. Se aplican de la misma las metodologías de trabajo, provenientes de la ingeniería de software, que aportan calidad y eficiencia la desarrollo. En particular, diseño iterativo y manejo repositorios de software, diseño modular y en capas.
+\item
+\textbf{Gestión de Proyectos en Ingeniería}. Durante esta se desarrolló el Plan de Proyecto del Trabajo Final, permitiendo desde un principio tener una clara planificación del trabajo a realizar. 
+\item
+\textbf{Sistemas Operativos de Proposito General}. Se aprovechan los conocimientos adquiridos sobre Linux para probar las herramientas desarrolladas sobre este sistema operativo.
+\item
+\textbf{Sistemas Operativos de Tiempo Real (I y II)}. De estas asignaturas se aplica el conocimiento obtenido sobre planificadores de tareas expropiativos y la manera en que trabajan. Esto ha sido muy importante para la realización de este Trabajo Final. También la creación de módulos de Firmware para la CIAA.
+\item
+\textbf{Desarrollo de Sistemas Embebidos en Android}. La plataforma Andoid es un claro caso de éxito de la aplicación de un lenguaje POO en sistemas embebidos (aunque no sea para aplicaciones induistriales). Estas aplicaciones se realizan en lenguaje Java. Si bien se contaba con experiencia en programación orientada a objetos en otros lenguajes, esta asignatura fue para el autor el primer acercamiento a dicho lenguaje. En consecuencia, mucho de lo aprendido colaboró en la decisión de llevar a cabo este trabajo.
+\item
+\textbf{Diseño de Sistemas Críticos}. Los conceptos aprendidos en esta asignatura contribuyeron a comprender, inmediatamente, las importantes implicancias de poder programar aplicaciones SCJ en sistemas embebidos, que provee HVM, para aplicaciones industriales.
+\end{itemize}
+
+\medskip
+
+\noindent Además, se han adquirido aprendizajes en las temáticas:
+
+\begin{itemize}
+\item
+Programación de aplicaciones en lenguaje Java.
+\item
+Especificaciones de Java, entre ellas, RTSJ y SCJ.
+\item
+Programación de aplicaciones SCJ.
+\item
+Experiencia en construcción de planificadores expropiativos con restricciones de tiempo real.
+\item
+Máquinas Virtuales de Java para sistemas embebidos y su funcionamiento interno.
+\item
+Desarrollo de API para sistemas embebidos.
+\item
+Desarrollo de \textit{plugins} para Eclipse y la aplicación de patrones de diseño orientado a objetos para lograr una exitosa solución.
+\end{itemize}
+
+\medskip
+
+Por lo tanto, se llega a la conclusión que los objetivos planteados al comenzar el trabajo han sido alcanzados satisfactoriamente, y además, se han adquirido conocimientos muy importantes para la formación profesional del autor.
+
+
+%\section{Conclusión}
+%
+%
 %En este trabajo se ha logrado llevar a cabo un diseño completo de un micro PLC, incluyendo especificaciones de Hardware, Software base (sistema operativo, drivers, implementaciones de funciones standard, etc.), y formato que debe respetar el resultado de la compilación de programas definidos en los lenguajes de la norma IEC61131-3, para poder ejecutarse en equipos que se correspondan con el modelo diseñado.
 %
 %\medskip
@@ -57,23 +129,23 @@ En este trabajo se ha logrado llevar a cabo...
 %Concluyendo, la realización de este Trabajo Final demandó la articulación entre los conocimientos adquiridos a lo largo de la carrera y los aprendizajes incorporados, habilitando su puesta en práctica.
 
 
+
+
+
+
+
 \section{Trabajo a futuro}
 
 \noindent Como labor a futuro, pueden realizarse las siguientes tareas:
 
 \begin{itemize}
-\item fdfdf
-\item fdfdf
-%\item 
-%Modelado del lenguaje ST (Structured Text) y de los elementos SFC (Secuencial Function Charts), definidos en la norma IEC 61131-3.  
-%\item  
-%Modelado de la opción Retenibilidad de variables como indica la norma IEC61131-3. Este tipo de variables se mantienen en memoria del PLC incluso luego de la pérdida de alimentación del equipo PLC.
-%\item 
-%Diseño de Entradas y Salidas Analógicas. 
-%\item 
-%Diseño de módulos de comunicaciones industriales compatibles, siguiendo las pautas expuestas en la norma IEC 61131-5.
-%\item 
-%Diseño de un simulador de PLC para ensayar el programa de usuario sin necesidad de poseer el Hardware específico.
-%\item 
-%Diseño de un sistema de depuración en caliente y observación de variables internas del PLC desde la computadora, mientras el programa de usuario se ejecuta en el PLC.
+\item
+Programar los \textit{Launchers} para las plataformas CIAA y EDU-CIAA-NXP para permitir \textit{debuggear} directamente en Java.
+\item
+Integrar el port de la CIAA al repositorio oficial de HVM.
+\item
+Investigar HVM-TP, el nuevo desarrollo de Stephan Erbs Korsholm. Es una máquina virtual de Java \textit{Time Predictable} y Portable para sistemas embebidos \textit{Hard Real-Time}, que toma como base a HVM, extendiéndola y mejorando sus capacidades.
+
+% HVMTP: A Time Predictable and Portable Java Virtual Machine for Hard Real-Time Embedded Systems - JTRES 2014 - Kasper Søe Luckow1 Bent Thomsen1 Stephan Erbs Korsholm2
+
 \end{itemize} 

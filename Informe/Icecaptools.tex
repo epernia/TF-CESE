@@ -17,3 +17,17 @@ Icecaptools se distribuye como un plugin de Eclipse realizado por Stephan Erbs K
 \par\caption{Esquema de funcionamiento de Icecaptools.}\label{fig:Icecaptools}
 \end{center}
 \end{figure}
+
+
+HVM provee tres formas de acceso al hardware:
+
+\begin{itemize}
+\item 
+\textbf{Variables Bindeadas.} Es una variable que puedo utilizar en lenguaje Java y tiene correspondencia directa con una variable en otro lenguaje (en este caso particular, lenguaje C).
+\item 
+\textbf{\textit{Hardware Objects}.} Es una abstracción que permite acceder a registros del microcontrolador mapeados en memoria para manipularlos desde el programa en lenguaje Java. De esta forma se puede crear una biblioteca completa dependiente del microcontrolador que maneje un periférico a nivel de registros directamente en Java.
+\item 
+\textbf{Métodos nativos.} Esta alternativa permite utilizar funciones realizadas en otro lenguaje como métodos en lenguaje Java. De esta manera permite ejecutar código \textit{legacy} dando la posibilidad de utilizar bibliotecas completas realizadas en otro lenguaje. Para conectar un método con una función en lenguaje C, deben respetarse ciertan convenciones de nombres y de pasajes de parámetros en las funciones realizadas para que el compilador de Java puede asociarlas.
+\end{itemize}
+
+Se elije métodos nativos como alternativa para proveer al programa de usuario en lenguaje Java el acceso a los periféricos del microcontrolador. Esto es porque ya existen bibliotecas completas de manejo de periféricos y además \textit{stacks} y \textit{file systems} entre otras.

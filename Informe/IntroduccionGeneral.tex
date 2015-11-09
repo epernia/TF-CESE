@@ -1,55 +1,141 @@
 %para gerentes}
-\chapter{INTRODUCCIÓN GENERAL}
+\chapter{INTRODUCCIÓN GENERAL - (8 pag)}
 
 \section{Marco temático\: Programación Orientada a Objetos en Sistemas embebidos para aplicaciones industriales}
 
-Marco temático: Programación Orientada a Objetos en Sistemas embebidos para aplicaciones industriales.
+Con la creciente complejidad de las aplicaciones a realizar sobre sistemas embebidos en entornos industriales, y el aumento de las capacidades de memoria y procesamiento de los mismos, se desea poder aplicar técnicas avanzadas de programación para realizar programas fácilmente mantenibles, extensibles y reconfigurables. El paradigma de Programación Orientada a Objetos (POO) cumple con estos requisitos.
 
-\section{Plataforma CIAA}
+\medskip
+
+Para aplicaciones industriales es requerimiento fundamental cumplir con especificaciones de tiempo real. Es por esto que se debe elegir un lenguaje POO que soporte de manejo de threads real-time. 
+Un ejemplo de aplicaciones con estos requerimientos son las de control a lazo cerrado. En estas aplicaciones es necesario garantizar una taza de muestreo periódica uniforme para poder aplicar la teoría de control automático.
+
+\medskip
+
+En las siguientes secciones se expondrán las distintas tecnologías que constituyen esta temática.
+
+\subsection{Lenguajes de POO para sistemas embebidos}
+
+En la actualidad existen varios desarrollos de lenguajes de programación orientado a objetos para sistemas embebidos, entre ellos podemos citar:
+
+\begin{itemize}
+\item 
+C++.
+\item 
+Java.
+\item 
+MicroPhyton.
+\end{itemize}
+
+\subsection{Plataforma CIAA}
+
+\paragraph{CIAA-NXP}
+
+\medskip
 
 Plataforma CIAA-NXP.
 
 %http://proyecto-ciaa.com.ar/devwiki/doku.php?id=desarrollo:hardware:ciaa_nxp:ciaa_nxp_inicio
 
+\paragraph{EDU-CIAA-NXP}
+
+\medskip
+
 Plataforma EDU-CIAA-NXP.
 
 %http://proyecto-ciaa.com.ar/devwiki/doku.php?id=desarrollo:edu-ciaa:edu-ciaa-nxp
 
-\section{Lenguaje Java}
-
-Se elije Java debido a que es uno de lenguajes de POO más utilizados en la actualidad. Es un lenguaje moderno, con manejo de memoria automático y sintaxis similar a C++. A diferencia de otros, en lugar de compilarse para la arquitectura del controlador objetivo, se compila a un lenguaje similar al assembler (bytecodes) que se ejecuta mediante una Máquina Virtual, o VM, por sus siglas en inglés (Virtual Machine). Esta máquina virtual corre habitualmente sobre un sistema operativo.
-
-
-
-
-\section{Máquinas Virtuales de Java para sistemas embebidos}
-
-Máquinas Virtuales de Java para sistemas embebidos.
-
-\section{Especificación SCJ}
-
-Especificación SCJ.
 
 \section{Justificación}
 
-Con la creciente complejidad de las aplicaciones a realizar sobre sistemas embebidos en entornos industriales, y el aumento de las capacidades de memoria y procesamiento de los mismos, se desea poder aplicar técnicas avanzadas de programación para realizar programas fácilmente mantenibles, extensibles y reconfigurables. El paradigma de Programación Orientada a Objetos (POO) cumple con estos requisitos.
+Acá debería poner por que se elije Java y HVM. Arrancamos con Java, que se elije porque es superador a C++ y existe la especificación RTSJ.
 
-Para aplicaciones industriales es requerimiento fundamental cumplir con especificaciones de tiempo real. Es por esto que se debe elegir un lenguaje POO que soporte de manejo de threads real-time. Ejemplos de aplicaciones con estos requerimientos son, control a lazo cerrado, etc.
+Luego se descubre HVM que implementa SCJ.
+
+\subsection{Lenguaje de POO Java}
+
+El lenguje Java fue desarrollado originalmente por James Gosling de Sun Microsystems y publicado en 1995 como un componente fundamental de la plataforma Java de Sun Microsystems (actualmente fue adquirida por la compañía Oracle). 
+
+\medskip
+
+\noindent Las características principales del mismo son:
+
+\begin{itemize}
+\item 
+Lenguaje de programación de propósito general.
+\item 
+Orientado a objetos.
+\item 
+Independiente de la máquina.
+\item 
+Seguro para trabajar en red.
+\item 
+Potente para sustituir código nativo.
+\item 
+Con comprobación estricta de tipos.
+\item 
+Manejo de memoria automático mediante Recolector de Basura.
+\item 
+Sin punteros, utiliza únicamente referencias a objetos.
+\item 
+Permite programación concurrente de forma estándar.
+\end{itemize}
+
+\medskip
+
+Para lograr la independencia de la máquina posee la característica de ser un lenguaje compilado e interpretado. Todo programa en Java, se compila primero a un lenguaje similar a un \textit{assembler} genérico basando en pila (\textit{bytecodes}), que luego es interpretado por una máquina virtual de Java (JVM) dependiente de la plataforma. 
+
+\medskip
+
+La JVM es habitualmente un programa que corre sobre un sistema operativo, sin embargo, existen implementaciones de la JVM que corren directamente sobre el hardware (\textit{bare-metal}) y procesadores capaces de ejecutar \textit{bytecodes} de Java directamente, por ejemplo, el microcontrolador ARM926EJ-S.
+
+\medskip
+
+Debido a estas características y la existencia de la especificación RTSJ que contempla aplicaciones \textit{Real-Time} (se desarrolla en la sección [\ref{sec:EspSCJ}]), se ha elegido Java como lenguaje POO para la programación de la CIAA. Además, Java es uno de lenguajes de POO más utilizados en la actualidad a nivel mundial por programadores informáticos.
+
+
+% PONER COMO BIBLIO DE JAVA - EL LIBRO DE JUAREZ
+% PONER COMO BIBLIO DE JAVA - http://www3.uji.es/~belfern/pdidoc/IX26/Documentos/introJava.pdf
+% Procesador Java - http://www.atmel.com/images/arm_926ejs_trm.pdf
+
+
+
+
+\subsection{Especificaciones RTSJ y SCJ}\label{sec:EspSCJ}
+
+Especificación SCJ.
+
+
+Executive Summary
+
+This Safety-Critical Java Specification (JSR-302), based on the Real-Time Specification for Java (JSR-1), defines a set of Java services that are designed to be usable by applications requiring some level of safety certification. The specification is targeted to a wide variety of very demanding certification paradigms such as the safety-critical requirements of DO-178B, Level A.
+
+This specification presents a set of Java classes providing for safety-critical application startup, concurrency, scheduling, synchronization, input/output, memory management, timer management, interrupt processing, native interfaces, and exceptions.
+To enhance the certifiability of applications constructed to conform to this specification, this specification also presents a set of annotations that can be used to permit static checking for applications to guarantee that the application exhibits certain safety properties.
+
+To enhance the portability of safety-critical applications across different implemen- tations of this specification, this specification also lists a minimal set of Java libraries that must be provided by conforming implementations.
+
+
+\input{EleccionHVM}
+
+\medskip
+
+Por que HVM y no otra VM de Java.
 
 \section{Objetivos}
 
 Los objetivos del presente trabajo final son:
 
 \begin{itemize}
+
 \item 
-Realizar el \textit{porting} de HVM para que corra sobre el microcontrolador NXP LPC4337 que contienen las plataformas CIAA-NXP y EDU-CIAA-NXP para permitir correr aplicaciones Java sobre la CIAA.
+Realizar el \textit{port} de la máquina virtual de HVM para que corra sobre las plataformas CIAA-NXP y EDU-CIAA-NXP, permitiendo la programación de aplicaciones Java.
 \item 
-Diseñar e implementar una HAL para controlar el Hardware desde una aplicación Java mediante una API establecida.
+Diseñar e implementar una API sencilla para permitir controlar periféricos del micronctrolador desde una aplicación Java.
 \item 
-Realizar el \textit{porting} de la capa SCJ de HVM para que corra sobre el microcontrolador NXP LPC4337 permitiendo aplicaciones Java SCJ sobre la CIAA.
+Llevar a cabo el \textit{port} de la capa SCJ de la máquina virtual de HVM, para permitir desarrollar aplicaciones Java SCJ.
 \item 
-Integrar en Icecaptools el \textit{porting} de HVM para completar el IDE de Java SCJ sobre la CIAA.
+La integración del \textit{port} para la CIAA al IDE de HVM, para completar un IDE de Java SCJ sobre la CIAA.
 \end{itemize}
 
 %\section{Alcance}
-
