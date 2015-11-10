@@ -1,4 +1,4 @@
-\section{Porting de HVM e icecaptools a una nueva arquitecura} \label{sec:portingHvm}
+\section{Port de HVM a una nueva arquitectura} \label{sec:portingHvm}
 
 Para portar el Firmware HVM a una nueva arquitectura deben realizarse los siguientes pasos:
 
@@ -8,20 +8,17 @@ Conseguir un ambiente de desarrollo en lenguaje C para la arquitectura.
 \item 
 Estandarizar los tamaños de tipos de datos.
 \item 
-Implementar una HAL para la arquitectura.
+Implementar una API para la arquitectura.
 \item 
 Implementar el acceso al hardware.
 \end{itemize}
 
-Para facilitar la inclusión de nuevas arquitecturas a icecaptools y automatizar tareas habituales, que en caso contrario debería realizar el usuario para cada nueva aplicación, se propone:
+Para facilitar la inclusión de nuevas arquitecturas a icecaptools y automatizar tareas habituales, que en caso contrario debería realizar el usuario para cada nueva aplicación, se propone la programación de un plugin llamado HVM4CIAA.
 
-\begin{itemize}
-\item 
-Adaptar Icecaptools para la arquitectura ARM mediante su extensión a través de un plug-in que llamaremos HvmForArmCortexM.
-\item 
-La programación de un segundo plug-in más específico llamado HVM4CIAA.
-\end{itemize}
 
-Finalmente, en la figura 2 se gráfica la solución propuesta para lograr utilizar icecaptools y HVM con la CIAA.
+Finalmente, en la figura [] se gráfica la solución propuesta para lograr utilizar icecaptools y HVM con la CIAA.
+
+\medskip
 
 FIGURAAAAAAAAAAA
+
