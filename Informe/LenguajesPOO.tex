@@ -1,0 +1,127 @@
+\subsection{Lenguajes de POO para sistemas embebidos} \label{sec:lenguajesPOO}
+
+En la actualidad existen muchos desarrollos de lenguajes de programación orientado a objetos para sistemas embebidos, puntualmente se han estudiado las siguientes alternativas:
+
+\begin{itemize}
+\item 
+C++.
+\item 
+Java.
+\item 
+MicroPython.
+\end{itemize}
+
+El lenguaje de programación \textbf{C++} se encuentra disponible para la mayoría de los sistemas embebidos del mercado. Básicamente todos los que poseen un compilador de C traen, además, un compilador de C++. En este lenguaje se pueden manejar las interrupciones de un microcontrolador a través de funciones en C embebidas en el código C++. 
+
+Si bien maneja todos los conceptos importantes que debe tener un lenguaje orientado a objetos, el mismo es considerado obsoleto por los ingenieros informáticos debido a que permite manejar la memoria sin ninguna protección a través de los punteros, una fuente habitual de errores. Otra desventaja que  el encuentran es el manejo de memoria manual, esto significa que los objetos deben ser creados y destruidos explícitamente por el programador. El tiempo de creación y destrucción de un objeto es variable, esto es una desventaja para aplicaciones de tiempo real. Es un lenguaje estáticamente tipado, es decir, cada variable debe ser declarada con un tipo, esto implica una ventaja para el programador ya que pueden detectarse en tiempo de compilación muchos errores por incompatibilidad de tipos de datos.
+
+\medskip
+
+\textbf{MicroPython} es una implementación de un intérprete de lenguaje Python para sistemas embebidos. Esto significa que a diferencia de C++, Python es un lenguaje interpretado en lugar de compilado. Este lenguaje posee características modernas, entre ellas Garbage Collecton, que es un proceso que se encarga de detectar que objetos en memoria no se utilizan y los borra automáticamente, liberando al programador de esta tarea. Sin embargo, al igual que el caso anterior esto es una desventaja esto es una desventaja pues su tiempo de ejecución no es determinista. Es un lenguaje dinámicamente tipado, es decir una variable puede cambiar su tipo de datos según lo que contenga en cada momento. En principio facilita la labor del programador al escribir el programa, pero los errores de incompatibilidad de datos solo se darán en tiempo de ejecución, dando más responsabilidad al programador para la detección de errores.
+
+\medskip
+
+El lenguaje \textbf{Java} realiza un balance entre las características de los dos anteriores que pueden ser considerados como  considerar 
+
+
+\medskip
+
+\noindent Las características principales del mismo son:
+
+\begin{itemize}
+\item 
+Lenguaje de programación de propósito general.
+\item 
+Orientado a objetos.
+\item 
+Independiente de la máquina.
+\item 
+Seguro para trabajar en red.
+\item 
+Potente para sustituir código nativo.
+\item 
+Con comprobación estricta de tipos.
+\item 
+Manejo de memoria automático mediante Recolector de Basura.
+\item 
+Sin punteros, utiliza únicamente referencias a objetos.
+\item 
+Permite programación concurrente de forma estándar.
+\end{itemize}
+
+\medskip
+
+Para lograr la independencia de la máquina posee la característica de ser un lenguaje compilado e interpretado. Todo programa en Java, se compila primero a un lenguaje similar a un \textit{assembler} genérico basando en pila (\textit{bytecodes}), que luego es interpretado por una máquina virtual de Java (JVM) dependiente de la plataforma. 
+
+\medskip
+
+La JVM es habitualmente un programa que corre sobre un sistema operativo, sin embargo, existen implementaciones de la JVM que corren directamente sobre el hardware (\textit{bare-metal}) y procesadores capaces de ejecutar \textit{bytecodes} de Java directamente, por ejemplo, el microcontrolador ARM926EJ-S.
+
+\medskip
+
+Debido a estas características y la existencia de la especificación RTSJ que contempla aplicaciones \textit{Real-Time} (se desarrolla en la sección [\ref{sec:EspSCJ}]), se ha elegido Java como lenguaje POO para la programación de la CIAA. Además, Java es uno de lenguajes de POO más utilizados en la actualidad a nivel mundial por programadores informáticos.
+
+
+%Fue desarrollado originalmente por James Gosling de Sun Microsystems y publicado en 1995 como un componente fundamental de la plataforma Java de Sun Microsystems (actualmente fue adquirida por la compañía Oracle). 
+
+
+
+
+
+
+
+\subsection{Especificaciones RTSJ y SCJ} \label{sec:especificacionesJava}
+
+Especificación SCJ.
+
+
+This Safety-Critical Java Specification (JSR-302), based on the Real-Time Specification for Java (JSR-1), defines a set of Java services that are designed to be usable by applications requiring some level of safety certification. The specification is targeted to a wide variety of very demanding certification paradigms such as the safety-critical requirements of DO-178B, Level A.
+
+This specification presents a set of Java classes providing for safety-critical application startup, concurrency, scheduling, synchronization, input/output, memory management, timer management, interrupt processing, native interfaces, and exceptions.
+To enhance the certifiability of applications constructed to conform to this specification, this specification also presents a set of annotations that can be used to permit static checking for applications to guarantee that the application exhibits certain safety properties.
+
+To enhance the portability of safety-critical applications across different implemen- tations of this specification, this specification also lists a minimal set of Java libraries that must be provided by conforming implementations.
+
+
+\medskip
+\titulo{Estructura de un programa SCJ:}
+
+\medskip
+
+\noindent Un programa SCJ se organiza en \textbf{\textit{Missions}}.
+
+\medskip
+
+\noindent Cada Misión se compone de \textbf{\textit{Schedulable objects}} (por ejemplo \textit{handlers}).
+
+\medskip
+
+\noindent Los \textbf{\textit{Handlers}} son:
+\begin{itemize}
+\item 
+\textbf{\textit{Periódicos}} (SCJ Level 0).
+\item 
+\textbf{\textit{Periódicos}} y \textbf{\textit{Aperiódicos}} (SCJ Level 1).
+\end{itemize}
+
+\noindent Modelo de memoria sin heap ni Garbage Collection, se maneja por áreas:
+
+\textbf{\textit{
+\begin{itemize}
+\item 
+Inmortal Memory.
+\item 
+Mission Memory. 
+\item 
+Private Memory.
+\end{itemize}
+}}
+
+Tipos de \textit{Scheduling}:
+
+\begin{itemize}
+\item 
+\textbf{\textit{Cyclic executive}} (SCJ Level 0).
+\item 
+\textbf{\textit{Fixed prioriy preemptive}} (SCJ Level 1).
+\end{itemize}

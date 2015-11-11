@@ -3,182 +3,44 @@
 
 \section{Marco temático: Programación Orientada a Objetos en Sistemas embebidos para aplicaciones industriales}
 
-El propósito de este Trabajo Final es la incorporación de nuevas tecnologías en ambientes industriales mediante el desarrollo de arquitecturas de sistemas embebidos novedosas. 
- 
-En particular, permitir crear aplicaciones \textit{Real-Time} para entornos industriales, utilizando un lenguaje de programación orientado a objetos (en adelante POO), sobre la Computadora Industrial Abierta Argentina (CIAA).
-
-Además, se espera acercar a programadores informáticos a la disciplina de programación de sistemas embebidos, permitiéndoles aplicar técnicas avanzadas de programación.
-
-
 Con la creciente complejidad de las aplicaciones a realizar sobre sistemas embebidos en entornos industriales, y el aumento de las capacidades de memoria y procesamiento de los mismos, se desea poder aplicar técnicas avanzadas de programación para realizar programas fácilmente mantenibles, extensibles y reconfigurables. 
 El paradigma de Programación Orientada a Objetos (POO) cumple con estos requisitos.
-Esto abre las puertas que u
-\medskip
+Un ejemplo donde es muy eficiente su utilización, es en la programación de una sistema donde existan recetas cambiantes para realizar un proceso.
+La aplicación de este paradigma abre las puertas a que programadores informáticos se acerquen a la disciplina de programación de sistemas embebidos, permitiéndoles aplicar técnicas avanzadas de programación.
 
 \medskip
 
-En aplicaciones industriales es requerimiento fundamental cumplir con especificaciones de tiempo real. Es por esto que se debe elegir un lenguaje POO que soporte de manejo de \textit{threads real-time}. 
-Un ejemplo de aplicaciones con estos requerimientos son las de control a lazo cerrado. En estas aplicaciones es necesario garantizar una taza de muestreo periódica uniforme para poder aplicar la teoría de control automático.
-Otro ejemplo donde es muy eficiente el uso del paradigma POO es 
+Para aplicaciones industriales es requerimiento fundamental cumplir con especificaciones temporales. En consecuencia, se necesita un lenguaje POO que soporte de manejo de \textit{threads real-time}. 
+El ejemplo más ilustrativo de este requerimiento es el de una aplicación de control a lazo cerrado. En este dominio es necesario garantizar una taza de muestreo periódica uniforme para poder aplicar la teoría de control automático, suficientemente rápida para que permita seguir la dinámica del sistema ($f_{min}$\footnote{Frecuencia mínima para asegurar la reconstrucción de la señal según el Teorema de muestreo de Nyquist.}) y suficientemente lenta para que permita calcular el algoritmo de control y actualizar la salida entre dos muestras ($f_{max}$\footnote{Frecuencia máxima impuesta por la duración del algoritmo de control.}). A lazo cerrado, finalmente, es el controlador quien impone la frecuencia del sistema, que corresponde a un parámetro de diseño a elegir en el rango entre $f_{min}$ y $f_{max}$.
 
 \medskip
 
-En las siguientes secciones se expondrán las distintas tecnologías que constituyen esta temática.
-
-\subsection{Lenguajes de POO para sistemas embebidos}
-
-En la actualidad existen varios desarrollos de lenguajes de programación orientado a objetos para sistemas embebidos, entre ellos podemos citar:
-
-\begin{itemize}
-\item 
-C++.
-\item 
-Java.
-\item 
-MicroPhyton.
-\end{itemize}
+En la sección [\ref{sec:lenguajesPOO}] se exponen las ventajas y desventajas de distintos lenguajes POO estudiados para la programación de sistemas embebidos con restricciones de tiempo real, concluyendo en la elección de Java. Seguidamente, en la sección [\ref{sec:especificacionesJava}] se introducen dos especificaciones de Java para aplicaciones de tiempo real. Finalmente, en la sección [\ref{sec:proyectoCIAA}] se introduce al proyecto CIAA y sus distintas plataformas.
 
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\input{LenguajesPOO}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{proyectoCIAA}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Justificación}
 
+El autor del presente Trabajo Final forma parte de un proyecto de investigación orientado por la práctica profesional perteneciente al departamento de Ciencia y Tecnología de la Universidad Nacional de Quilmes, titulado, \textbf{\textit{``Estrategias de desarrollo de sistemas embebidos en ambientes de automatización y control industrial. Un enfoque de programación con objetos y servicios web''}}. Cuyo director es, además, el director de este trabajo, MSc. Ing. Félix Gustavo E. Safar y su co-director es Ing. Leonardo Ariel Gassman.
 
-Acá debería poner por que se elije la CIAA y Java
+Este Trabajo surge entonces como necesidad de de obtener una herramienta para llevar a cabo los desarrollos en el marco de dicho proyecto.
 
-Java, que se elije porque es superador a C++ y existe la especificación RTSJ. 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\subsection{Proyecto CIAA}
+\section{Objetivo}
 
-El proyecto de la Computadora Industrial Abierta Argentina (CIAA) nació en 2013 como una iniciativa conjunta entre el sector académico y el industrial, representados por la ACSE\footnote{Asociación Civil para la investigación, promoción y desarrollo de los Sistemas electrónicos Embebidos. Sitio web: \url{http://www.sase.com.ar/asociacion-civil-sistemas-embebidos}} y CADIEEL\footnote{Cámara Argentina de Industrias Electrónicas, Electromecánicas y Luminotécnicas. Sitio web: \url{http://www.cadieel.org.ar/}}, respectivamente.
-
-\medskip
-
-\noindent Los objetivos del proyecto CIAA son:
+El objetivo del Trabajo Final permitir la programación en lenguaje Java de la CIAA con aplicación en entornos industriales. El camino elegido para llevarlo a cabo es realizar:
 
 \begin{itemize}
-\item
-Impulsar el desarrollo tecnológico nacional, a partir de sumar valor agregado al trabajo y a los productos y servicios, mediante el uso de sistemas electrónicos, en el marco de la vinculación de las instituciones educativas y el sistema científico-tecnológico con la industria.
-\item
-Darle visibilidad positiva a la electrónica argentina.
-\item
-Generar cambios estructurales en la forma en la que se desarrollan y utilizan en nuestro país los conocimientos en el ámbito de la electrónica y de las instituciones y empresas que hacen uso de ella.
-\end{itemize}
-
-\noindent Todo esto en el marco de un trabajo libre, colaborativo y articulado entre industria y academia. 
-
-\medskip
-
-Con esta iniciativa se han desarrollado en la actualidad varias plataformas de hardware y entornos de programación para utilizarlas.
-
-\medskip
-
-Siendo el autor participante de este proyecto, ocupando el rol de Responsable de Software-PLC mediante el aporte al proyecto CIAA de un IDE\footnote{IDE4PLC. Sitio web: \url{http://proyecto-ciaa.com.ar/devwiki/doku.php?id=desarrollo:software-plc}} que permite programar esta plataforma con lenguajes de PLC industriales (IEC-661131-3), se desea agregar en esta oportunidad la posibilidad de programar a esta plataforma con un lenguaje de programación orientado a objetos mediante el desarrollo de un IDE para tal fin.
-
-\medskip
-
-Al momento de la presentación de este trabajo, existen dos versiones de la plataforma CIAA cuyo desarrollo ha sido completado. Una de estas, la CIAA-NXP, basada en el microcontrolador NXP LPC4337, que ya se comercializa; y la restante. CIAA-FSL (basada en el microcontrolador Freescale MK60FX512VLQ15), existen únicamente prototipos. Además, de la CIAA-NXP existe una versión educativa de bajo costo. Debido a esta razón, el trabajo se enfoca en el desarrollo de un IDE para programar las dos plataformas basadas en el microcontrolador NXP LPC4337. Se introducen a continuación las características de las mismas.
-
-\bigskip
-\titulo{Plataforma CIAA-NXP}
-
-La CIAA es un dispositivo electrónico programable, basado en un microcontrolador. 
-
-%http://proyecto-ciaa.com.ar/devwiki/doku.php?id=desarrollo:hardware:ciaa_nxp:ciaa_nxp_inicio
-
-\bigskip
-\titulo{Plataforma EDU-CIAA-NXP}
-
-La EDU-CIAA es un desarrollo colaborativo entre docentes universitarios miembros de la Red RUSE (Red Universitaria de Sistemas Embebidos). La red se compone de docentes pertenecientes a más de 60 Universidades a lo largo y a lo ancho del país. 
-
-\noindent Los propósitos de la EDU-CIAA son: 
-
-\begin{itemize}
-\item
-Proveer una plataforma de desarrollo moderna, económica y de fabricación nacional basada en la CIAA-NXP, que sirva a docentes y a estudiantes en los cursos de sistemas embebidos.
-\item
-Lograr una amplia inserción en el sistema educativo argentino.
-\item
-Realizar un aporte eficaz al desarrollo de vocaciones tempranas en electrónica, computación e informática.
-\item
-Demostrar que las universidades argentinas son capaces de realizar un desarrollo colaborativo exitoso en el área de los sistemas embebidos, cumpliendo con requerimientos de tiempo y forma.
-\end{itemize}
-
-
-%http://proyecto-ciaa.com.ar/devwiki/doku.php?id=desarrollo:edu-ciaa:edu-ciaa-nxp
-
-% http://proyecto-ciaa.com.ar/devwiki/doku.php?id=start
-
-
-
-\subsection{Lenguaje de POO Java}
-
-El lenguje Java fue desarrollado originalmente por James Gosling de Sun Microsystems y publicado en 1995 como un componente fundamental de la plataforma Java de Sun Microsystems (actualmente fue adquirida por la compañía Oracle). 
-
-\medskip
-
-\noindent Las características principales del mismo son:
-
-\begin{itemize}
-\item 
-Lenguaje de programación de propósito general.
-\item 
-Orientado a objetos.
-\item 
-Independiente de la máquina.
-\item 
-Seguro para trabajar en red.
-\item 
-Potente para sustituir código nativo.
-\item 
-Con comprobación estricta de tipos.
-\item 
-Manejo de memoria automático mediante Recolector de Basura.
-\item 
-Sin punteros, utiliza únicamente referencias a objetos.
-\item 
-Permite programación concurrente de forma estándar.
-\end{itemize}
-
-\medskip
-
-Para lograr la independencia de la máquina posee la característica de ser un lenguaje compilado e interpretado. Todo programa en Java, se compila primero a un lenguaje similar a un \textit{assembler} genérico basando en pila (\textit{bytecodes}), que luego es interpretado por una máquina virtual de Java (JVM) dependiente de la plataforma. 
-
-\medskip
-
-La JVM es habitualmente un programa que corre sobre un sistema operativo, sin embargo, existen implementaciones de la JVM que corren directamente sobre el hardware (\textit{bare-metal}) y procesadores capaces de ejecutar \textit{bytecodes} de Java directamente, por ejemplo, el microcontrolador ARM926EJ-S.
-
-\medskip
-
-Debido a estas características y la existencia de la especificación RTSJ que contempla aplicaciones \textit{Real-Time} (se desarrolla en la sección [\ref{sec:EspSCJ}]), se ha elegido Java como lenguaje POO para la programación de la CIAA. Además, Java es uno de lenguajes de POO más utilizados en la actualidad a nivel mundial por programadores informáticos.
-
-
-% PONER COMO BIBLIO DE JAVA - EL LIBRO DE JUAREZ
-% PONER COMO BIBLIO DE JAVA - http://www3.uji.es/~belfern/pdidoc/IX26/Documentos/introJava.pdf
-% Procesador Java - http://www.atmel.com/images/arm_926ejs_trm.pdf
-
-
-
-
-\subsection{Especificaciones RTSJ y SCJ}\label{sec:EspSCJ}
-
-Especificación SCJ.
-
-
-This Safety-Critical Java Specification (JSR-302), based on the Real-Time Specification for Java (JSR-1), defines a set of Java services that are designed to be usable by applications requiring some level of safety certification. The specification is targeted to a wide variety of very demanding certification paradigms such as the safety-critical requirements of DO-178B, Level A.
-
-This specification presents a set of Java classes providing for safety-critical application startup, concurrency, scheduling, synchronization, input/output, memory management, timer management, interrupt processing, native interfaces, and exceptions.
-To enhance the certifiability of applications constructed to conform to this specification, this specification also presents a set of annotations that can be used to permit static checking for applications to guarantee that the application exhibits certain safety properties.
-
-To enhance the portability of safety-critical applications across different implemen- tations of this specification, this specification also lists a minimal set of Java libraries that must be provided by conforming implementations.
-
-
-\section{Objetivos}
-
-Los objetivos del presente trabajo final son:
-
-\begin{itemize}
-
 \item 
 Realizar el \textit{port} de la máquina virtual de HVM para que corra sobre las plataformas CIAA-NXP y EDU-CIAA-NXP, permitiendo la programación de aplicaciones Java.
 \item 
@@ -188,5 +50,8 @@ Llevar a cabo el \textit{port} de la capa SCJ de la máquina virtual de HVM, para
 \item 
 La integración del \textit{port} para la CIAA al IDE de HVM, para completar un IDE de Java SCJ sobre la CIAA.
 \end{itemize}
+
+Con el objetivo de obtener un Entorno de Desarrollo Integrado (IDE) para programar en lenguaje Java las plataformas CIAA-NXP y EDU-CIAA-NXP.
+
 
 %\section{Alcance}
