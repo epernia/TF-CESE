@@ -1,19 +1,7 @@
-\chapter{IMPLEMENTACIÓN - (14 pag)}\label{cap:implementacion}
+\chapter{IMPLEMENTACIÓN}\label{cap:implementacion}
 % Cómo realicé concretamente el diseño
 
-%\input{Lenguajes}
-%\input{Eclipse}
-%\input{PortHvmParaCiaa}
-%\input{ImplementacionHal}
-%\input{EjemplosPerifericos}
-%\input{PortHvmParaCiaaScj}
-%\input{EjemploRealTime}
-%\input{Plugins}
-%\input{ImplementacionIDE}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\noindent La implementación consiste en:
+La implementación consiste en:
 
 \begin{itemize}
 \item 
@@ -26,45 +14,45 @@ El \textit{port} de la capa SCJ de la máquina virtual de HVM, para permitir desa
 La integración del \textit{port} para la CIAA al IDE de HVM, para completar un IDE de Java SCJ sobre la CIAA.
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+En las siguientes secciones se describen las herramientas utilizadas e implementaciones concretas del diseño propuesto.
 
-En las siguientes secciones se describen las herramientas utilizadas y  
+%\input{Lenguajes}
 
-\section{Paradigmas y lenguajes de programación utilizados} \label{sec:lenguajesJavaYC}
+\section{Herramientas utilizadas} \label{sec:heramientas}
 
-Paradigmas y lenguajes de programación utilizados.
+	\subsection{Lenguaje C}
+	
+	\subsection{Lenguaje Java}
+	
+	\subsection{Cygwin}
+	
+	\subsection{Eclipse}
+   
+\section{Port de HVM al microcontrolador NXP LPC4337} \label{sec:HVMenLPC4337}
+
+\section{Implementación de una API para manejo de periféricos} \label{sec:lenguajesJavaYC}
+
+	\subsection{CIAA-NXP}
+         %Mapeo de pines
+         
+	\subsection{EDU-CIAA}
+         %Mapeo de pines
+         
+	\subsection{Java} %  ---> Como se ve la API desde Java Space
+
+\section{Port de HVM SCJ al microcontrolador NXPLPC4337} \label{sec:HVMscjEnLPC4337}
+
+	\subsection{Funciones para SCJ}
+   
+\section{Implementación del IDE} \label{sec:ImplIde}
+
+	\subsection{Plugins desarrollados}
 
 
-\section{Entorno Eclipse} \label{sec:eclipse}
+%Implementación de API para manejo de periféricos CIAA-NXP.
 
-Entorno Eclipse.
+%sAPI
 
+%Como subproducto, se obtiene además un nuevo módulo de Firmware para la CIAA nombrado sAPI (simple API) que permite mediante un conjunto de clases encapsular el manejo de periféricos con una interfaz muy sencilla pensada para el programador con perfil informático no experto en Sistemas embebidos. 
 
-\section{Port de HVM (Java básico) para CIAA-NXP} \label{sec:portHvmParaCiaa}
-
-Port de HVM (Java básico) para CIAA-NXP.
-
-
-\section{Implementación de una API para manejo de periféricos} \label{sec:implementacionHal}
-
-Implementación de API para manejo de periféricos CIAA-NXP.
-
-sAPI
-
-Como subproducto, se obtiene además un nuevo módulo de Firmware para la CIAA nombrado sAPI (simple API) que permite mediante un conjunto de clases encapsular el manejo de periféricos con una interfaz muy sencilla pensada para el programador con perfil informático no experto en Sistemas embebidos. 
-
-	Enumerar el hardware que permite atacar
-
-
-\section{Port de HVM SCJ para CIAA-NXP} \label{sec:portHvmParaCiaaScj}
-
-Port de HVM (Java SCJ) para CIAA-NXP.
-
-
-\section{Implementación del IDE} \label{sec:implementacionIDE}
-
-Implementación del IDE.
-
-\subsection{Plugins desarrollados} \label{sec:plugins}
-
-Plugins desarrollados.
+%	Enumerar el hardware que permite atacar

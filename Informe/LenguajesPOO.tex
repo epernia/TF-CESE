@@ -137,7 +137,7 @@ Brinda diversas formas de reservar memoria para objetos. Los objetos pueden asig
 \item
 \textbf{Memoria inmortal}. Un área de memoria que no tiene un \textit{gargabe collector}, cuyo uso lo debe gestionar el programador.
 \item
-\textbf{Memoria acotada}. Sólo disponible para \textit{threads} de tiempo real (RTT\footnote{RTT son las siglas de \textit{Real-Time Thread}. Es la clase Java que implementa las tareas de tiempo real} y NHRT\footnote{NHRT significa \textit{No Heap Real-time Thread}. Es una subclase de RTT donde el \textit{garbage colletor} no actúa durante su ejecución. Destinada a tareas \textit{hard real-time}}). Estas áreas de memoria están pensadas para objetos con un tiempo de vida conocido. Al igual que la anterior no posee \textit{gargabe collector}.
+\textbf{Memoria de ámbito}. Sólo disponible para \textit{threads} de tiempo real (RTT\footnote{RTT son las siglas de \textit{Real-Time Thread}. Es la clase Java que implementa las tareas de tiempo real} y NHRT\footnote{NHRT significa \textit{No Heap Real-time Thread}. Es una subclase de RTT donde el \textit{garbage colletor} no actúa durante su ejecución. Destinada a tareas \textit{hard real-time}}). Estas áreas de memoria están pensadas para objetos con un tiempo de vida conocido. Al igual que la anterior no posee \textit{gargabe collector}.
 \end{itemize}
 
 
@@ -156,46 +156,66 @@ Presenta un conjunto de \textit{annotations} que pueden ser utilizadas para gara
 
 Para aumentar la portabilidad de las aplicaciones \textit{Safety-Critical} entre distintas implementaciones de esta especificación, se enumera un conjunto mínimo de bibliotecas Java que deben ser proporcionados en una implementación conforme a la especificación.
 
+\bigskip
+\titulo{Modelo de programación SCJ}
+
+En esta especificación solo se permiten \textbf{\textit{Threads Real-Time}} a diferencia de RTSJ. 
+Un programa SCJ se organiza en \textbf{Misiones}\footnote{\textit{Missions} en su idioma original}. 
+Una misión encapsula una funcionalidad específica, o una fase, en el tiempo de vida de del sistema en tiempo real como un conjunto de \textbf{entidades planificables}\footnote{\textit{schedulable entities} en su idioma original.}. 
+Por ejemplo, un sistema de control de vuelo puede estar compuesto de despegue, crucero y aterrizaje; pudiendo dedicarse a cada una una misión.
+Una entidad planificable maneja una funcionalidad específica y tiene parámetros de liberación que describen el modelo de liberación y alcance temporal, por tiemplo tiempo de liberación y \textit{dedline}. 
+El patrón de liberación es periódico o aperiódico.
+
 \medskip
 
-\noindent A continuación se describen algunas características de SCJ.
+El concepto de misión se representa en la figura [\ref{fig:missionsSCJ}] y contiene cinco fases:
 
 \begin{itemize}
 \item 
-En esta especificación solo se permiten \textbf{\textit{Threads Real-Time}}.
-
+\textbf{Configuración:} donde se asignan en memoria los objetos de la misión. Esto se hace durante el arranque del sistema y no se considera de tiempo critico.
 \item 
-Un programa SCJ se organiza en \textbf{\textit{Missions}}.
-
+\textbf{Inicialización:} donde se realizan todas las asignaciones de objetos relacionados con la misión o de la totalidad de la aplicación. Esta fase no es de tiempo crítico.
 \item 
-Cada Misión se compone de \textbf{\textit{Schedulable objects}} (por ejemplo \textit{handlers}).
+\textbf{Ejecución:} durante el cual se ejecuta toda la lógica de aplicación y entidades planificables se preparan para su ejecución de acuerdo con un planificador apropiativo. Esta fase es de tiempo crítico.
+\item 
+\textbf{Limpieza:} se ingresa cuando termina la misión y se utiliza para completar la ejecución de todas las entidades planificables, así como la realización de funciones relacionadas con limpieza de memoria. Después de esta fase, la misma misión puede ser reiniciada, se selecciona una nueva, o bien, se ingresa en la fase de desmontaje. Esta fase no es de tiempo crítico.
+\item 
+\textbf{Desmontaje:} es la fase final de la vida útil de la aplicación y se compone de la liberación de memoria de los objetos y otros recursos. Esta fase no es de tiempo crítico.
+\end{itemize}
 
-\item
-Modelo de memoria sin \textit{heap} ni \textit{Garbage Collector}, se divide  la memoria en \textbf{ámbitos de memoria} que se manejan mediante áreas de memoria, en este caso:
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=16cm,height=5cm]{figuras/MisionSCJ.png}
+\par\caption{Concepto de misión SCJ.}\label{fig:missionsSCJ}
+\end{center}
+\end{figure}
+
+Se utiliza un \textbf{secuenciador de misión} para regular el orden de los objetos de misión que puede ser personalizado para la aplicación.
+
+\medskip
+
+SCJ presenta un modelo de memoria basado en el concepto de \textbf{ámbitos de memoria} de RTSJ, evitando el uso del \textit{heap} con \textit{garbage collector} para facilitar la verificación de los sistemas de SCJ. El modelo de memoria SCJ se muestra en la Figura [\ref{fig:memoriaSCJ}] e introduce tres niveles de memorias, estos son:
 
 \begin{itemize}
 \item 
-\textbf{\textit{Inmortal Memory.}}
+\textbf{\textit{Memoria Privada.}} Se asocia a cada \textit{handler} de eventos \textit{real-time}. Esta memoria privada existe durante toda la duración del \textit{handler} y se borra al finalizar.
 \item 
-\textbf{\textit{Mission Memory.}}
+\textbf{\textit{Memoria Inmortal.}} Es el área deque perdura durante toda la vida útil del sistema quedando a cargo del programador.
 \item 
-\textbf{\textit{Private Memory.}}
+\textbf{\textit{Memoria de Misión.}} Se asocia con cada misión del sistema y como tal gestiona la memoria de todos los \textit{handlers} de tiempo real de la misión, así como los objetos compartidos entre \textit{handlers}. Cuando una misión completa su ejecución se borra su memoria asociada.
 \end{itemize}
 
-\item 
-Tipos de \textit{Scheduling}:
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=14cm,height=6.5cm]{figuras/MemoriaSCJ.png}
+\par\caption{Modelo de memoria SCJ.}\label{fig:missionsSCJ}
+\end{center}
+\end{figure}
 
-\begin{itemize}
-\item 
-\textbf{\textit{Cyclic executive}} (SCJ Level 0).
-\item 
-\textbf{\textit{Fixed prioriy preemptive}} (SCJ Level 1).
-\end{itemize}
+\bigskip
+\titulo{Niveles conformidad con la especificación SCJ}
 
-\end{itemize}
-
-
-\noindent Existen 3 niveles conformidad con la especificación SCJ:
+Existen 3 niveles conformidad con la especificación SCJ, dependiendo de las prestaciones ofrecidas:
 
 \begin{itemize}
 \item 
@@ -203,14 +223,7 @@ Tipos de \textit{Scheduling}:
 \item 
 \textbf{Nivel 1}. Provee una única \textbf{Misión} con múltiples \textbf{Objetos planificables}.
 \item 
-\textbf{Nivel 2}. Ofrece \textbf{Misiones} anidadas con (limitados) proporciona misiones anidadas con (limitados) \textbf{ámbitos de memoria} anidados.
+\textbf{Nivel 2}. Ofrece \textbf{Misiones} anidadas (limitadas) con \textbf{ámbitos de memoria} anidados (limitados).
 \end{itemize}
 
-\noindent En la figura [\ref{fig:missionsSCJ}] ilustra el comportamiento de una aplicación SCJ. 
 
-\begin{figure}[!htbp]
-\begin{center}
-\includegraphics*[width=16cm,height=5cm]{figuras/MisionSCJ.png}
-\par\caption{Ccomportamiento de una aplicación SCJ.}\label{fig:missionsSCJ}
-\end{center}
-\end{figure}
