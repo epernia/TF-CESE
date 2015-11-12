@@ -1,13 +1,12 @@
 %para gerentes}
-\chapter{INTRODUCCIÓN GENERAL - (8 pag)}
+\chapter{INTRODUCCIÓN GENERAL}
 
 \section{Marco temático: Programación Orientada a Objetos en Sistemas embebidos para aplicaciones industriales}
 
 Con la creciente complejidad de las aplicaciones a realizar sobre sistemas embebidos en entornos industriales, y el aumento de las capacidades de memoria y procesamiento de los mismos, se desea poder aplicar técnicas avanzadas de programación para realizar programas fácilmente mantenibles, extensibles y reconfigurables. 
 El paradigma de Programación Orientada a Objetos (POO) cumple con estos requisitos.
-Un ejemplo donde es muy eficiente su utilización, es en la programación de una sistema donde existan recetas cambiantes para realizar un proceso.
 La aplicación de este paradigma abre las puertas a que programadores informáticos se acerquen a la disciplina de programación de sistemas embebidos, permitiéndoles aplicar técnicas avanzadas de programación.
-
+Un ejemplo donde es muy eficiente su utilización, es en la programación de una sistema donde existan recetas cambiantes para realizar un proceso.
 \medskip
 
 Para aplicaciones industriales es requerimiento fundamental cumplir con especificaciones temporales. En consecuencia, se necesita un lenguaje POO que soporte de manejo de \textit{threads real-time}. 
@@ -15,12 +14,7 @@ El ejemplo más ilustrativo de este requerimiento es el de una aplicación de cont
 
 \medskip
 
-En la sección [\ref{sec:lenguajesPOO}] se exponen las ventajas y desventajas de distintos lenguajes POO estudiados para la programación de sistemas embebidos con restricciones de tiempo real, concluyendo en la elección de Java. Seguidamente, en la sección [\ref{sec:especificacionesJava}] se introducen dos especificaciones de Java para aplicaciones de tiempo real. Finalmente, en la sección [\ref{sec:proyectoCIAA}] se introduce al proyecto CIAA y sus distintas plataformas.
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-\input{LenguajesPOO}
+En la sección [\ref{sec:proyectoCIAA}] se introduce el proyecto CIAA y sus distintas plataformas. Seguidamente, en la sección [\ref{sec:lenguajesPOO}] se exponen las ventajas y desventajas de distintos lenguajes POO estudiados para la programación de sistemas embebidos, de los cuales se selecciona Java. Luego, en la sección [\ref{sec:especificacionesJava}] se introducen dos especificaciones de Java para aplicaciones de tiempo real. Finalmente, en la sección [\ref{sec:VMsJava}] se exponen distintas máquinas virtuales de Java para aplicaicones \textit{real-time}, concluyendo en la elección de HVM.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -28,17 +22,27 @@ En la sección [\ref{sec:lenguajesPOO}] se exponen las ventajas y desventajas de 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+\input{LenguajesPOO}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\input{VMsJava}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 \section{Justificación}
 
 El autor del presente Trabajo Final forma parte de un proyecto de investigación orientado por la práctica profesional perteneciente al departamento de Ciencia y Tecnología de la Universidad Nacional de Quilmes, titulado, \textbf{\textit{``Estrategias de desarrollo de sistemas embebidos en ambientes de automatización y control industrial. Un enfoque de programación con objetos y servicios web''}}. Cuyo director es, además, el director de este trabajo, MSc. Ing. Félix Gustavo E. Safar y su co-director es Ing. Leonardo Ariel Gassman.
 
-Este Trabajo surge entonces como necesidad de de obtener una herramienta para llevar a cabo los desarrollos en el marco de dicho proyecto.
+\medskip
+
+Este trabajo surge entonces como necesidad de de obtener una herramienta para llevar a cabo los desarrollos en el marco de dicho proyecto.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Objetivo}
 
-El objetivo del Trabajo Final permitir la programación en lenguaje Java de la CIAA con aplicación en entornos industriales. El camino elegido para llevarlo a cabo es realizar:
+El objetivo del Trabajo Final permitir la programación en lenguaje Java de la CIAA con aplicación en entornos industriales. El camino elegido para llevarlo a cabo es:
 
 \begin{itemize}
 \item 
@@ -51,7 +55,4 @@ Llevar a cabo el \textit{port} de la capa SCJ de la máquina virtual de HVM, para
 La integración del \textit{port} para la CIAA al IDE de HVM, para completar un IDE de Java SCJ sobre la CIAA.
 \end{itemize}
 
-Con el objetivo de obtener un Entorno de Desarrollo Integrado (IDE) para programar en lenguaje Java las plataformas CIAA-NXP y EDU-CIAA-NXP.
-
-
-%\section{Alcance}
+Estas tareas conllevan a la obtención de un Entorno de Desarrollo Integrado (IDE) para programar en lenguaje Java las plataformas CIAA-NXP y EDU-CIAA-NXP.

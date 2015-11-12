@@ -1,0 +1,62 @@
+\subsection{Máquinas Virtuales Java para aplicaciones de tiempo real} \label{sec:VMsJava}
+
+Para poder utilizar Java sobre una plataforma de hardware en particular, se debe contar con una implementación de la JVM conforme a alguna de las especificaciones anteriores. Se exponen las distintas máquinas virtuales de Java que se consideraron y sus características:
+
+\begin{itemize}
+\item 
+\textbf{JamaicaVM}. Sitio Web: \url{http://www.aicas.com/jamaica.html}.
+\item 
+\textbf{FijiVM}. Sitio Web: \url{http://fiji-systems.com/}.
+\item 
+\textbf{oSCJ}. Sitio Web: \url{https://www.cs.purdue.edu/sss/projects/oscj/}.
+\item 
+\textbf{KESO VM}. Sitio Web: \url{https://www4.cs.fau.de/Research/KESO/}.
+\item 
+\textbf{HVM}. Sitio Web: \url{http://icelab.dk/}.
+\end{itemize}
+
+\textbf{JamaicaVM} soporta la especificación RTSJ. Es un desarrollo de la empresa Aicas, planeada para aplicaciones \textit{Hard Real-Time}, que posee un \textit{garbage collector} determinístico (\textit{fully preemptable}). Se encuentra en estado de certificación para su utilización en automóviles y aviones. Si bien es la JVM más prometedora, la misma es de código privado y por eso se descarta su utilización en este trabajo.
+
+\medskip
+
+\textbf{FijiVM} soporta la especificación SCJ con muy buenas pretaciones, sin embargo al igual que JamaicaVM es un desarrollo de código privado. 
+
+% http://rtjava.blogspot.com.ar/2011/07/fijivm-real-time-java-vm-overview.html
+
+\medskip 
+
+\textit{Open Safety-Critical Java Implementation} (\textbf{oSCJ}) es un desarrollo de la universidad de Purdue, de código abierto, que implementa un conjunto restringido de la especificación SCJ, con foco en el nivel 0 de la misma. Posee un desarrollo de \textit{Technology Compatibility Kit} (TCK) como es solicitado en SCJ, chequeo estático de \textit{Annotations} SCJ y un conjunto de \textit{benchmarks} SCJ. Su licencia es \textit{New BSD}. La plataforma sobre la cual está desarrollada oSCJ es una FPGA Xilinx con un softcore LEON3 corriendo el sistema operativo de tiempo real RTEMS. Este desarrollo dista mucho del microcontrolador que se utiliza en el trabajo y no se ha encontrado documentación para portarlo a otra arquitectura.
+
+\medskip 
+
+\textbf{KESO VM} se desarrolla en Universidad Friedrich-Alexander, Alemania, con licencia LGPL V3. Está diseñada para correr sobre el sistema operativo de tiempo real OSEK, sobre las plataformas JOSEK, CiAO, Trampoline OS, Elektrobit ProOSEK y RTA-OSEK. En la web ofical existen ejemplos sobre la arquitectura AVR de 8 bits de la compañia Atmel. Si bien posee soporte de \textit{threads real-time}, no se basa en ninguna de las especificaciones para Java de tiempo real anteriores. Por otro lado, no se encontró documentación acerca de como llevar la misma a otra distribución de OSEK.
+
+\medskip 
+
+Hardware near Virtual Machine (\textbf{HVM}) comenzó como un desarrollo para la tesis doctoral de Stephan Erbs Korsholm (Icelabs). Es un entorno de ejecución de \textit{Safety Critical} Java (SCJ) nivel 1 y 2, de código abierto diseñado para plataformas embebidas de bajos recursos.
+
+\medskip
+
+HVM corre directamente sobre el hardware sin necesidad de un sistema operativo (\textit{bare-metall}). Su diseño y documentación [ref biblio HVM REF] facilita la portabilidad a nuevas arquitecturas.
+
+\medskip
+
+Se compone de las siguientes partes:
+\begin{itemize}
+\item \textbf{Icecaptools}. Es un \textit{plugin} que convierte al IDE Eclipse, en un IDE para la programación en lenguaje Java para HVM. Icecaptools genera código C a partir de la aplicación Java de usuario para correr sobre la máquina virtual de Java, HVM, así como los proprios archivos que implementan a esta máquina virtual.
+\item \textbf{HVM SDK}. Es el \textit{Software Development Kit} de HVM que incluye las clases que implementan SCJ.
+\end{itemize}
+
+
+
+% [ref biblio] = icelab.dk/resources/SCJ_JTRES12.pdf
+
+En [ref biblio] se porveen \textit{benckmarks} de HVM, KESO VM y FijiVM relativas a la aplicación de los mismos algoritmos en lenguaje C.
+
+\medskip
+
+Debido a estas características se elije HVM como la JVM a utilizar en este trabajo. 
+
+\medskip
+
+Cabe destacar, que durante el desarrollo del presente trabajo se ha entrado en contacto con Korsholm, vía correo electrónico, quien con excelente predisposición ha facilitado mucho la labor contestando todas las dudas. De esta manera, se ha logrado una cooperación entre los equipos de investigación de la Universidad Nacional de Quilmes e Icelabs, y se espera luego de la conclusión de este trabajo, contribuir al proyecto HVM con el aporte del \textit{port} para la CIAA de HVM.

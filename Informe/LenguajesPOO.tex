@@ -1,6 +1,6 @@
 \subsection{Lenguajes de POO para sistemas embebidos} \label{sec:lenguajesPOO}
 
-En la actualidad existen muchos desarrollos de lenguajes de programación orientado a objetos para sistemas embebidos, puntualmente se han estudiado las siguientes alternativas:
+En la actualidad existen muchos desarrollos de lenguajes de programación orientado a objetos de propósito general para sistemas embebidos. Puntualmente se han evaluado las siguientes alternativas:
 
 \begin{itemize}
 \item 
@@ -8,31 +8,58 @@ C++.
 \item 
 Java.
 \item 
-MicroPython.
+Python.
 \end{itemize}
 
-El lenguaje de programación \textbf{C++} se encuentra disponible para la mayoría de los sistemas embebidos del mercado. Básicamente todos los que poseen un compilador de C traen, además, un compilador de C++. En este lenguaje se pueden manejar las interrupciones de un microcontrolador a través de funciones en C embebidas en el código C++. 
 
-Si bien maneja todos los conceptos importantes que debe tener un lenguaje orientado a objetos, el mismo es considerado obsoleto por los ingenieros informáticos debido a que permite manejar la memoria sin ninguna protección a través de los punteros, una fuente habitual de errores. Otra desventaja que  el encuentran es el manejo de memoria manual, esto significa que los objetos deben ser creados y destruidos explícitamente por el programador. El tiempo de creación y destrucción de un objeto es variable, esto es una desventaja para aplicaciones de tiempo real. Es un lenguaje estáticamente tipado, es decir, cada variable debe ser declarada con un tipo, esto implica una ventaja para el programador ya que pueden detectarse en tiempo de compilación muchos errores por incompatibilidad de tipos de datos.
+\titulo{C++}
 
-\medskip
-
-\textbf{MicroPython} es una implementación de un intérprete de lenguaje Python para sistemas embebidos. Esto significa que a diferencia de C++, Python es un lenguaje interpretado en lugar de compilado. Este lenguaje posee características modernas, entre ellas Garbage Collecton, que es un proceso que se encarga de detectar que objetos en memoria no se utilizan y los borra automáticamente, liberando al programador de esta tarea. Sin embargo, al igual que el caso anterior esto es una desventaja esto es una desventaja pues su tiempo de ejecución no es determinista. Es un lenguaje dinámicamente tipado, es decir una variable puede cambiar su tipo de datos según lo que contenga en cada momento. En principio facilita la labor del programador al escribir el programa, pero los errores de incompatibilidad de datos solo se darán en tiempo de ejecución, dando más responsabilidad al programador para la detección de errores.
+El lenguaje de programación C++ se encuentra disponible para la mayoría de los sistemas embebidos del mercado. Básicamente, todo embebido  que dispone de un compilador de C, trae además, un compilador de C++. En este lenguaje se pueden manejar las interrupciones de un microcontrolador a través de funciones en C embebidas en el código C++. 
 
 \medskip
 
-El lenguaje \textbf{Java} realiza un balance entre las características de los dos anteriores que pueden ser considerados como  considerar 
-
+No tiene soporte de manejo de \textit{threads} en el lenguaje, sino que debe programarse desde cero una aplicación que resuelva. 
 
 \medskip
 
-\noindent Las características principales del mismo son:
+Si bien aplica todos los conceptos importantes que debe tener un lenguaje orientado a objetos, el mismo es considerado obsoleto por ingenieros informáticos debido a que arrastra muchos conceptos de C que lo vuelven inseguro, como por ejemplo, permite manejar la memoria sin ninguna protección a través de punteros, una fuente habitual de errores. El manejo de memoria manual se extiende a la eliminación explicita de objetos, cuya responsabilidad recae sobre el programador. El tiempo de creación y destrucción de un objeto es variable, esto es una desventaja para aplicaciones de tiempo real. 
+
+\medskip
+
+Es un lenguaje estáticamente tipado, es decir, cada variable debe ser declarada con un tipo, esto implica una ventaja para el programador ya que pueden detectarse en tiempo de compilación muchos errores por incompatibilidad de tipos de datos. 
+
+\medskip
+
+Este lenguaje POO está disponible para utilizarse actualmente en las plataformas CIAA.
+
+
+\bigskip
+\titulo{Python}
+
+Este lenguaje posee características modernas, entre ellas Garbage Collecton, que es un proceso que se encarga de detectar que objetos en memoria no se utilizan y los borra automáticamente, liberando al programador de esta tarea. Sin embargo, al igual que el caso anterior es una desventaja para aplicaciones de timpo real pues su tiempo de ejecución no es determinista. 
+No utiliza punteros, posee solamente referencias.
+
+\medskip
+
+Es un lenguaje dinámicamente tipado, es decir una variable puede cambiar su tipo de datos según lo que contenga en cada momento, constituyendo una ventaja aparente para el programador al escribir el programa, pero los errores de incompatibilidad de datos solo se darán en tiempo de ejecución, dando más responsabilidad al programador para la detección de errores. Si bien en desarrollos unipersonales esto no es determinante, no se recomienda para grandes proyectos donde existan muchos programadores distribuidos. 
+
+\medskip
+
+El lenguaje Python posee soporte para el manejo de procesos, pero no se han encontrado especificaciones de soporte de procesos \textit{real-time}. 
+
+A diferencia de C++, Python es un lenguaje interpretado en lugar de compilado.
+
+\medskip
+
+MicroPython es una implementación de un intérprete de lenguaje Python para sistemas embebidos. Durante el tiempo de realización de este trabajo, un grupo perteneciente al proyecto CIAA se portó este intérprete para poder ser utilizado sobre la plataforma EDU-CIAA-NXP. Sin embargo, el mismo no se recomienda para aplicaciones industriales.
+
+
+\bigskip
+\titulo{Java}
+
+El lenguaje Java, uno de los lenguaje de programación más utilizados en la actualidad. Realiza un balance entre las mejores características de los dos anteriores y agrega otras faltantes. Sus características son:
 
 \begin{itemize}
-\item 
-Lenguaje de programación de propósito general.
-\item 
-Orientado a objetos.
 \item 
 Independiente de la máquina.
 \item 
@@ -44,79 +71,118 @@ Con comprobación estricta de tipos.
 \item 
 Manejo de memoria automático mediante Recolector de Basura.
 \item 
-Sin punteros, utiliza únicamente referencias a objetos.
+Sin punteros, utiliza referencias.
 \item 
 Permite programación concurrente de forma estándar.
 \end{itemize}
 
 \medskip
 
-Para lograr la independencia de la máquina posee la característica de ser un lenguaje compilado e interpretado. Todo programa en Java, se compila primero a un lenguaje similar a un \textit{assembler} genérico basando en pila (\textit{bytecodes}), que luego es interpretado por una máquina virtual de Java (JVM) dependiente de la plataforma. 
+Para lograr la independencia de la máquina, Java posee la característica de ser un lenguaje compilado e interpretado. Todo programa en Java, se compila primero a un lenguaje similar a un \textit{assembler} genérico basando en pila (\textit{bytecodes}), que luego es interpretado por una máquina virtual de Java (JVM) dependiente de la plataforma.
 
 \medskip
 
-La JVM es habitualmente un programa que corre sobre un sistema operativo, sin embargo, existen implementaciones de la JVM que corren directamente sobre el hardware (\textit{bare-metal}) y procesadores capaces de ejecutar \textit{bytecodes} de Java directamente, por ejemplo, el microcontrolador ARM926EJ-S.
-
-\medskip
-
-Debido a estas características y la existencia de la especificación RTSJ que contempla aplicaciones \textit{Real-Time} (se desarrolla en la sección [\ref{sec:EspSCJ}]), se ha elegido Java como lenguaje POO para la programación de la CIAA. Además, Java es uno de lenguajes de POO más utilizados en la actualidad a nivel mundial por programadores informáticos.
-
+La JVM es habitualmente un programa que corre sobre un sistema operativo, sin embargo, existen implementaciones de la JVM que corren directamente sobre el hardware (\textit{bare-metal}) y procesadores capaces de ejecutar \textit{bytecodes} de Java directamente (por ejemplo, el microcontrolador ARM926EJ-S). Si bien es interpretado al igual que Python, existen disponibles muchas implementaciones de la JVM para distintas plataformas, no siendo este el caso de los intérpretes de Python.
 
 %Fue desarrollado originalmente por James Gosling de Sun Microsystems y publicado en 1995 como un componente fundamental de la plataforma Java de Sun Microsystems (actualmente fue adquirida por la compañía Oracle). 
 
+\medskip
 
-
-
-
-
+Java posee varias especificaciones de tiempo real. En consecuencia, por todas las razones expuestas, se elige Java como lenguaje POO para el presente trabajo. Se introducen a continuación las especificaciones de Java RTSJ y SCJ.
 
 \subsection{Especificaciones RTSJ y SCJ} \label{sec:especificacionesJava}
 
-Especificación SCJ.
+En Java existen varias descripciones del lenguaje pensadas para la implementación \textit{threads real-time}, mitigando los puntos de desventaja del lenguaje Java para la programación de aplicaciones industriales. Una de ellas es la especificación RTSJ que contempla aplicaciones \textit{Real-Time}, otra es \textit{Predictable} Java (PJ), un subconjunto de RTSJ que agrega algunos conceptos. Esta última se ha utilizado como inspiración para SCJ, la cual agrega conceptos de sistemas críticos y seguridad funcional. Se describen a continuación las especificaciones RTSJ y SCJ.
 
 
-This Safety-Critical Java Specification (JSR-302), based on the Real-Time Specification for Java (JSR-1), defines a set of Java services that are designed to be usable by applications requiring some level of safety certification. The specification is targeted to a wide variety of very demanding certification paradigms such as the safety-critical requirements of DO-178B, Level A.
+\bigskip
+\titulo{Especificación RTSJ}
 
-This specification presents a set of Java classes providing for safety-critical application startup, concurrency, scheduling, synchronization, input/output, memory management, timer management, interrupt processing, native interfaces, and exceptions.
-To enhance the certifiability of applications constructed to conform to this specification, this specification also presents a set of annotations that can be used to permit static checking for applications to guarantee that the application exhibits certain safety properties.
-
-To enhance the portability of safety-critical applications across different implemen- tations of this specification, this specification also lists a minimal set of Java libraries that must be provided by conforming implementations.
-
-
-\medskip
-\titulo{Estructura de un programa SCJ:}
+La Especificación de Tiempo Real para Java (RTSJ), o JSR 1, indica cómo un sistema Java debería comportarse en un contexto de tiempo real. Fue desarrollada durante varios años por expertos de Java y de aplicaciones en tiempo real.
 
 \medskip
 
-\noindent Un programa SCJ se organiza en \textbf{\textit{Missions}}.
+Está diseñada para extender naturalmente cualquiera de las plataformas de la familia Java (Java, Java SE, Java EE, Java Micro Edition, etc.), y tiene el requerimiento de que cualquier implementación debe pasar el \textit{Test} de Compatibilidad JSR 1 (TCK) y el TCK propio de la plataforma en la cual está basada. 
 
 \medskip
 
-\noindent Cada Misión se compone de \textbf{\textit{Schedulable objects}} (por ejemplo \textit{handlers}).
+RTSJ introduce varias características nuevas para soportar operaciones en tiempo real. Estas características incluyen nuevos tipos de \textit{thread}, nuevos modelos de gestión de memoria, y nuevos \textit{frameworks}.
 
 \medskip
 
-\noindent Los \textbf{\textit{Handlers}} son:
+Modela una aplicación de tiempo real como un conjunto de tareas, cada una de las cuales tiene una meta de tiempo opcional. Esta meta especifica cuando debe ser completada la tarea. Las tareas de tiempo real se pueden agrupar en varias categorías, basadas en cómo el desarrollador puede predecir su frecuencia y ejecución:
+
 \begin{itemize}
-\item 
-\textbf{\textit{Periódicos}} (SCJ Level 0).
-\item 
-\textbf{\textit{Periódicos}} y \textbf{\textit{Aperiódicos}} (SCJ Level 1).
+\item
+\textbf{Periódicas:} tareas que se ejecutan repetitivamente a una frecuencia fija.
+\item
+\textbf{Esporádicas:} tareas que no se ejecutan en una frecuencia fija, pero que tienen una frecuencia máxima.
+\item
+\textbf{Aperiódicas:} tareas cuya frecuencia y ejecución no pueden predecirse.
 \end{itemize}
 
-\noindent Modelo de memoria sin heap ni Garbage Collection, se maneja por áreas:
+RTSJ utiliza información de los tipos de tarea para asegurar que las tareas críticas no incumplan sus metas. Permite asociarle a cada tarea un \textit{Handler} de Meta Incumplida, de manera que una tarea no se completa antes de su meta de tiempo, se invoca al \textit{handler} asociado para poder tomar medidas al respecto.
 
-\textbf{\textit{
+\medskip
+
+Define la gestión de prioridades de los \textit{threads} con al menos 28 niveles de prioridad. Para evitar la inversión de prioridades utiliza herencia de prioridades para su gestión.
+
+\medskip
+
+Brinda diversas formas de reservar memoria para objetos. Los objetos pueden asignarse a un área de memoria específica. Estas áreas tienen diferentes características de \textit{gargabe collector} y límites de reserva. Se clasifican en:
+
+\begin{itemize}
+\item
+\textbf{Heap estándar}. Como cualquier máquina virtual, RTJS mantiene un \textit{heap} con \textit{garbage collector} para que sea utilizado por cualquier tipo de tarea (\textit{real-time} o no).
+\item
+\textbf{Memoria inmortal}. Un área de memoria que no tiene un \textit{gargabe collector}, cuyo uso lo debe gestionar el programador.
+\item
+\textbf{Memoria acotada}. Sólo disponible para \textit{threads} de tiempo real (RTT\footnote{RTT son las siglas de \textit{Real-Time Thread}. Es la clase Java que implementa las tareas de tiempo real} y NHRT\footnote{NHRT significa \textit{No Heap Real-time Thread}. Es una subclase de RTT donde el \textit{garbage colletor} no actúa durante su ejecución. Destinada a tareas \textit{hard real-time}}). Estas áreas de memoria están pensadas para objetos con un tiempo de vida conocido. Al igual que la anterior no posee \textit{gargabe collector}.
+\end{itemize}
+
+
+\bigskip
+\titulo{Especificación SCJ}
+
+La especificación \textit{Safety-Critical} Java, (JSR-302), es un subconjunto de la especificación RTSJ, que además, define un conjunto de servicios diseñados para ser utilizados en aplicaciones que requieran un nivel de certificación de seguridad funcional.
+La especificación está dirigida a una amplia variedad de paradigmas de certificación muy exigentes, tales como los requisitos de seguridad crítica DO-178B, Nivel A.
+
+\medskip
+
+Esta especificación presenta un conjunto de clases Java que implementan soluciones \textit{Safety-Critical} para el inicio de la aplicación, concurrencia, planificación, sincronización, entrada/salida, gestión de memoria, gestión de temporización, procesamiento de interrupciones, interfaces nativas y excepciones.
+Presenta un conjunto de \textit{annotations} que pueden ser utilizadas para garantizar que la aplicación exhibe ciertas propiedades de seguridad funcional, mediante comprobación estática, para mejorar la certificación de aplicaciones construidas para ajustarse a esta especificación.
+
+\medskip
+
+Para aumentar la portabilidad de las aplicaciones \textit{Safety-Critical} entre distintas implementaciones de esta especificación, se enumera un conjunto mínimo de bibliotecas Java que deben ser proporcionados en una implementación conforme a la especificación.
+
+\medskip
+
+\noindent A continuación se describen algunas características de SCJ.
+
 \begin{itemize}
 \item 
-Inmortal Memory.
-\item 
-Mission Memory. 
-\item 
-Private Memory.
-\end{itemize}
-}}
+En esta especificación solo se permiten \textbf{\textit{Threads Real-Time}}.
 
+\item 
+Un programa SCJ se organiza en \textbf{\textit{Missions}}.
+
+\item 
+Cada Misión se compone de \textbf{\textit{Schedulable objects}} (por ejemplo \textit{handlers}).
+
+\item
+Modelo de memoria sin \textit{heap} ni \textit{Garbage Collector}, se divide  la memoria en \textbf{ámbitos de memoria} que se manejan mediante áreas de memoria, en este caso:
+
+\begin{itemize}
+\item 
+\textbf{\textit{Inmortal Memory.}}
+\item 
+\textbf{\textit{Mission Memory.}}
+\item 
+\textbf{\textit{Private Memory.}}
+\end{itemize}
+
+\item 
 Tipos de \textit{Scheduling}:
 
 \begin{itemize}
@@ -125,3 +191,26 @@ Tipos de \textit{Scheduling}:
 \item 
 \textbf{\textit{Fixed prioriy preemptive}} (SCJ Level 1).
 \end{itemize}
+
+\end{itemize}
+
+
+\noindent Existen 3 niveles conformidad con la especificación SCJ:
+
+\begin{itemize}
+\item 
+\textbf{Nivel 0}. Proporciona una ejecución cíclica (un único \textit{thread}), sin \textit{wait/notify}.
+\item 
+\textbf{Nivel 1}. Provee una única \textbf{Misión} con múltiples \textbf{Objetos planificables}.
+\item 
+\textbf{Nivel 2}. Ofrece \textbf{Misiones} anidadas con (limitados) proporciona misiones anidadas con (limitados) \textbf{ámbitos de memoria} anidados.
+\end{itemize}
+
+\noindent En la figura [\ref{fig:missionsSCJ}] ilustra el comportamiento de una aplicación SCJ. 
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=16cm,height=5cm]{figuras/MisionSCJ.png}
+\par\caption{Ccomportamiento de una aplicación SCJ.}\label{fig:missionsSCJ}
+\end{center}
+\end{figure}

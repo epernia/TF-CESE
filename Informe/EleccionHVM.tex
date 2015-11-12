@@ -1,9 +1,17 @@
+\section{Màquinas viruales de Java para sistemas embebiodos} \label{sec:jvms}
+
+
+% http://icelab.dk/resources/SCJ_JTRES12.pdf
+5.1    Java Virtual Machines
+
+Our main sources of inspiration have been the FijiVM [18] and the KESO VM [10].  Both are based on Java-to-C compilation, just like the HVM. The FijiVM ensures hard real-time execution guarantees, including real-time GC, of Java software on high-end embedded systems.  It produces strikingly  eficient C code (see  Section  4.3). The FijiVM requires a POSIX-like OS and produces executables too large for low-end embedded systems. The KESO VM comes very close to offer the same kind of integratability as the HVM: it produces suficiently small executables and strips away unused code. The code produced by KESO requires the presence of certain OSEK [12] specific header les and certain standard features of the C-runtime. But it is our impression that it would be possible to make KESO just as integratable as the HVM with only a limited effort. Neither FijiVM nor KESO support interpretation, which is supported by the HVM. In comparison with FijiVM and KESO the main contribution of the HVM is support for a mixture of compact interpreted code and compiled code as well as support for integratability of Java into an  existing C based build and execution environment.
+
+In our experience from advocating the idea of using Java for low-end embedded systems to companies which already have a large amount of C based source code for their embedded devices, the feature of integratability is very important. We have found that the typical existing embedded developer  will be reluctant to abandon his currently used toolchain. In many cases the compiler, linker, and debugger are adapted to the target in question and may even contain special purpose changes in functionality made by the toolchain vendor or developer himself. The configuration of the toolchain and the  build procedure supported by the IDE are hard to change. Embedded programming is notoriously difficult, and moving to a different kind of compiler or having to make significant changes to build procedures will  most likely be tasks that developers avoid.
+
+
+
+
 \section{Elección de HVM} \label{sec:eleccionHvm}
-
-
-
-
-
 
 
 \textit{Hardware near Virtual Machine} (HVM)\footnote{HVM desarrollado por Stephan Erbs Korsholm.} es un entorno de ejecución de \textit{Safety Critical} Java (SCJ) nivel 1 y 2, código abierto diseñado par plataformas embebidas de bajos recursos.
