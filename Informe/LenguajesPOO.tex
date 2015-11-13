@@ -12,17 +12,13 @@ Python.
 \end{itemize}
 
 
-\titulo{C++}
+\titulo{Lenguaje C++}
 
 El lenguaje de programación C++ se encuentra disponible para la mayoría de los sistemas embebidos del mercado. Básicamente, todo embebido  que dispone de un compilador de C, trae además, un compilador de C++. En este lenguaje se pueden manejar las interrupciones de un microcontrolador a través de funciones en C embebidas en el código C++. 
 
 \medskip
 
-No tiene soporte de manejo de \textit{threads} en el lenguaje, sino que debe programarse desde cero una aplicación que resuelva. 
-
-\medskip
-
-Si bien aplica todos los conceptos importantes que debe tener un lenguaje orientado a objetos, el mismo es considerado obsoleto por ingenieros informáticos debido a que arrastra muchos conceptos de C que lo vuelven inseguro, como por ejemplo, permite manejar la memoria sin ninguna protección a través de punteros, una fuente habitual de errores. El manejo de memoria manual se extiende a la eliminación explicita de objetos, cuya responsabilidad recae sobre el programador. El tiempo de creación y destrucción de un objeto es variable, esto es una desventaja para aplicaciones de tiempo real. 
+No tiene soporte de manejo de \textit{threads} en el lenguaje, sino que debe programarse desde cero una aplicación que resuelva la concurrencia de procesos a bajo nivel.
 
 \medskip
 
@@ -30,14 +26,19 @@ Es un lenguaje estáticamente tipado, es decir, cada variable debe ser declarada 
 
 \medskip
 
+Si bien aplica los conceptos principales que debe tener un lenguaje orientado a objetos, el mismo es considerado obsoleto por ingenieros informáticos debido a que arrastra muchos conceptos de C que lo vuelven inseguro, como por ejemplo, permite manejar la memoria sin ninguna protección a través de punteros, una fuente habitual de errores. El manejo de memoria manual se extiende a la eliminación explicita de objetos, cuya responsabilidad recae sobre el programador. El tiempo de creación y destrucción de un objeto es variable, esto es una desventaja para aplicaciones de tiempo real. 
+Tampoco incluye características modernas de lenguajes como, por ejemplo, bloques (\textit{closures}), o sintaxis simplificada para recorrer colecciones.
+
+\medskip
+
 Este lenguaje POO está disponible para utilizarse actualmente en las plataformas CIAA.
 
 
 \bigskip
-\titulo{Python}
+\titulo{Lenguaje Python}
 
-Este lenguaje posee características modernas, entre ellas Garbage Collecton, que es un proceso que se encarga de detectar que objetos en memoria no se utilizan y los borra automáticamente, liberando al programador de esta tarea. Sin embargo, al igual que el caso anterior es una desventaja para aplicaciones de timpo real pues su tiempo de ejecución no es determinista. 
-No utiliza punteros, posee solamente referencias.
+Este lenguaje posee características modernas, entre ellas Garbage Collector, que es un proceso que se encarga de detectar que objetos en memoria no se utilizan y los borra automáticamente, liberando al programador de esta tarea. Sin embargo, al igual que el caso anterior es una desventaja para aplicaciones de timpo real pues su tiempo de ejecución no es determinista. 
+No utiliza punteros, posee solamente referencias. A diferencia de C++, Python es un lenguaje interpretado en lugar de compilado.
 
 \medskip
 
@@ -47,48 +48,37 @@ Es un lenguaje dinámicamente tipado, es decir una variable puede cambiar su tipo
 
 El lenguaje Python posee soporte para el manejo de procesos, pero no se han encontrado especificaciones de soporte de procesos \textit{real-time}. 
 
-A diferencia de C++, Python es un lenguaje interpretado en lugar de compilado.
-
 \medskip
 
 MicroPython es una implementación de un intérprete de lenguaje Python para sistemas embebidos. Durante el tiempo de realización de este trabajo, un grupo perteneciente al proyecto CIAA se portó este intérprete para poder ser utilizado sobre la plataforma EDU-CIAA-NXP. Sin embargo, el mismo no se recomienda para aplicaciones industriales.
 
 
 \bigskip
-\titulo{Java}
+\titulo{Lenguaje Java}
 
-El lenguaje Java, uno de los lenguaje de programación más utilizados en la actualidad. Realiza un balance entre las mejores características de los dos anteriores y agrega otras faltantes. Sus características son:
-
-\begin{itemize}
-\item 
-Independiente de la máquina.
-\item 
-Seguro para trabajar en red.
-\item 
-Potente para sustituir código nativo.
-\item 
-Con comprobación estricta de tipos.
-\item 
-Manejo de memoria automático mediante Recolector de Basura.
-\item 
-Sin punteros, utiliza referencias.
-\item 
-Permite programación concurrente de forma estándar.
-\end{itemize}
+El lenguaje Java, uno de los lenguaje de programación más utilizados en la actualidad. Realiza un balance entre las mejores características de los dos anteriores y agrega otras faltantes. 
 
 \medskip
 
-Para lograr la independencia de la máquina, Java posee la característica de ser un lenguaje compilado e interpretado. Todo programa en Java, se compila primero a un lenguaje similar a un \textit{assembler} genérico basando en pila (\textit{bytecodes}), que luego es interpretado por una máquina virtual de Java (JVM) dependiente de la plataforma.
+Java tiene aspectos que lo hace más robusto y seguro, entre ellos, una especificación del lenguaje (JLS) que es independiente de cualquier implementación, que ayuda que existan diferentes implementaciones es muchas arquitecturas totalmente compatibles; todos los accesos al hardware son a través de la Máquina Virtual de Java (JVM), que no permite el accesos ilegales a zonas de memoria y ha sido diseñado para ser seguro para trabajar en red. 
+
+\medskip
+
+Para lograr la independencia de la máquina, Java posee la característica de ser un lenguaje compilado e interpretado. Todo programa en Java, se compila primero a un lenguaje similar a un \textit{assembler} genérico basando en pila (\textit{bytecodes}), que luego es interpretado por la JVM, dependiente de la plataforma.
 
 \medskip
 
 La JVM es habitualmente un programa que corre sobre un sistema operativo, sin embargo, existen implementaciones de la JVM que corren directamente sobre el hardware (\textit{bare-metal}) y procesadores capaces de ejecutar \textit{bytecodes} de Java directamente (por ejemplo, el microcontrolador ARM926EJ-S). Si bien es interpretado al igual que Python, existen disponibles muchas implementaciones de la JVM para distintas plataformas, no siendo este el caso de los intérpretes de Python.
 
-%Fue desarrollado originalmente por James Gosling de Sun Microsystems y publicado en 1995 como un componente fundamental de la plataforma Java de Sun Microsystems (actualmente fue adquirida por la compañía Oracle). 
+\medskip
+
+Posee comprobación estricta de tipos, como C++. Manejo de memoria automático mediante Garbage Collector y utiliza referencias al igual que Python. Además, permite programación concurrente de forma estándar y existen varias especificaciones de Java para aplicaciones de tiempo real. 
 
 \medskip
 
-Java posee varias especificaciones de tiempo real. En consecuencia, por todas las razones expuestas, se elige Java como lenguaje POO para el presente trabajo. Se introducen a continuación las especificaciones de Java RTSJ y SCJ.
+En consecuencia, por todas las razones expuestas, se elige Java como lenguaje POO para el presente trabajo. Se introducen a continuación las especificaciones de Java RTSJ y SCJ.
+
+%Fue desarrollado originalmente por James Gosling de Sun Microsystems y publicado en 1995 como un componente fundamental de la plataforma Java de Sun Microsystems (actualmente fue adquirida por la compañía Oracle). 
 
 \subsection{Especificaciones RTSJ y SCJ} \label{sec:especificacionesJava}
 
@@ -208,7 +198,7 @@ SCJ presenta un modelo de memoria basado en el concepto de \textbf{ámbitos de me
 \begin{figure}[!htbp]
 \begin{center}
 \includegraphics*[width=14cm,height=6.5cm]{figuras/MemoriaSCJ.png}
-\par\caption{Modelo de memoria SCJ.}\label{fig:missionsSCJ}
+\par\caption{Modelo de memoria SCJ.}\label{fig:memoriaSCJ}
 \end{center}
 \end{figure}
 

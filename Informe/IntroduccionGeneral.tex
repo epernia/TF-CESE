@@ -6,11 +6,11 @@
 Con la creciente complejidad de las aplicaciones a realizar sobre sistemas embebidos en entornos industriales, y el aumento de las capacidades de memoria y procesamiento de los mismos, se desea poder aplicar técnicas avanzadas de programación para realizar programas fácilmente mantenibles, extensibles y reconfigurables. 
 El paradigma de Programación Orientada a Objetos (POO) cumple con estos requisitos.
 La aplicación de este paradigma abre las puertas a que programadores informáticos se acerquen a la disciplina de programación de sistemas embebidos, permitiéndoles aplicar técnicas avanzadas de programación.
-Un ejemplo donde es muy eficiente su utilización, es en la programación de una sistema donde existan recetas cambiantes para realizar un proceso.
+Un ejemplo donde es muy eficiente su utilización, es en la programación de sistemas donde existan recetas cambiantes para realizar el mismo proceso.
 \medskip
 
 Para aplicaciones industriales es requerimiento fundamental cumplir con especificaciones temporales. En consecuencia, se necesita un lenguaje POO que soporte de manejo de \textit{threads real-time}. 
-El ejemplo más ilustrativo de este requerimiento es el de una aplicación de control a lazo cerrado. En este dominio es necesario garantizar una taza de muestreo periódica uniforme para poder aplicar la teoría de control automático, suficientemente rápida para que permita seguir la dinámica del sistema ($f_{min}$\footnote{Frecuencia mínima para asegurar la reconstrucción de la señal según el Teorema de muestreo de Nyquist.}) y suficientemente lenta para que permita calcular el algoritmo de control y actualizar la salida entre dos muestras ($f_{max}$\footnote{Frecuencia máxima impuesta por la duración del algoritmo de control.}). A lazo cerrado, finalmente, es el controlador quien impone la frecuencia del sistema, que corresponde a un parámetro de diseño a elegir en el rango entre $f_{min}$ y $f_{max}$.
+El ejemplo más ilustrativo de este requerimiento es el de una aplicación de control a lazo cerrado. En este dominio es necesario garantizar una tasa de muestreo periódica uniforme para poder aplicar la teoría de control automático, suficientemente rápida para que permita seguir la dinámica del sistema ($f_{min}$\footnote{Frecuencia mínima para asegurar la reconstrucción de la señal según el Teorema de muestreo de Nyquist.}) y suficientemente lenta para que permita calcular el algoritmo de control y actualizar la salida entre dos muestras ($f_{max}$\footnote{Frecuencia máxima impuesta por la duración del algoritmo de control.}). A lazo cerrado, finalmente, es el controlador quien impone la frecuencia del sistema, que corresponde a un parámetro de diseño a elegir en el rango entre $f_{min}$ y $f_{max}$.
 
 \medskip
 

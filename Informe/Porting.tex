@@ -1,30 +1,115 @@
-\section{Port de HVM a una nueva arquitectura} \label{sec:disenoPortHvm} 
+\section{Port de HVM a una nueva plataforma de Haedware} \label{sec:disenoPortHvm} 
 
-
-Para portar el Firmware HVM a una nueva arquitectura deben realizarse los siguientes pasos:
+HVM genera código ANSI C independiente de la plataforma. Únicamente una pequeña parte de la infraestructura es dependiente de la plataforma. Para portar HVM a una nueva plataforma se deben realizar las siguientes tareas:
 
 \begin{itemize}
-\item 
-Conseguir un ambiente de desarrollo en lenguaje C para la arquitectura.
-\item 
-Estandarizar los tamaños de tipos de datos.
-\item 
-Implementar una API para la arquitectura.
-\item 
-Implementar el acceso al hardware.
+\item
+Obtener un entorno de desarrollo de C para la plataforma y probar su correcto funcionamiento.
+\item
+Construir un comando de compilación para compilar y linkear los archivos generados de HVM.
+\item
+Agregar una definición para la plataforma en el archivo \textbf{ostypes.h}.
+\item
+Definir las funciones específicas de la plataforma. HVM aísla estas funciones en dos archivos, \textbf{natives\_XXX.c} y \textbf{XXX\_interrupts.s}.
+\item
+Completar el comando de compilación y probar el funcionamiento.
+\item
+Implementar el acceso a periféricos de la plataforma.
 \end{itemize}
 
-Para facilitar la inclusión de nuevas arquitecturas a icecaptools y automatizar tareas habituales, que en caso contrario debería realizar el usuario para cada nueva aplicación, se propone la programación de un plugin llamado HVM4CIAA.
-
-
-Finalmente, en la figura [] se gráfica la solución propuesta para lograr utilizar icecaptools y HVM con la CIAA.
+Según el manual de referencia de HVM [REF], la plataforma más chica donde se ha ejecutado HVM es el Arduino UNO (basado en AVR Atmega328 de Armel). Posee un microcontrolador de 8 bits  con 32 kB de memoria ROM y 2 kB de memoria RAM. En esta configuración existe lugar para programas Java no triviales que controlan periféricos mediante el uso variables nativas o \textit{hardware objects}. Es posible también soportar intercambio de procesos utilizando el concepto de Procesos de SCJ, sin embargo, para tener SCJ completo se requiere más recursos. El microcontrolador más pequeño donde se probó un programa SCJ completo es el AVR ATMega1280, con 128 kB de ROM y 8 kB de RAM. Este microcontrolador puede encontrarse en la plataforma Arduino Mega. Actualmente existen implementaciones de HVM para las arquitecturas AVR (8 bits), CR16c (16 bits), ARM7 (32 bits), Intel de 32 bits e Intel 64 bits. 
 
 \medskip
 
-FIGURAAAAAAAAAAA
+El port de HVM a una nueva plataforma puede implementarse en dos partes, una para lograr ejecutar programas Java simples, y otra para dar soporte de aplicaciones SCJ. En las siguientes secciones se describe que funciones deben realizarse para lograr ambos objetivos.
 
+\subsection{Port de HVM para ejecutar Java}
 
+Como se ha adelantado, se debe agregar una \textbf{definición para la plataforma} en el archivo \textbf{ostypes.h}. 
+Esto se debe a que HVM utiliza su propia definición de tipos de datos básicos y de puntero para independizarse de la arquitectura donde se ejecuta. 
+Es por esto que definición consiste en indicar correctamente los tipos de datos básicos, de punteros a memoria de programa de HVM, así como algunas macros para la plataforma. 
+Como ambas plataformas CIAA donde se porta HVM contienen el mismo microcontrolador. La definición de plataforma para la CIAA se nombra \textbf{CIAA\_NXP\_OSTYPES\_FOR\_HVM} en la implementación.
 
-	\subsection{Port de HVM para ejecutar Java}
-	\subsection{Port de HVM para ejecutar Java SCJ}
+\medskip
 
+En el archivo \textbf{natives\_XXX.c} deben definirse las siguientes funciones específicas de la plataforma:
+
+\begin{itemize}
+\item
+\textbf{void init\_compiler\_specifics(void)}. Esta función se llama al comienzo de la función \textit{main}. Se utiliza en algunas plataformas para copiar datos inicializados en los segmentos correctos. Si esto no es necesario, se puede dejar vacía. Sólo se llama una única vez.
+\item
+\textbf{int32* get\_java\_stack\_base(int16 size)}. Esta función se llama antes de entrar en la máquina virtual. Debe devolver un puntero a un área de memoria RAM que se utilizrá como la pila de Java.
+\item
+\textbf{void initNatives(void)}. Esta función se llama antes de iniciar la máquina virtual. Si la máquina virtual se reinicia, la misma vuelve a ser llamada. Se puede dejar vacía.
+\item
+\textbf{ void mark\_error(void)}, \textbf{void mark\_success(void)}. Sólo las utiliza el sistema de pruebas de regresión. Si el mismo no es utilizado se puede dejar vacío.
+\item
+\textbf{void writeByteToIO(pointer address, unsigned short offset, unsigned char lsb)}. Esta función se utiliza para la implementación de objetos hardware. Se debe implementar para escribir lsb a la dirección + \textit{offset}. El \textit{offset} es en bits. En la mayoría de las arquitecturas esto puede implementarse muy fácilmente como una deferencia normal de puntero. En otras arquitecturas, en cambio, se deben ejecutar instrucciones de propósito especial para la lectura y escritura de registros I/O. Existen varias otras funciones similares \textit{read/writeXXXToIO} para otros tipos de datos.
+\item
+\textbf{init\_memory\_lock, lock\_memory, unlock\_memory}. Deben ser implementadas en caso de que puedan producirse interrupciones mientras se asigna memoria utilizando \textit{new}. Estas funciones se utilizan para realizar un \textit{mutex} alrededor de la asignación de memoria. Se pueden dejar vacías para programas que no utilizan las interrupciones o si ninguno de los \textit{handlers} de interrupciones asignan memoria.
+\item
+\textbf{void sendbyte(unsigned char byte)}. Imprime un byte. Se utiliza para imprimir los mensajes de la consola. Se puede dejar vacía. Si la plataforma posee una UART disponible, se puede utilizar para la impresión. 
+\end{itemize}
+
+Este archivo para la plataforma CIAA se nombra \textbf{natives\_CIAA\_NXP.c} en la implementación.
+
+\medskip
+
+Existen funciones adicionales para implementar \textit{debug} directo desde un programa Java las cuales no se tratan en este trabajo.
+
+\subsection{Port de HVM para ejecutar Java SCJ}
+
+Para la ejecución de Java SCJ se deben definir, adicionalmente para la plataforma, las siguientes funciones en el archivo \textbf{natives\_XXX.c}:
+
+\begin{itemize}
+\item
+\textbf{void start\_system\_tick(void)}, \textbf{void stop\_system\_tick(void)}. Estas funciones inician y terminan un temporizador que actualiza la variable global \textbf{systemTick} utilizada por el planificador.
+\item
+\textbf{int16 n\_vm\_RealtimeClock\_awaitNextTick(int32 *sp)}. Debe bloquear hasta que se actualice la variable global \textbf{systemTick}.
+\item
+\textbf{int16 n\_vm\_RealtimeClock\_getNativeResolution(int32 *sp)}. Debe devolver la resolución del temporizador que se inició en la función \textbf{void start\_system\_tick (void)}. Debe devolver en número de nano segundos entre dos \textit{ticks} del sistema con tipo de datos \textit{uint32}.
+\item
+\textbf{int16 n\_vm\_RealtimeClock\_getNativeTime(int32 *sp)}. Devuelve el tiempo actual del reloj de tiempo real como un objeto AbsoluteTime con mili segundos y nano segundos.
+\end{itemize}
+
+Luego, en el archivo \textbf{XXX\_interrupt.s} deben realizarse tres funciones en \textit{assembler} necesarias para implementar los \textbf{procesos SCJ} y el cambio de \textit{threads} (cambio de contexto).
+
+\medskip
+
+La función \textbf{\_yield}. Debe guardar todos los registros en la pila, guardar el puntero a pila en la variable global \textbf{stackPointer} (declarada en natives\_allOS.c) y llama a la función \textbf{transfer} (definida también en natives\_allOS.c). Cuando termina la ejecución de \textbf{transfer} debe guardar el valor de la variable global \textbf{stackPointer} al puntero a pila, restaurar todos los registros (en orden inverso) y retornar.
+
+\medskip
+   
+Cuando se llama a la función \textbf{pointer* get\_stack\_pointer(void)} debe devolver el valor del puntero a pilas. Los pasos para llevarlo a cabo son:
+
+\begin{enumerate}
+\item
+Mover el valor del puntero a pila al registro utilizado por el compilador para el valor de retorno de funciones.
+\item
+El valor actual del puntero a pila es el valor del \textit{frame} actual. Se debe ajustar el valor de retorno ya que se requiere el valor del \textit{frame} que llamó a esta función.
+\item
+Devolver este último valor de retorno.
+\end{enumerate}
+
+La función \textbf{set\_stack\_pointer(void)} Debe establecer el valor de la variable global \textbf{stackPointer} en el puntero a pila y retornar a la función invocante. Concretamente:
+
+\begin{enumerate}
+\item
+Mover el valor de retorno de la pila a algún registro.
+\item
+Mover el valor de la variable global \textbf{stackPointer} al registro puntero a pila.
+\item
+Mover el valor de retorno guardado en 1 a la pila.
+\item
+Retornar.
+\end{enumerate}
+
+Por lo general (en la mayoría de las arquitecturas) al llamar a una función se inserta en la pila la dirección de retorno. Esta es la dirección donde debe continuar al ejecución cuando termine de ejecutar la función que ha llamado.
+Luego cuando se retorna de la función, se saca de la pila la dirección de retorno y se realiza un salto a dicha dirección.
+Esto provoca que la ejecución continúe en la dirección correcta al terminar de ejecutar la función. 
+En la función \textbf{set\_stack\_pointer} se utiliza una nueva pila, sin embargo, se necesita de todas formas retornar la dirección de donde se ha llamado a la función \textbf{set\_stack\_pointer}. 
+Como se establece un nuevo puntero a pila, la dirección de retorno correcta no se encuentra en esta nueva pila. Por esto, es necesario que en el paso 1 se mueva la dirección de retorno a la nueva pila para poder retornar correctamente a donde se ejecutó \textbf{set\_stack\_pointer}.
+
+\medskip
+
+En la implementación este archivo se nombra \textbf{CIAA\_NXP\_interrupt.s}
