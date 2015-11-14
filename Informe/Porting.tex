@@ -69,7 +69,11 @@ Para dar soporte a aplicaciones basadas en la especificación SCJ sobre HVM, debe
 La adaptación de la HAL para una aplicación en particular no requiere ningún esfuerzo para las partes de la HAL escritas en Java.
 \end{enumerate}
 
-Dejando una pequeña parte que debe implementarse en lenguaje C. Se deben implementar, adicionalmente para la plataforma, las siguientes funciones del archivo \textbf{natives\_XX.c}:
+Dejando una pequeña parte que debe implementarse en lenguaje C. Esta parte corresponde a las siguientes funciones. 
+
+\medskip 
+
+\noindent Archivo \textbf{natives\_XX.c}:
 
 \begin{itemize}
 \item
@@ -82,7 +86,10 @@ Dejando una pequeña parte que debe implementarse en lenguaje C. Se deben impleme
 \textbf{int16 n\_vm\_RealtimeClock\_getNativeTime(int32 *sp)}. Devuelve el tiempo actual del reloj de tiempo real como un objeto AbsoluteTime con mili segundos y nano segundos.
 \end{itemize}
 
-Luego, en el archivo \textbf{XX\_interrupt.s} deben realizarse tres funciones en \textit{assembler} necesarias para implementar los \textbf{procesos SCJ} y el cambio de \textit{threads} (cambio de contexto).
+
+\medskip 
+
+\noindent Luego, en el archivo \textbf{XX\_interrupt.s} deben realizarse tres funciones en \textit{assembler} necesarias para implementar los \textbf{procesos SCJ} y el cambio de \textit{threads} (cambio de contexto).
 
 \medskip
 
