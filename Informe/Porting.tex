@@ -1,6 +1,17 @@
 \section{Port de HVM a una nueva plataforma de Hardware} \label{sec:disenoPortHvm} 
 
-HVM genera código ANSI C independiente de la plataforma. Únicamente una pequeña parte de la infraestructura es dependiente de la plataforma. Para portar HVM a una nueva plataforma se deben realizar las siguientes tareas:
+HVM genera código ANSI C independiente de la plataforma. Únicamente una pequeña parte de la infraestructura es dependiente de la plataforma. En la figura [\ref{fig:capasHVM}] se da ofrece esquema en capas de HVM.
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=10cm,height=5.5cm]{figuras/hvm_10_x_5,5.png}
+\par\caption{Modelo de capas de HVM.}\label{fig:capasHVM}
+\end{center}
+\end{figure}
+
+\medskip
+
+Para portar HVM a una nueva plataforma se deben realizar las siguientes tareas:
 
 \begin{itemize}
 \item
