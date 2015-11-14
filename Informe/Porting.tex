@@ -1,4 +1,4 @@
-\section{Port de HVM a una nueva plataforma de Haedware} \label{sec:disenoPortHvm} 
+\section{Port de HVM a una nueva plataforma de Hardware} \label{sec:disenoPortHvm} 
 
 HVM genera código ANSI C independiente de la plataforma. Únicamente una pequeña parte de la infraestructura es dependiente de la plataforma. Para portar HVM a una nueva plataforma se deben realizar las siguientes tareas:
 
@@ -10,7 +10,7 @@ Construir un comando de compilación para compilar y linkear los archivos generad
 \item
 Agregar una definición para la plataforma en el archivo \textbf{ostypes.h}.
 \item
-Definir las funciones específicas de la plataforma. HVM aísla estas funciones en dos archivos, \textbf{natives\_XXX.c} y \textbf{XXX\_interrupts.s}.
+Definir las funciones específicas de la plataforma. HVM aísla estas funciones en dos archivos, \textbf{natives\_XX.c} y \textbf{XX\_interrupts.s}.
 \item
 Completar el comando de compilación y probar el funcionamiento.
 \item
@@ -32,7 +32,7 @@ Como ambas plataformas CIAA donde se porta HVM contienen el mismo microcontrolad
 
 \medskip
 
-En el archivo \textbf{natives\_XXX.c} deben definirse las siguientes funciones específicas de la plataforma:
+En el archivo \textbf{natives\_XX.c} deben definirse las siguientes funciones específicas de la plataforma:
 
 \begin{itemize}
 \item
@@ -44,7 +44,7 @@ En el archivo \textbf{natives\_XXX.c} deben definirse las siguientes funciones e
 \item
 \textbf{ void mark\_error(void)}, \textbf{void mark\_success(void)}. Sólo las utiliza el sistema de pruebas de regresión. Si el mismo no es utilizado se puede dejar vacío.
 \item
-\textbf{void writeByteToIO(pointer address, unsigned short offset, unsigned char lsb)}. Esta función se utiliza para la implementación de objetos hardware. Se debe implementar para escribir lsb a la dirección + \textit{offset}. El \textit{offset} es en bits. En la mayoría de las arquitecturas esto puede implementarse muy fácilmente como una deferencia normal de puntero. En otras arquitecturas, en cambio, se deben ejecutar instrucciones de propósito especial para la lectura y escritura de registros I/O. Existen varias otras funciones similares \textit{read/writeXXXToIO} para otros tipos de datos.
+\textbf{void writeByteToIO(pointer address, unsigned short offset, unsigned char lsb)}. Esta función se utiliza para la implementación de objetos hardware. Se debe implementar para escribir lsb a la dirección + \textit{offset}. El \textit{offset} es en bits. En la mayoría de las arquitecturas esto puede implementarse muy fácilmente como una deferencia normal de puntero. En otras arquitecturas, en cambio, se deben ejecutar instrucciones de propósito especial para la lectura y escritura de registros I/O. Existen varias otras funciones similares \textit{read/writeXXToIO} para otros tipos de datos.
 \item
 \textbf{init\_memory\_lock, lock\_memory, unlock\_memory}. Deben ser implementadas en caso de que puedan producirse interrupciones mientras se asigna memoria utilizando \textit{new}. Estas funciones se utilizan para realizar un \textit{mutex} alrededor de la asignación de memoria. Se pueden dejar vacías para programas que no utilizan las interrupciones o si ninguno de los \textit{handlers} de interrupciones asignan memoria.
 \item
@@ -59,7 +59,17 @@ Existen funciones adicionales para implementar \textit{debug} directo desde un p
 
 \subsection{Port de HVM para ejecutar Java SCJ}
 
-Para la ejecución de Java SCJ se deben definir, adicionalmente para la plataforma, las siguientes funciones en el archivo \textbf{natives\_XXX.c}:
+Para dar soporte a aplicaciones basadas en la especificación SCJ sobre HVM, debe construirse una HAL\footnote{Siglas de \textit{Hardware Abstraction Layer}.}. Esta HAL debe tener primitivas para planificación de tareas expropiativas\footnote{Una posible traducción al castellano de \textit{preemptive}, otra posible es apropiativa.}, manejo de memoria, acceso a dispositivos mediante \textit{Hardware Objects}, manejo de interrupciones de primer nivel, un programa monitor y \textit{real-time clock}. Esto se conoce generalmente como la construcción de un \textit{micro kernel}. En el caso particular de la HAL de Java SCJ para HVM se encuentra implementada en su mayoría en lenguaje Java. Esto da 2 beneficios importantes,
+
+\begin{enumerate}
+\item 
+\textbf{Protabilidad}. Todas las partes de la HAL de Java escritas en Java pueden ejecutarse sobre HVM.
+\item 
+\textbf{Especialización de programa}. En este contexto se refiere a incluir únicamente las partes utilizadas de la HAL de Java, excluyendo las partes no utilizadas del ejecutable final.
+La adaptación de la HAL para una aplicación en particular no requiere ningún esfuerzo para las partes de la HAL escritas en Java.
+\end{enumerate}
+
+Dejando una pequeña parte que debe implementarse en lenguaje C. Se deben implementar, adicionalmente para la plataforma, las siguientes funciones del archivo \textbf{natives\_XX.c}:
 
 \begin{itemize}
 \item
@@ -72,7 +82,7 @@ Para la ejecución de Java SCJ se deben definir, adicionalmente para la plataform
 \textbf{int16 n\_vm\_RealtimeClock\_getNativeTime(int32 *sp)}. Devuelve el tiempo actual del reloj de tiempo real como un objeto AbsoluteTime con mili segundos y nano segundos.
 \end{itemize}
 
-Luego, en el archivo \textbf{XXX\_interrupt.s} deben realizarse tres funciones en \textit{assembler} necesarias para implementar los \textbf{procesos SCJ} y el cambio de \textit{threads} (cambio de contexto).
+Luego, en el archivo \textbf{XX\_interrupt.s} deben realizarse tres funciones en \textit{assembler} necesarias para implementar los \textbf{procesos SCJ} y el cambio de \textit{threads} (cambio de contexto).
 
 \medskip
 

@@ -1,4 +1,4 @@
-\section{HVM} \label{sec:disenoHVMintro}
+\section{HVM (\textit{Hardware near Virtual Machine})} \label{sec:disenoHVMintro}
 
 El propósito de HVM es permitir programar en lenguaje Java dispositivos embebidos con pocos recursos. 
 Los recursos mínimos necesarios en un microcontrolador son 10 kB de ROM y 512 bytes de RAM. Sin embargo, para ejecutar programas de tamaño razonables, se necesitan 32 kB de ROM y 2kB de RAM.
@@ -29,12 +29,16 @@ En la sección [\ref{sec:VMsJava}] se adelantó que HVM se distribuye como un \tex
 \item
 IDE Eclipse. En particular la distribución \textbf{Eclipse Automotive}, recomendada pues integra el desarrollo de aplicaciones Java y C.
 \item
-El \textit{plugin} de Eclipse de HVM \textbf{Icecaptools}. 
+\textbf{Icecaptools}. Es el \textit{plugin} de Eclipse de HVM. 
 \item
-El \textit{Software Development Kit} \textbf{HVM SDK}.
+\textbf{HVM SDK}. El \textit{Software Development Kit} que provee HVM.
 \end{itemize}
 
-\textbf{Eclipse Automotive} se descarga en \url{http://www.eclipse.org/downloads/packages/eclipse-ide-automotive-software-developers-includes-incubating-components/junosr2}. Los otros dos se distribuyen como archivos \textit{.jar} y pueden descargarse de \url{http://icelab.dk/download.html} sus respectivos nombres son \textbf{icecaptools\_x.y.z.jar} e \textbf{icecapSDK.jar}.
+\textbf{Eclipse Automotive} se descarga en \url{http://www.eclipse.org/downloads/packages/eclipse} \url{-ide-automotive-software-developers-includes-incubating-components/junosr2}. 
+
+\medskip
+
+Los otros dos se distribuyen como archivos \textit{.jar} y pueden descargarse de \url{http://icelab.dk/download.html} sus respectivos nombres son \textbf{icecaptools\_x.y.z.jar} e \textbf{icecapSDK.jar}.
 
 \medskip
 
@@ -56,7 +60,7 @@ Luego se realiza el programa Java de manera estándar escribiendo las Clases que 
 
 \begin{figure}[!htbp]
 \begin{center}
-\includegraphics*[width=15cm,height=12cm]{figuras/holaMundoHVM-05.png}
+\includegraphics*[width=14.7cm,height=11.7cm]{figuras/holaMundoHVM-05.png}
 \par\caption{Programa Hola Mundo con HVM.}\label{fig:holaMundoHVM}
 \end{center}
 \end{figure}
@@ -71,8 +75,8 @@ Esto lanza el proceso donde se genera el código C. El primer paso es generar el 
 
 \begin{figure}[!htbp]
 \begin{center}
-\includegraphics*[width=15cm,height=12cm]{figuras/holaMundoHVM-07.png}
-\par\caption{Programa Hola Mundo con HVM.}\label{fig:gradoDepHolaHVM}
+\includegraphics*[width=14.7cm,height=11.7cm]{figuras/holaMundoHVM-07.png}
+\par\caption{Grado de dependencia del programa Hola Mundo con HVM.}\label{fig:gradoDepHolaHVM}
 \end{center}
 \end{figure}
 
@@ -83,59 +87,219 @@ Luego se debe presionar el botón derecho del \textit{mouse} sobre \textbf{\texti
 Finalmente se utiliza el compilador de la plataforma y se descarga a la misma.
 Un resumen de todo el proceso se muestra en la figura [\ref{fig:Icecaptools}]. 
 
-\begin{figure}[!htbp]
+\begin{figure}[!hbt]
 \begin{center}
-\includegraphics*[width=15.5cm,height=14cm]{figuras/Icecaptools.png}
-\par\caption{Esquema de funcionamiento del IDE para trabajar con HVM.}\label{fig:Icecaptools}
+\includegraphics*[width=15.5cm,height=15cm]{figuras/Icecaptools.png}
+\par\caption{Esquema de funcionamiento del IDE para trabajar con HVM sobre sistemas embebidos.}\label{fig:Icecaptools}
 \end{center}
 \end{figure}
 
 \newpage
 \titulo{Compilación y ejecución del ejemplo en PC x86 (Posix)}
 
-Con estos archivos puede utilizarse la \textbf{Terminal} de Linux, o \textbf{Cygwin} en Windows, para compilar el programa con \textbf{gcc} para su posterior ejecución en la PC mediante el comando:
+Con los archivos C generados se puede utilizar la \textbf{Terminal} de Linux, o \textbf{Cygwin} en Windows, para compilar el programa con \textbf{gcc} para su posterior ejecución en la PC mediante el comando:
 
+\medskip
 \begin{verbatim}
-gcc -Wall -pedantic -Werror -g -O0 -DPC64 -DREF_OFFSET -DPRINTFSUPPORT 
--DJAVA_HEAP_SIZE=6500 -DJAVA_STACK_SIZE=1024 classes.c icecapvm.c methodinterpreter.c
-methods.c gc.c natives_allOS.c natives_i86.c allocation_point.c print.c
+gcc -Wall -g -O0 -DPC32 -DPRINTFSUPPORT -DJAVA_HEAP_SIZE=6500 -DJAVA_STACK_SIZE=1024 
+classes.c icecapvm.c methodinterpreter.c methods.c gc.c natives_allOS.c natives_i86.c 
+allocation_point.c print.c
 \end{verbatim}
 
-Esto genera un ejecutable llamado SASASAS que puede ejecutarse utilizando el comando ./ASASAS. En la figura [\ref{fig:cygwinHolaHVM}] se expone el resultado de su ejecución en \textbf{Cygwin}. 
+\bigskip
+
+\noindent Esto genera un ejecutable llamado \textbf{a.exe}. Para probarlo, se ejecuta mediante el comando \textbf{./a.exe} que produce la salida en pantalla: 
+
+\medskip
+
+\textbf{Hola Mundo HVM}
+
+\medskip
+
+\noindent En la figura [\ref{fig:cygwinHolaHVM}] se muestra la ejecución del comando de compilación y del archivo \textbf{a.exe} en \textbf{Cygwin}.
 
 \begin{figure}[!htbp]
 \begin{center}
-\includegraphics*[width=10cm,height=7cm]{figuras/Icecaptools.png}
-\par\caption{Ejecución del ejemplo Hola mundo con HVM en Cygwin.}\label{fig:cygwinHolaHVM}
+\includegraphics*[width=12cm,height=7cm]{figuras/holaMundoHVM-15.png}
+\par\caption{Ejemplo Hola mundo con HVM en Cygwin.}\label{fig:cygwinHolaHVM}
 \end{center}
 \end{figure}
+
+\bigskip
 
 \subsection{Consideraciones a tener en cuenta al utilizar HVM}
 
 \bigskip
+\titulo{Archivos C generados por HVM}
+
+La salida del proceso de traducción de Java a C produce un conjunto de archivos fuente en lenguaje C. Algunos de estos archivos dependen de la aplicación a traducir y otros son fijos. Los archivos dependientes de la aplicación son:
+
+\begin{itemize}
+\item
+\textbf{methods.c, methods.h} - Contiene la implementación en lenguaje C de todos los métodos de Java incluidos en el grado de dependencia.
+\item
+\textbf{classes.c, classes.h} - Contiene la implementación en lenguaje C de todas las clases de Java incluidas en el grado de dependencia y sus relaciones jerárquicas.
+
+\end{itemize}
+
+\noindent mientras que los archivos fijos los archivos fijos:
+
+\begin{itemize}
+\item
+\textbf{ostypes.h} - Tipos de datos dependientes de la arquitectura.
+\item
+\textbf{types.h} - Tipos de datos de HVM, por ejemplo, para definir objetos.
+\item
+\textbf{icecapvm.c} - La función main que inicia HVM.
+\item
+\textbf{methodinterpreter.c, methodinterpreter.h} - Funciones del intérprete de HVM para \textit{bytecodes} de Java.
+\item
+\textbf{gc.c, gc.h, allocation point.c, allocation point.h} - Funciones para el manejo de memoria de HVM.
+\item
+\textbf{print.c} - Funciones nativas para imprimir mensajes simples.
+\item
+\textbf{natives\_allOS.c} - Funciones que implementan una Java SDK rudimentaria, con lo mínimo indispensable para que funcione.
+\item
+\textbf{natives\_XXX.c} - Funciones de HVM específicas de la arquitectura del microcontrolador.
+\item
+\textbf{XXX\_interrupt.s} - Funciones en \textit{assembler} para implementar un cambio de contexto si se utilizan hilos de ejecución (\textit{threading}).
+\item
+\textbf{native\_scj.c} - Funciones para correr aplicaciones SCJ sobre plataformas POSIX.
+\end{itemize}
+
+\noindent Una explicación detallada de cada uno de los archivos generados puede encontrarse en [\ref{bib:HVMref}].
+
+
+\bigskip
 \titulo{Grado de dependencia}
 
-Si el grado de dependencia es mayor a lo que puede manejar HVM puede ocurrir error por ``pérdida de dependencias''\footnote{En inglés \textit{Dependency Leak}.}. Cuando sucede se informa por consola en qué línea ocurrió. En programas embebidos pueden utilizarse muchas de las \textbf{java.util.*} sin que se produzca esta pérdida. 
-En el ejemplo realizado no se utiliza \textbf{System.out.println("Hello World");} para imprimir por consola debido a que causa una pérdida de dependencias, porque el analizador de HVM no puede manejar la cantidad de dependencias. En consecuencia se utiliza \textbf{devices.Console.println("Hello World");} que funciona perfectamente.
+Si el grado de dependencia es mayor a lo que puede manejar HVM puede ocurrir error por \textbf{pérdida de dependencias}\footnote{En inglés \textit{Dependency Leak}.}. Cuando sucede se informa por consola en qué línea ocurrió. En programas embebidos pueden utilizarse muchas de las \textbf{java.util.*} sin que se produzca esta pérdida. 
+
+\medskip
+
+Nótese que en el ejemplo realizado no se utiliza la típica línea de Java  \textbf{System.out.println("Hola Mundo HVM");} para imprimir por consola. En caso de utilizarla causará una pérdida de dependencias porque el analizador de HVM no puede manejar la excesiva cantidad de dependencias generadas. Para subsanarlo se utiliza \textbf{devices.Console.println("Hola Mundo HVM");} que genera un número mucho menor de dependencias y HVM puede manejarlas.
 
  
 \bigskip
-\titulo{Métodos compilados e interpretados}
+\titulo{Métodos compilados y métodos interpretados}
 
-Si se elige ..
+Icecaptools permite elegir a nivel de métodos cuales serán compilados y cuales interpretados. Por defecto son todos interpretados. Para pasar un método a compilado se debe presionar el botón derecho del \textit{mouse} sobre el método y seleccionar la opción \textbf{\textit{Toggle Compilation}} (figura [\ref{fig:toggleCompilation}]). Una vez pasado a compilado la esfera verde que indica el método se pasa a color violeta.
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=9cm,height=4cm]{figuras/toggleCompilation.png}
+\par\caption{Cambiar un método a modo compilado.}\label{fig:toggleCompilation}
+\end{center}
+\end{figure}
+
+\medskip
+
+Los compilados son traducidos a funciones en lenguaje C, mientras que los interpretados se traducen como un vector de \textit{bytecodes} constante en lenguaje C para ser interpretados mediante el intérprete de HVM. 
+
+\medskip
+
+Cada método de ejecución tiene sus ventajas: Los métodos interpretados ocupan menos espacio en ROM pero son más lentos al ejecutarse y los métodos compilados requieren un poco más de ROM pero la ejecución es significativamente más rápida.
 
 
-\subsection{Archivos C generados por HVM}
+\bigskip
+\titulo{Acerca del comando de compilación}
 
-HVM es un compilador de Java a C con un intérprete embebido. Esto significa que Permite traducir un programa Java a un programa en C. 
-De esta manera, la entrada al proceso de traducción es un conjunto de archivos fuente en lenguaje Java y la salida un conjunto de archivos fuente en lenguaje C.
+\noindent Optimizaciones:
 
+\begin{itemize}
+\item
+\textbf{-O0} produce un ejecutable optimizado para \textit{debug}.
+\item
+\textbf{-Os} produce un ejecutable con optimización en tamaño.
+\item
+\textbf{-O3} produce un ejecutable con optimización en velocidad de ejecución.
+\end{itemize}
+
+\noindent Definiciones para compilación condicional de HVM:
+
+\begin{itemize}
+\item
+\textbf{-DPC32} define para la plataforma objetivo. Esto selecciona los tipos que usa HVM en ostypes.h. Los posibles son DPC64, DPC32, WIN32, CR16C, V850ES, SAM7S256, AVR.
+\item
+\textbf{-DPRINTFSUPPORT} habilita el uso de la función \textit{printf} si la plataforma tiene una biblioteca \textit{libc}.
+\item
+\textbf{-DJAVA HEAP SIZE=6500} define el tamaño del \textit{heap} de Java. El tamaño por defecto es de 64 kB. Este ejemplo utiliza 6500 bytes para el heap.
+\item
+\textbf{-DJAVA STACK SIZE=1024} se utiliza para definir el tamaño de la pila principal en celdas de 4 bytes. Esto significa que en este ejemplo se utilizan 4 kB. Para Windows o Linux no puede ser menor a 4 kB. Para sistemas embebidos puede ser tan chico como 256 bytes, pero debe ajustarse según la apliacación.
+\end{itemize}
 
 
 \subsection{Características de HVM}
 	
+\bigskip
+\titulo{Manejo de memoria}
 
-\input{Icecaptools}
+HVM no soporta el \textit{Garbage Collerctor} estándar de Java. Para la gestión de la asignación y liberación de recursos de memoria utiliza el modelo de ámbitos de memoria de SCJ. 
+
+\medskip
+
+Para los programas no SCJ esto significa que los datos se asignan consecutivamente en áreas de memoria y se liberan fragmentos liberando un área completa a la vez.
+
+\medskip
+
+El uso de áreas de memoria requiere más cuidado que el uso del \textit{Garbage Collerctor} estándar. En este esquema el manejo de memoria es responsabilidad del programador y pueden ocurrir todos los problemas habituales que suceden cuando se utiliza la gestión de la memoria explícita (por ejemplo, punteros colgantes [\ref{bib:Dangling_pointer}]). El concepto de área de memoria para Java es una violación de la seguridad de Java que el desarrollador HVM debe comprender y utilizar con cuidado.
+
+\medskip
+
+En la práctica la mayoría de las aplicaciones para sistemas embebidos (en especial los de bajos recursos) tienen requisitos muy sencillos de asignación de memoria. En tales escenarios no se requiere un \textit{Garbage Collerctor} completo y el concepto de área de memoria es suficiente.
+
+
+\bigskip
+\titulo{Acceso al hardware desde Java}
+
+HVM provee cuatro formas de acceso al hardware:
+
+\begin{itemize}
+\item 
+\textbf{Variables Nativas}. Sirven para mapear variables de C a variables estáticas de Clase en Java. Solo pueden ser accedidas dentro de métodos compilados.
+\item 
+\textbf{Objetos Hardware}. Es una abstracción que permite acceder a registros del microcontrolador mapeados en memoria para manipularlos desde el programa en lenguaje Java. De esta forma se puede crear una biblioteca completa dependiente del microcontrolador que maneje un periférico a nivel de registros directamente en Java.
+\item 
+\textbf{Métodos Nativos}. Desde Java pueden utilizarse métodos nativos escritos en lenguaje C y pasar parámetros de cualquier tipo. De esta manera permite ejecutar código \textit{legacy} dando la posibilidad de utilizar bibliotecas completas realizadas en C desde Java. Para conectar un método con una función en lenguaje C, deben respetarse ciertas convenciones de nombres y de pasaje de parámetros en las funciones realizadas para que puedan ser asociadas.
+\item 
+\textbf{Manejadores de interrupciones\footnote{Del inglés \textit{Interrupt Handlers}.}}. HVM SDK contiene clases en infraestructura para el manejo de interrupciones desde Java. En particular, la clase vm.InterruptDispatcher define como registrar \textit{interrupt handlers}. 
+\end{itemize}
+
+Se elije métodos nativos como alternativa para proveer al programa de usuario en lenguaje Java el acceso a los periféricos básicos del microcontrolador. Existen además \textit{stacks}, \textit{file systems} y muchas otras bibliotecas que se querrán aprovechar.
+
+
+
+\bigskip
+\titulo{Reflexión\footnote{Del inglés \textit{Reflection}.}}
+
+HVM SDK contiene una API de \textit{Reflection} limitada que la utiliza la infraestructura de SCJ. Permite escanear información estática de clases, referencias a objetos creados y vectores; instanciar Clases en \textit{run time} e invocación reflexiva de métodos.
+
+\bigskip
+\titulo{Depuración a Nivel de Java}
+
+El \textit{plugin} de Eclipse de HVM soporta depuración a nivel de Java mediante Eclipse. Las sesiones de depuración (\textit{debug}) se inician lanzando la aplicación en modo \textit{debug} mediante las configuraciones de \textit{Launcher} (Lanzador) de HVM. Soporta las siguientes características de depuración:
+
+\begin{itemize}
+\item
+Agregar y eliminar \textit{breakpoints}. Por el momento uno por método.
+\item
+\textit{Step over} y \textit{step into}.
+\item
+Inspeccionar los valores de las variables locales de tipos de datos básicos. Momentáneamente no permite objetos ni \textit{Arrays}.
+\item
+Inspección de la pila de ejecución
+\item
+Depuración únicamente sobre métodos interpretados.
+\end{itemize}
+
+La aplicación que se ejecuta de forma remota es controlada por el depurador mediante un enlace de comunicación. 
+Cuando la aplicación es ejecutada en modo depuración se establece una comunicación con el depurador con el fin de actualizar \textit{breakpoints}, informan que se alcanzó un \textit{breakpoints} y enviar los datos de variables y pila al depurador. 
+Para las plataformas POSIX el enlace de comunicación es sobre es TCP/IP, para plataformas AVR es sobre comunicación serie (UART). 
+
+\medskip
+
+El depurador se implementa en Eclipse utilizando el \textit{Eclipse debugging framework} (\textbf{org.eclipse .debug.*}). Del lado cliente la conexión de depuración se lleva a cabo principalmente en el archivo \textit{natives\_allOS.c} para todas las plataformas y en \textit{natives\_XXX.c} las funciones específicas de la plataforma.
+
 
 
 % ``Icecap tools''
