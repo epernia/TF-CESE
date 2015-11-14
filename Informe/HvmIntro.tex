@@ -1,32 +1,27 @@
 \section{HVM} \label{sec:disenoHVMintro}
 
-El propósito de HVM es permitir programar en lenguaje Java dispositivos embebidos con pocos recursos. El código ANSI C generado puede compilarse utilizando un \textit{cross compiler} para el dispositivo en particular para generar el ejecutable.
-
-\medskip
-
-Los recursos mínimos necesarios en un microcontrolador son 10kB de ROM y 512 bytes de RAM. Sin embargo, para ejecutar programas de tamaño razonables, se necesitan 32 kB de ROM y 2kB de RAM.
+El propósito de HVM es permitir programar en lenguaje Java dispositivos embebidos con pocos recursos. 
+Los recursos mínimos necesarios en un microcontrolador son 10 kB de ROM y 512 bytes de RAM. Sin embargo, para ejecutar programas de tamaño razonables, se necesitan 32 kB de ROM y 2kB de RAM.
 
 \bigskip
 
-HVM funciona realizando una traducción de un programa de usuario escrito en lenguaje Java, a un programa en lenguaje C que incluye el código de dicho programa y el código C generado de HVM. De esta manera, logra portabilidad entre diferentes microcontroladores y permite integración con programas escritos previamente en lenguaje C, como por ejemplo, el firmware de la CIAA. Requiere un toolchain de lenguaje C, para el microcontrolador objetivo, que permita compilar el código, generando un binario ejecutable, y su posterior descarga a dicho dispositivo. El proceso completo se ilustra en la figura [\ref{fig:Icecaptools}]. 
+HVM funciona realizando una traducción de un programa de usuario escrito en lenguaje Java a un programa en lenguaje ANSI C, que incluye el código de dicho programa y el código que implementa la máquina virtual.
 
-\begin{figure}[!htbp]
-\begin{center}
-\includegraphics*[width=12cm,height=12cm]{figuras/Icecaptools.png}
-\par\caption{Esquema de funcionamiento del IDE para trabajar con HVM.}\label{fig:Icecaptools}
-\end{center}
-\end{figure}
+\bigskip
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+El código ANSI C generado puede compilarse mediante un \textit{cross compiler} para una plataforma en particular generando un ejecutable para luego descargarlo a la misma.
 
-EXPLICAR LA FIGURAAAAAAAA
+\bigskip
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+HVM está diseñada para ser independiente del hardware. Solamente una pequeña parte de la misma debe implementarse con código dependientede la plataforma donde va a ejecutarse. Esta parte se encuentra bien definida de manera de facilitar la portabilidad entre diferentes microcontroladores.
 
+\bigskip
 
+Además, posibilita la integración con programas escritos previamente en lenguaje C (código \textit{legacy}) para poder aprovechar cualquier biblioteca desarrollada previamente. 
+Esto es muy importante debido que en la actualidad casi la totalidad de las bibliotecas existentes para microcontroladores están hechas en este lenguaje. 
 
 
-\subsection{Obtención de un IDE para desarrollar programas Java SCJ sobre HVM}
+\subsection{Obtención de un IDE para desarrollar programas Java sobre HVM}
 
 En la sección [\ref{sec:VMsJava}] se adelantó que HVM se distribuye como un \textit{plugin} de Eclipse para convertirlo en un IDE para desarrollar programas Java SCJ sobre HVM. Para su utilización se debe descargar:
 
@@ -36,34 +31,111 @@ IDE Eclipse. En particular la distribución \textbf{Eclipse Automotive}, recomend
 \item
 El \textit{plugin} de Eclipse de HVM \textbf{Icecaptools}. 
 \item
-\textbf{HVM SDK}.
+El \textit{Software Development Kit} \textbf{HVM SDK}.
 \end{itemize}
 
-\textbf{Eclipse Automotive} se descarga en \url{http://ECLIPSEEEEE}. Los otros dos se distribuyen como archivos \textit{.jar} y pueden descargarse de \url{http://icelab.dk/download.html} sus respectivos nombres son \textbf{icecaptools\_x.y.z.jar} e \textbf{icecapSDK.jar}.
+\textbf{Eclipse Automotive} se descarga en \url{http://www.eclipse.org/downloads/packages/eclipse-ide-automotive-software-developers-includes-incubating-components/junosr2}. Los otros dos se distribuyen como archivos \textit{.jar} y pueden descargarse de \url{http://icelab.dk/download.html} sus respectivos nombres son \textbf{icecaptools\_x.y.z.jar} e \textbf{icecapSDK.jar}.
 
 \medskip
 
-Una vez que se descarga y descomprime Eclipse se debe instalar sobre el mismo el \textit{plugin} \textbf{icecaptools}, que es el encargado de compilar el programa Java para utilizarse sobre HVM. Para realizar programas SCJ debe incluirse \textbf{icecapSDK} como biblioteca (Jar externa) al proyecto de aplicación Java.
+Una vez que se descarga y descomprime Eclipse, se debe instalar sobre el mismo el \textit{plugin} \textbf{icecaptools}, que es el encargado de compilar el programa Java para utilizarse sobre HVM. Para realizar programas SCJ debe incluirse \textbf{icecapSDK} como biblioteca (Jar externa) al proyecto de aplicación Java.
 
 \medskip
 
-Finalmente se debe conseguir un compilador de lenguaje C para la arquitectura. Este compilador puede ser un  programa independiente o integrarse a Eclipse. De esta manera se completan las herramientas requerids para trabajar con HVM.
+Finalmente se debe instalar un \textit{toolchain} para la plataforma de hardware que integre un \textit{cross compiler} de lenguaje C, y los programas necesarios para \textit{debug} y  descargar el ejecutable compilado. Este puede ser un conjunto de programas independiente o integrarse a Eclipse. De esta manera se completa el IDE para trabajar con HVM.
+
+\medskip
+
+\subsection{Utilización de HVM}
+
+Para realizar una aplicación Java para HVM se debe realizar un proyecto Java estándar, con el IDE Eclipse, que incluya \textbf{icecapSDK.jar} como biblioteca Jar externa.
+
+\medskip
+
+Luego se realiza el programa Java de manera estándar escribiendo las Clases que lo componen. En la figura [\ref{fig:holaMundoHVM}] se muestra una captura de una aplicación llamada HolaMundoHVM.Java que simplemente imprime por consola este mensaje.
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=15cm,height=12cm]{figuras/holaMundoHVM-05.png}
+\par\caption{Programa Hola Mundo con HVM.}\label{fig:holaMundoHVM}
+\end{center}
+\end{figure}
+
+\medskip
+
+Una vez completada la aplicación Java se busca el método \textbf{main} de la clase principal donde comienza la aplicación\footnote{En Java cada Clase puede tener un método \textbf{main} pero en el proyecto debe especificarse cual es la que se utiliza como punto de inicio a la aplicación} en el árbol de proyecto y se presiona el botón derecho del \textit{mouse} sobre dicho método para abrir un menú contextual donde se selecciona la opción \textbf{\textit{Icecap tools}} y luego \textbf{\textit{Convert to Icecap Application}}.
+
+\medskip
+
+Esto lanza el proceso donde se genera el código C. El primer paso es generar el \textbf{grado de dependencia}\footnote{En el manual de referencia de HVM [\ref{bib:HVMref}] se llama \textit{Dependency Extent} en su idioma original.} que es el conjunto de clases y métodos requeridos para la aplicación. En la figura [\ref{fig:gradoDepHolaHVM}] se ofrece el grado de dependencia del ejemplo (\textit{Dependency Extent}) que se compone de 29 elementos. Esto se debe a todas las clases que necesita para el manejo de \textit{Strings}, excepciones de Java, la propia clase del ejemplo, además de todas sus dependencias.
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=15cm,height=12cm]{figuras/holaMundoHVM-07.png}
+\par\caption{Programa Hola Mundo con HVM.}\label{fig:gradoDepHolaHVM}
+\end{center}
+\end{figure}
+
+Luego se debe presionar el botón derecho del \textit{mouse} sobre \textbf{\textit{Dependency Extent}} y mediante la opción \textbf{\textit{Set output folder}} y se elije la carpeta donde se guardarán los archivos C generados por HVM. Una vez elegida la carpeta de salida se vuelve a ejecutar \textbf{\textit{Convert to Icecap Application}} para generar los archivos C.
+
+\medskip
+
+Finalmente se utiliza el compilador de la plataforma y se descarga a la misma.
+Un resumen de todo el proceso se muestra en la figura [\ref{fig:Icecaptools}]. 
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=15.5cm,height=14cm]{figuras/Icecaptools.png}
+\par\caption{Esquema de funcionamiento del IDE para trabajar con HVM.}\label{fig:Icecaptools}
+\end{center}
+\end{figure}
+
+\newpage
+\titulo{Compilación y ejecución del ejemplo en PC x86 (Posix)}
+
+Con estos archivos puede utilizarse la \textbf{Terminal} de Linux, o \textbf{Cygwin} en Windows, para compilar el programa con \textbf{gcc} para su posterior ejecución en la PC mediante el comando:
+
+\begin{verbatim}
+gcc -Wall -pedantic -Werror -g -O0 -DPC64 -DREF_OFFSET -DPRINTFSUPPORT 
+-DJAVA_HEAP_SIZE=6500 -DJAVA_STACK_SIZE=1024 classes.c icecapvm.c methodinterpreter.c
+methods.c gc.c natives_allOS.c natives_i86.c allocation_point.c print.c
+\end{verbatim}
+
+Esto genera un ejecutable llamado SASASAS que puede ejecutarse utilizando el comando ./ASASAS. En la figura [\ref{fig:cygwinHolaHVM}] se expone el resultado de su ejecución en \textbf{Cygwin}. 
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=10cm,height=7cm]{figuras/Icecaptools.png}
+\par\caption{Ejecución del ejemplo Hola mundo con HVM en Cygwin.}\label{fig:cygwinHolaHVM}
+\end{center}
+\end{figure}
+
+\subsection{Consideraciones a tener en cuenta al utilizar HVM}
+
+\bigskip
+\titulo{Grado de dependencia}
+
+Si el grado de dependencia es mayor a lo que puede manejar HVM puede ocurrir error por ``pérdida de dependencias''\footnote{En inglés \textit{Dependency Leak}.}. Cuando sucede se informa por consola en qué línea ocurrió. En programas embebidos pueden utilizarse muchas de las \textbf{java.util.*} sin que se produzca esta pérdida. 
+En el ejemplo realizado no se utiliza \textbf{System.out.println("Hello World");} para imprimir por consola debido a que causa una pérdida de dependencias, porque el analizador de HVM no puede manejar la cantidad de dependencias. En consecuencia se utiliza \textbf{devices.Console.println("Hello World");} que funciona perfectamente.
+
+ 
+\bigskip
+\titulo{Métodos compilados e interpretados}
+
+Si se elige ..
 
 
-%%%%%%%%%%%%%%%
+\subsection{Archivos C generados por HVM}
+
+HVM es un compilador de Java a C con un intérprete embebido. Esto significa que Permite traducir un programa Java a un programa en C. 
+De esta manera, la entrada al proceso de traducción es un conjunto de archivos fuente en lenguaje Java y la salida un conjunto de archivos fuente en lenguaje C.
 
 
-TRADUCTOR
 
-HVM es un compilador de Java a C con un intérprete embebido. Esto significa que Permite traducir un programa Java a un programa en C. De esta manera, la entrada al proceso de traducción es un conjunto de archivos fuente en lenguaje Java y la salida un conjunto de archivos fuente en lenguaje C.
-
+\subsection{Características de HVM}
+	
 
 \input{Icecaptools}
 
-	\subsection{Componentes}
-	
-	\subsection{Modo de utilización}
 
-	\subsection{Características}
-	
-
+% ``Icecap tools''
