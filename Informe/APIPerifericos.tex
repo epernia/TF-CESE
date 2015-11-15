@@ -1,4 +1,87 @@
-\section{Diseño de API para manejo de periféricos} \label{sec:disenoAPI}
+\section{Diseño de biblioteca para el manejo de periféricos desde Java} \label{sec:disenoAPI}
 
-Diseño de una API sencilla.
+Proveer el manejo de periféricos de la CIAA directamente desde Java es requisito fundamental para que tenga sentido la adopción de este lenguaje para la programación de aplicaciones. 
 
+\medskip
+
+En Java, esto se traduce a la necesidad de diseñar una biblioteca Java para el manejo de periféricos.
+Una biblioteca de Java se compone de un conjunto de Clases Java empaquetadas en un archivo de extensión \textbf{.jar}. 
+El alcance de esta biblioteca para el presente trabajo es permitir la utilización de los siguientes periféricos:
+
+\begin{itemize}
+\item
+Entradas y salidas digitales.
+\item
+Entradas y salidas analógicas.
+\item
+Periférico Temporizador.
+\item
+Periférico de comunicación serie (UART).
+\end{itemize}
+
+Para la construcción de esta biblioteca se utilizarán métodos nativos escritos en lenguaje C. En consecuencia se necesita obtener una implementación de bibliotecas de C para estos periféricos y luego programar los métodos nativos que formarán parte de las Clases Java que componen la biblioteca.
+
+\medskip
+
+Al comienzo se analizó la estructura del Firmware de la CIAA para intentar compatibilizar HVM con el mismo, con el interés de reutilizar el manejo de periféricos mediante \textbf{Posix} y el protocolo \textbf{Modbus} para HVM. En la figura [\ref{fig:EstructuraCiaaFirmware}] se ilustra la estructura en capas (simplificada) del Firmware de la CIAA. 
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=9cm,height=8cm]{figuras/EstructuraCiaaFirmware.png}
+\par\caption{Estructura en caps del Firmware de la CIAA.}\label{fig:EstructuraCiaaFirmware}
+\end{center}
+\end{figure}
+
+\medskip
+Se descubrió que los módulos de interés dependen de \textbf{FreeOSEK}, el sistema operativo de tiempo real, que provee manejo de tareas mediante un planificador apropiativo, alarmas, eventos, recursos y \textit{handlers} de interrupción. 
+
+\medskip
+
+HVM realiza las mismas tareas que OSEK y está diseñada para correr directamente sobre el hardware, entonces, no es posible lograr fácilmente una convivencia entre ambos en una misma aplicación. Para realizarlo una buena estrategia sería reformar HVM para que corra sobre OSEK.
+Otra posibilidad es reescribir las partes de los módulos Posix y Modbus que dependen de FreeOSEK para que utilicen servicios de HVM.
+
+\medskip
+
+Por otro lado se investigaron distintas bibliotecas para el manejo de periféricos desde lenguajes POO para el control de sistemas embebidos. En esta búsqueda se observa que en su mayoría abstraen cada periférico en particular en una Clase, con métodos para lectura, escritura y configuración de los mismos. 
+
+\medskip
+
+Es de interés estandarizar estos métodos para que el usuario no tenga que recordar distintos métodos para atacar a los distintos periféricos. Posix utiliza esta filosofía, tratando a todos los periféricos de la misma manera mediante las funciones \textit{open, close, read, write} e \textit{ioctl}. Posix abstrae todos los periféricos como \textbf{nodos} de un sistema de archivos, esta abstracción no es requerida ya que se desea que se trate directamente con el concepto de \textbf{periférico}.
+
+\medskip
+
+En los últimos años la programación de sistemas embebidos ha dejado de ser una actividad exclusiva de ingenieros electrónicos y se ha popularizado ampliamente. Esto se debe, en parte, a la gran oferta plataformas de hardware listas usar (entre ellas Arduino, Raspberry-Pi, BeagleBone, etc.), que permiten  prototipado rápido, con diseño abiertos y precios accesibles. La parte que completa esta masificación es la facilidad de instalación y uso de su software de programación.
+
+\medskip
+
+La facilidad en la programación se debe a que el programa de usuario se construye utilizando interfaz de programación de aplicaciones (API) sencilla sencilla que permite con muy pocas líneas de código obtener un programa básico que actúe sobre los periféricos de la plataforma. La biblioteca \textbf{\textit{Wiring}}\footnote{Sitio web de \textit{Wiring}:\url{http://wiring.org.co/}} fue una de las primeras convirtiéndose en un estándar de facto. Existen muchas bibliotecas estilo \textit{Wiring} para en la programación en C, Java Script y Python de muchas plataformas. Su filosofía es proveer las configuraciones típicas de los periféricos y funciones básicas para su utilización ocultando la complejidad intrínseca de cada uno de ellos al usuario, creando una capa de abstracción del hardware (HAL). Utiliza a cada periférico en particular como abstracción, aunque no estandariza su uso como en el caso de Posix.
+
+\medskip
+
+Con todos estos antecedentes se decide diseñar una biblioteca que incorpore una API sencilla, orientada a que el concepto de abstracción sea el \textbf{periférico}, como \textit{Wiring}; con una \textbf{estandarización de métodos} como la propuesta por Posix.
+También se desarrollará para ser independiente del Sistema Operativo (en este caso HVM).
+
+
+
+\medskip
+
+
+ para permitir también su uso \textit{bare-metal}.
+
+
+
+Pin
+	DigitalPin
+	AnalogPin
+Timer
+Uart
+
+
+
+
+
+
+
+
+
+En la sección [\ref{sec:disenoPortHvm}] se explica que HVM trata directamente sobre Hardware. Es por esto que no tiene sentido utilizar OSEK.
