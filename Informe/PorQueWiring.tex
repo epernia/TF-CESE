@@ -1,0 +1,25 @@
+\medskip
+
+Por otro lado se investigaron distintas bibliotecas para el manejo de periféricos desde lenguajes POO para el control de sistemas embebidos. En esta búsqueda se observa que en su mayoría
+
+
+
+ abstraen cada periférico en particular en una Clase, con métodos para lectura, escritura y configuración de los mismos. 
+
+\medskip
+
+Es de interés estandarizar estos métodos para que el usuario no tenga que recordar distintos métodos para atacar a los distintos periféricos. Posix utiliza esta filosofía, todos los periféricos se acceden como un \textit{stream} de bytes mediante las funciones \textit{open, close, read, write} e \textit{ioctl}.
+
+
+
+
+En los últimos años la programación de sistemas embebidos ha dejado de ser una actividad exclusiva de ingenieros electrónicos y se ha popularizado ampliamente. Esto se debe, en parte, a la gran oferta plataformas de hardware listas usar (entre ellas Arduino, Raspberry-Pi, BeagleBone, etc.), que permiten  prototipado rápido, con diseño abiertos y precios accesibles. La parte que completa esta masificación es la facilidad de instalación y uso de su software de programación.
+
+\medskip
+
+La facilidad en la programación se debe a que el programa de usuario se construye utilizando interfaz de programación de aplicaciones (API) sencilla sencilla que permite con muy pocas líneas de código obtener un programa básico que actúe sobre los periféricos de la plataforma. La biblioteca \textbf{\textit{Wiring}}\footnote{Sitio web de \textit{Wiring}:\url{http://wiring.org.co/}} fue una de las primeras convirtiéndose en un estándar de facto. Existen muchas bibliotecas estilo \textit{Wiring} para en la programación en C, Java Script y Python de muchas plataformas. Su filosofía es proveer las configuraciones típicas de los periféricos y funciones básicas para su utilización ocultando la complejidad intrínseca de cada uno de ellos al usuario, creando una capa de abstracción del hardware (HAL). Utiliza a cada periférico en particular como abstracción, aunque no estandariza su uso como en el caso de Posix.
+
+\medskip
+
+Con todos estos antecedentes se decide diseñar una biblioteca que incorpore una API sencilla, como \textit{Wiring}; con una \textbf{estandarización de métodos} como la propuesta por Posix.
+También se desarrollará para ser independiente del sistema operativo (en este caso HVM).

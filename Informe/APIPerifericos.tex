@@ -1,6 +1,6 @@
 \section{Diseño de biblioteca para el manejo de periféricos desde Java} \label{sec:disenoAPI}
 
-Proveer el manejo de periféricos de la CIAA directamente desde Java es requisito fundamental para que tenga sentido la adopción de este lenguaje para la programación de aplicaciones. 
+Proveer el manejo de periféricos de la CIAA directamente desde Java es requisito fundamental para que tenga sentido la adopción de este lenguaje. 
 
 \medskip
 
@@ -14,16 +14,15 @@ Entradas y salidas digitales.
 \item
 Entradas y salidas analógicas.
 \item
-Periférico Temporizador.
-\item
 Periférico de comunicación serie (UART).
 \end{itemize}
 
-Para la construcción de esta biblioteca se utilizarán métodos nativos escritos en lenguaje C. En consecuencia se necesita obtener una implementación de bibliotecas de C para estos periféricos y luego programar los métodos nativos que formarán parte de las Clases Java que componen la biblioteca.
+Para la construcción de esta biblioteca se utilizarán métodos nativos escritos en lenguaje C.
+En consecuencia, se necesita obtener una implementación de bibliotecas de C para estos periféricos y luego programar los métodos nativos que formarán parte de las Clases Java que componen la biblioteca.
 
 \medskip
 
-Al comienzo se analizó la estructura del Firmware de la CIAA para intentar compatibilizar HVM con el mismo, con el interés de reutilizar el manejo de periféricos mediante \textbf{Posix} y el protocolo \textbf{Modbus} para HVM. En la figura [\ref{fig:EstructuraCiaaFirmware}] se ilustra la estructura en capas (simplificada) del Firmware de la CIAA. 
+Al comienzo se analizó la estructura del Firmware de la CIAA (que està escrito en lenguaje C) para intentar compatibilizar HVM con el mismo, con el interés de reutilizar el manejo de periféricos mediante \textbf{Posix} y el protocolo \textbf{Modbus} para HVM. En la figura [\ref{fig:EstructuraCiaaFirmware}] se ilustra la estructura en capas (simplificada) del Firmware de la CIAA. 
 
 \begin{figure}[!htbp]
 \begin{center}
@@ -34,32 +33,103 @@ Al comienzo se analizó la estructura del Firmware de la CIAA para intentar compa
 
 \medskip
 Se descubrió que los módulos de interés dependen de \textbf{FreeOSEK}, el sistema operativo de tiempo real, que provee manejo de tareas mediante un planificador apropiativo, alarmas, eventos, recursos y \textit{handlers} de interrupción. 
+HVM realiza las mismas tareas que OSEK y está diseñada para correr directamente sobre el hardware, entonces, no es posible lograr fácilmente una convivencia entre ambos en una misma aplicación. Para realizarlo, una  estrategia sería reformar HVM para que corra sobre OSEK.
+Otra posibilidad es reescribir las partes de los módulos Posix y Modbus que dependen de FreeOSEK para que utilicen servicios de HVM. Ambas tareas demandan bastante trabajo.
 
 \medskip
 
-HVM realiza las mismas tareas que OSEK y está diseñada para correr directamente sobre el hardware, entonces, no es posible lograr fácilmente una convivencia entre ambos en una misma aplicación. Para realizarlo una buena estrategia sería reformar HVM para que corra sobre OSEK.
-Otra posibilidad es reescribir las partes de los módulos Posix y Modbus que dependen de FreeOSEK para que utilicen servicios de HVM.
+Por otro lado Posix utiliza una filosofía donde todos los periféricos se acceden como un \textit{stream} de bytes (concepto de todo es un archivo) mediante las funciones \textit{open, close, read, write} e \textit{ioctl}. Si bien es una abstracción muy eficiente, resulta poco natural para programadores ajenos a los sistemas Unix. 
 
 \medskip
 
-Por otro lado se investigaron distintas bibliotecas para el manejo de periféricos desde lenguajes POO para el control de sistemas embebidos. En esta búsqueda se observa que en su mayoría abstraen cada periférico en particular en una Clase, con métodos para lectura, escritura y configuración de los mismos. 
+En los siguientes apartados se presentan las distintas características del diseño propuesto para esta biblioteca.
+
+
+\subsection{Modelo de la biblioteca} \label{sec:disenoModeloBib}
+
+Para el modelado de la biblioteca de Java se persiguen los siguientes objetivos:
+
+\begin{itemize}
+\item
+Abstraer y simplificar la configuración del Hardware.
+\item
+De uso fácil para programadores informáticos y gente familiarizada con otras plataformas de hardware.
+\item
+Independiente del sistema operativo (en este caso HVM).
+\end{itemize}
+
+Se enfoca la misma a los conceptos que manejan los programadores en entornos industriales. Allí el dispositivo de uso más masivo es el PLC\footnote{Siglas de Controlador Lógico Programable.} donde los conceptos que se manejan son los de dispositivos de entrada, salida y comunicaciones.
 
 \medskip
 
-Es de interés estandarizar estos métodos para que el usuario no tenga que recordar distintos métodos para atacar a los distintos periféricos. Posix utiliza esta filosofía, tratando a todos los periféricos de la misma manera mediante las funciones \textit{open, close, read, write} e \textit{ioctl}. Posix abstrae todos los periféricos como \textbf{nodos} de un sistema de archivos, esta abstracción no es requerida ya que se desea que se trate directamente con el concepto de \textbf{periférico}.
+Se propone modelar el concepto de \textbf{Dispositivo} que se compone de \textbf{Periféricos}. Los periféricos se clasifican en:
+
+\begin{itemize}
+\item
+\textbf{DigitalIO}. Modela una entrada o salida cuyo valor lo representa un booleano.
+\item
+\textbf{AnalogIO}. Modela una entrada o salida cuyo valor lo representa un número entero.
+\item
+\textbf{Uart}. Modela el periférico de comunicación serie, UART.
+\end{itemize}
+
+Como en las plataformas de hardware existe más de un periférico de cada tipo, se debe poder identificar a cada uno en particular. 
 
 \medskip
 
-En los últimos años la programación de sistemas embebidos ha dejado de ser una actividad exclusiva de ingenieros electrónicos y se ha popularizado ampliamente. Esto se debe, en parte, a la gran oferta plataformas de hardware listas usar (entre ellas Arduino, Raspberry-Pi, BeagleBone, etc.), que permiten  prototipado rápido, con diseño abiertos y precios accesibles. La parte que completa esta masificación es la facilidad de instalación y uso de su software de programación.
+Cada periférico utiliza uno o más de pines del microcontrolador. 
+En la plataforma CIAA-NXP esta relación es fija por diseño y no tiene sentido configurar cada pin para otra funcionalidad que no sea la asociada a su hardware de salida. 
+En la EDU-CIAA-NXP, en cambio, esto es distinto porque se dispone de los pines directos que salen del microcontrolador pudiéndose utilizar para cualquier propósito. Aquí un pin puede ser compartido por varios periféricos. Se agrega al modelo, entonces, el concepto de \textbf{Pin} de un periférico que sirve para mantener la relación física del periférico con el microcontrolador. El Pin también sirve para determinar si un pin está en uso por un periférico cuando se intente usar dos periféricos distintos que utilicen los mismos pines físicos.
 
 \medskip
 
-La facilidad en la programación se debe a que el programa de usuario se construye utilizando interfaz de programación de aplicaciones (API) sencilla sencilla que permite con muy pocas líneas de código obtener un programa básico que actúe sobre los periféricos de la plataforma. La biblioteca \textbf{\textit{Wiring}}\footnote{Sitio web de \textit{Wiring}:\url{http://wiring.org.co/}} fue una de las primeras convirtiéndose en un estándar de facto. Existen muchas bibliotecas estilo \textit{Wiring} para en la programación en C, Java Script y Python de muchas plataformas. Su filosofía es proveer las configuraciones típicas de los periféricos y funciones básicas para su utilización ocultando la complejidad intrínseca de cada uno de ellos al usuario, creando una capa de abstracción del hardware (HAL). Utiliza a cada periférico en particular como abstracción, aunque no estandariza su uso como en el caso de Posix.
+Los métodos públicos para el acceso a un periférico son:
+
+\begin{itemize}
+\item
+\textbf{read()}. Método para leer el periférico.
+\item
+\textbf{write()}. Método para escribir el periférico.
+\item
+\textbf{config()}. Método para configurar el periférico.
+\end{itemize}
+
+En la figura [\ref{fig:ModeloPeriferico}] se ofrece el modelo de Periférico (se han simplificado en el mismo tipos de datos). 
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=12cm,height=8cm]{figuras/ModeloPeriferico.png}
+\par\caption{Modelo de Periférico.}\label{fig:ModeloPeriferico}
+\end{center}
+\end{figure}
+
+Una clase \textbf{\textit{Peripheral}} define los métodos propuestos para el acceso, que luego son redefinidos en cada una de las subclases que contienen la implementación concreta de cada tipo de periférico.
 
 \medskip
 
-Con todos estos antecedentes se decide diseñar una biblioteca que incorpore una API sencilla, orientada a que el concepto de abstracción sea el \textbf{periférico}, como \textit{Wiring}; con una \textbf{estandarización de métodos} como la propuesta por Posix.
-También se desarrollará para ser independiente del Sistema Operativo (en este caso HVM).
+
+
+
+%Pin digital Input/Output
+%	digitalRead()
+%	digitalWrite()
+%	pinMode()
+%
+%Port digital Input/Output
+%	portMode()
+%	portRead()
+%	portWrite()
+%
+%Pin analog Input
+%	analogRead()
+%	analogReference()
+%
+%Pin PWM (analog) Output
+%	analogWrite()
+%	noAnalogWrite()
+
+
+
 
 
 
@@ -67,21 +137,3 @@ También se desarrollará para ser independiente del Sistema Operativo (en este ca
 
 
  para permitir también su uso \textit{bare-metal}.
-
-
-
-Pin
-	DigitalPin
-	AnalogPin
-Timer
-Uart
-
-
-
-
-
-
-
-
-
-En la sección [\ref{sec:disenoPortHvm}] se explica que HVM trata directamente sobre Hardware. Es por esto que no tiene sentido utilizar OSEK.
