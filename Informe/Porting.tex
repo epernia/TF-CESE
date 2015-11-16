@@ -36,9 +36,9 @@ El port de HVM a una nueva plataforma puede implementarse en dos partes, una par
 
 \subsection{Port de HVM para ejecutar Java}
 
-Como se ha adelantado, se debe agregar una \textbf{definición para la plataforma} en el archivo \textbf{ostypes.h}. 
+Como se ha adelantado, se requiere agregar una \textbf{definición para la plataforma} en el archivo \textbf{ostypes.h}. 
 Esto se debe a que HVM utiliza su propia definición de tipos de datos básicos y de puntero para independizarse de la arquitectura donde se ejecuta. 
-Es por esto que definición consiste en indicar correctamente los tipos de datos básicos, de punteros a memoria de programa de HVM, así como algunas macros para la plataforma. 
+Es por esto que la definición consiste en indicar correctamente los tipos de datos básicos, de punteros a memoria de programa de HVM, así como algunas macros para la plataforma. 
 Como ambas plataformas CIAA donde se porta HVM contienen el mismo microcontrolador. La definición de plataforma para la CIAA se nombra \textbf{CIAA\_NXP\_OSTYPES\_FOR\_HVM} en la implementación.
 
 \medskip
@@ -92,7 +92,7 @@ Dejando una pequeña parte que debe implementarse en lenguaje C. Esta parte corre
 \item
 \textbf{int16 n\_vm\_RealtimeClock\_awaitNextTick(int32 *sp)}. Debe bloquear hasta que se actualice la variable global \textbf{systemTick}.
 \item
-\textbf{int16 n\_vm\_RealtimeClock\_getNativeResolution(int32 *sp)}. Debe devolver la resolución del temporizador que se inició en la función \textbf{void start\_system\_tick (void)}. Debe devolver en número de nano segundos entre dos \textit{ticks} del sistema con tipo de datos \textit{uint32}.
+\textbf{int16 n\_vm\_RealtimeClock\_getNativeResolution(int32 *sp)}. Debe retornar la resolución del temporizador que se inició en la función \textbf{void start\_system\_tick (void)}. Debe retornar en número de nano segundos entre dos \textit{ticks} del sistema con tipo de datos \textit{uint32}.
 \item
 \textbf{int16 n\_vm\_RealtimeClock\_getNativeTime(int32 *sp)}. Devuelve el tiempo actual del reloj de tiempo real como un objeto AbsoluteTime con mili segundos y nano segundos.
 \end{itemize}
@@ -108,7 +108,7 @@ La función \textbf{\_yield}. Debe guardar todos los registros en la pila, guarda
 
 \medskip
    
-Cuando se llama a la función \textbf{pointer* get\_stack\_pointer(void)} debe devolver el valor del puntero a pilas. Los pasos para llevarlo a cabo son:
+Cuando se llama a la función \textbf{pointer* get\_stack\_pointer(void)} debe retornar el valor del puntero a pila. Los pasos para llevarlo a cabo son:
 
 \begin{enumerate}
 \item

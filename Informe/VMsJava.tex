@@ -25,11 +25,11 @@ Para poder utilizar Java sobre una plataforma de hardware en particular, se debe
 
 \medskip 
 
-\textit{Open Safety-Critical Java Implementation} (\textbf{oSCJ}) es un desarrollo de la universidad de Purdue, de código abierto, que implementa un conjunto restringido de la especificación SCJ, con foco en el nivel 0 de la misma. Posee un desarrollo de \textit{Technology Compatibility Kit} (TCK) como es solicitado en SCJ, chequeo estático de \textit{Annotations} SCJ y un conjunto de \textit{benchmarks} SCJ. Su licencia es \textit{New BSD}. La plataforma sobre la cual está desarrollada oSCJ es una FPGA Xilinx con un softcore LEON3 corriendo el sistema operativo de tiempo real RTEMS. Este desarrollo dista mucho del microcontrolador que se utiliza en el trabajo y no se ha encontrado documentación para portarlo a otra arquitectura.
+\textit{Open Safety-Critical Java Implementation} (\textbf{oSCJ}) es un desarrollo de la Universidad de Purdue, de código abierto, que implementa un conjunto restringido de la especificación SCJ, con foco en el nivel 0 de la misma. Posee un desarrollo de \textit{Technology Compatibility Kit} (TCK) como es solicitado en SCJ, chequeo estático de \textit{Annotations} SCJ y un conjunto de \textit{benchmarks} SCJ. Su licencia es \textit{New BSD}. La plataforma sobre la cual está desarrollada oSCJ es una FPGA Xilinx con un softcore LEON3 corriendo el sistema operativo de tiempo real RTEMS. Este desarrollo dista mucho del microcontrolador que se utiliza en el trabajo y no se ha encontrado documentación para portarlo a otra arquitectura.
 
 \medskip 
 
-\textbf{KESO VM} se desarrolla en Universidad Friedrich-Alexander, Alemania, con licencia LGPL V3. Está diseñada para correr sobre el sistema operativo de tiempo real OSEK, sobre las plataformas JOSEK, CiAO, Trampoline OS, Elektrobit ProOSEK y RTA-OSEK. En la web ofical existen ejemplos sobre la arquitectura AVR de 8 bits de la compañia Atmel. Si bien posee soporte de \textit{threads real-time}, no se basa en ninguna de las especificaciones para Java de tiempo real anteriores. Por otro lado, no se encontró documentación acerca de como llevar la misma a otra distribución de OSEK.
+\textbf{KESO VM} se desarrolla en Universidad Friedrich-Alexander, Alemania, con licencia LGPL V3. Está diseñada para correr sobre el sistema operativo de tiempo real OSEK, sobre las plataformas JOSEK, CiAO, Trampoline OS, Elektrobit ProOSEK y RTA-OSEK. En la web ofical existen ejemplos sobre la arquitectura AVR de 8 bits de la compañia Atmel. Si bien posee soporte de \textit{threads real-time}, no se basa en ninguna de las especificaciones de Java anteriores. Por otro lado, no se encontró documentación acerca de como llevar la misma a otra distribución de OSEK.
 
 \medskip 
 
@@ -37,13 +37,13 @@ Hardware near Virtual Machine (\textbf{HVM}) comenzó como un desarrollo para la 
 
 \medskip
 
-HVM corre directamente sobre el hardware sin necesidad de un sistema operativo (\textit{bare-metall}). Su diseño y exelente documentación (véase [\label{bib:HVMref}]) facilita la portabilidad a nuevas arquitecturas.
+HVM corre directamente sobre el hardware sin necesidad de un sistema operativo (\textit{bare-metall}). Su diseño y excelente documentación (véase [\label{bib:HVMref}]) facilita la portabilidad a nuevas arquitecturas.
 
 \medskip
 
 Se compone de las siguientes partes:
 \begin{itemize}
-\item \textbf{Icecaptools}. Es un \textit{plugin} que convierte al IDE Eclipse, en un IDE para la programación en lenguaje Java para HVM. Icecaptools genera código C a partir de la aplicación Java de usuario para correr sobre la máquina virtual de Java, HVM, así como los proprios archivos que implementan a esta máquina virtual.
+\item \textbf{Icecaptools}. Es un \textit{plugin} que convierte al IDE Eclipse, en un IDE para la programación en lenguaje Java para HVM. Icecaptools genera código C a partir de la aplicación Java de usuario para correr sobre la máquina virtual de Java, HVM, así como los propios archivos que implementan a esta máquina virtual.
 \item \textbf{HVM SDK}. Es el \textit{Software Development Kit} de HVM que incluye las clases que implementan SCJ.
 \end{itemize}
 
@@ -51,8 +51,8 @@ En [\ref{bib:PaperSCJKorsholm}] se porveen \textit{benckmarks} de HVM, KESO VM y
 
 \medskip
 
-Debido a estas características se elije HVM como la JVM a utilizar en este trabajo. 
+Debido a estas características se elije HVM como la JVM a utilizar.
 
 \medskip
 
-Cabe destacar, que durante el desarrollo del presente trabajo se ha entrado en contacto con Korsholm, vía correo electrónico, quien con excelente predisposición ha facilitado mucho la labor contestando todas las dudas. De esta manera, se ha logrado una cooperación entre los equipos de investigación de la Universidad Nacional de Quilmes e Icelabs, y se espera luego de la conclusión de este trabajo, contribuir al proyecto HVM con el aporte del \textit{port} para la CIAA de HVM.
+Cabe destacar, que durante el desarrollo del presente trabajo se ha entrado en contacto con Korsholm, vía correo electrónico, quien con excelente predisposición ha facilitado mucho la labor respondiendo todas las dudas. De esta manera, se ha logrado una cooperación entre los equipos de investigación de la Universidad Nacional de Quilmes e Icelabs, y se espera luego de la conclusión de este trabajo, contribuir al proyecto HVM con el aporte del \textit{port} para la CIAA de HVM.

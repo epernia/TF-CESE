@@ -26,7 +26,7 @@ Es un lenguaje estáticamente tipado, es decir, cada variable debe ser declarada 
 
 \medskip
 
-Si bien aplica los conceptos principales que debe tener un lenguaje orientado a objetos, el mismo es considerado obsoleto por ingenieros informáticos debido a que arrastra muchos conceptos de C que lo vuelven inseguro, como por ejemplo, permite manejar la memoria sin ninguna protección a través de punteros, una fuente habitual de errores. El manejo de memoria manual se extiende a la eliminación explicita de objetos, cuya responsabilidad recae sobre el programador. El tiempo de creación y destrucción de un objeto es variable, esto es una desventaja para aplicaciones de tiempo real. 
+Si bien aplica los conceptos principales que debe tener un lenguaje orientado a objetos, el mismo es considerado obsoleto por ingenieros informáticos debido a que arrastra muchos conceptos de C que lo vuelven inseguro, como por ejemplo, permite manejar la memoria sin ninguna protección a través de punteros, una fuente habitual de errores. El manejo de memoria manual se extiende a la eliminación explícita de objetos, cuya responsabilidad recae sobre el programador. El tiempo que tarda la creación y destrucción de un objeto es variable, esto es una desventaja para aplicaciones de tiempo real. 
 Tampoco incluye características modernas de lenguajes como, por ejemplo, bloques (\textit{closures}), o sintaxis simplificada para recorrer colecciones.
 
 \medskip
@@ -37,12 +37,12 @@ Este lenguaje POO está disponible para utilizarse actualmente en las plataformas
 \bigskip
 \titulo{Lenguaje Python}
 
-Este lenguaje posee características modernas, entre ellas Garbage Collector, que es un proceso que se encarga de detectar que objetos en memoria no se utilizan y los borra automáticamente, liberando al programador de esta tarea. Sin embargo, al igual que el caso anterior es una desventaja para aplicaciones de timpo real pues su tiempo de ejecución no es determinista. 
-No utiliza punteros, posee solamente referencias. A diferencia de C++, Python es un lenguaje interpretado en lugar de compilado.
+Este lenguaje posee características modernas, entre ellas Garbage Collector, que es un proceso que se encarga de detectar que objetos en memoria no se utilizan y los borra automáticamente, liberando al programador de esta tarea. Sin embargo, al igual que el caso anterior es una desventaja para aplicaciones de tiempo real pues la duración de su ejecución no es determinista. 
+No utiliza punteros, posee solamente referencias. A diferencia de C++, Python es interpretado en lugar de compilado.
 
 \medskip
 
-Es un lenguaje dinámicamente tipado, es decir una variable puede cambiar su tipo de datos según lo que contenga en cada momento, constituyendo una ventaja aparente para el programador al escribir el programa, pero los errores de incompatibilidad de datos solo se darán en tiempo de ejecución, dando más responsabilidad al programador para la detección de errores. Si bien en desarrollos unipersonales esto no es determinante, no se recomienda para grandes proyectos donde existan muchos programadores distribuidos. 
+Es un lenguaje dinámicamente tipado, es decir una variable puede cambiar su tipo de datos según lo que contenga en cada momento, constituyendo una ventaja aparente para el programador al escribir su programa, pero los errores de incompatibilidad de datos solo se darán en tiempo de ejecución, dando más responsabilidad al programador para la detección de errores. Si bien en desarrollos unipersonales esto no es determinante, no se recomienda para grandes proyectos donde existan muchos programadores distribuidos. 
 
 \medskip
 
@@ -56,11 +56,11 @@ MicroPython es una implementación de un intérprete de lenguaje Python para siste
 \bigskip
 \titulo{Lenguaje Java}
 
-El lenguaje Java, uno de los lenguaje de programación más utilizados en la actualidad. Realiza un balance entre las mejores características de los dos anteriores y agrega otras faltantes. 
+El lenguaje Java, uno de los lenguaje de programación más utilizados en la actualidad. Realiza un balance entre las mejores características de los dos anteriores y complementa. 
 
 \medskip
 
-Java tiene aspectos que lo hace más robusto y seguro, entre ellos, una especificación del lenguaje (JLS) que es independiente de cualquier implementación, que ayuda que existan diferentes implementaciones es muchas arquitecturas totalmente compatibles; todos los accesos al hardware son a través de la Máquina Virtual de Java (JVM), que no permite el accesos ilegales a zonas de memoria y ha sido diseñado para ser seguro para trabajar en red. 
+Java tiene aspectos que lo hace más robusto y seguro, entre ellos, una especificación del lenguaje (JLS) que es independiente de cualquier implementación, que ayuda que existan diferentes implementaciones es muchas arquitecturas totalmente compatibles; todos los accesos al hardware son a través de la Máquina Virtual de Java (JVM), que no permite los accesos ilegales a zonas de memoria y ha sido diseñado para ser seguro para trabajar en red. 
 
 \medskip
 
@@ -68,7 +68,7 @@ Para lograr la independencia de la máquina, Java posee la característica de ser 
 
 \medskip
 
-La JVM es habitualmente un programa que corre sobre un sistema operativo, sin embargo, existen implementaciones de la JVM que corren directamente sobre el hardware (\textit{bare-metal}) y procesadores capaces de ejecutar \textit{bytecodes} de Java directamente (por ejemplo, el microcontrolador ARM926EJ-S). Si bien es interpretado al igual que Python, existen disponibles muchas implementaciones de la JVM para distintas plataformas, no siendo este el caso de los intérpretes de Python.
+La JVM es habitualmente un programa que corre sobre un sistema operativo, sin embargo, existen implementaciones de la JVM que corren directamente sobre el hardware (\textit{bare-metal}) y procesadores capaces de ejecutar \textit{bytecodes} de Java directamente (por ejemplo, el microcontrolador ARM926EJ-S). Si bien es interpretado al igual que Python, se disponen de muchas implementaciones de la JVM para distintas plataformas, no siendo este el caso de los intérpretes de Python.
 
 \medskip
 
@@ -82,7 +82,7 @@ En consecuencia, por todas las razones expuestas, se elige Java como lenguaje PO
 
 \subsection{Especificaciones RTSJ y SCJ} \label{sec:especificacionesJava}
 
-En Java existen varias descripciones del lenguaje pensadas para la implementación \textit{threads real-time}, mitigando los puntos de desventaja del lenguaje Java para la programación de aplicaciones industriales. Una de ellas es la especificación RTSJ que contempla aplicaciones \textit{Real-Time}, otra es \textit{Predictable} Java (PJ), un subconjunto de RTSJ que agrega algunos conceptos. Esta última se ha utilizado como inspiración para SCJ, la cual agrega conceptos de sistemas críticos y seguridad funcional. Se describen a continuación las especificaciones RTSJ y SCJ.
+En Java existen varias descripciones del lenguaje pensadas para la implementación \textit{threads real-time}, mitigando los puntos de desventaja de Java para la programación de aplicaciones industriales. Una de ellas es la especificación RTSJ que contempla aplicaciones \textit{Real-Time}, otra es \textit{Predictable} Java (PJ), un subconjunto de RTSJ que agrega algunos conceptos. Esta última se ha utilizado como inspiración para SCJ, la cual agrega conceptos de sistemas críticos y seguridad funcional. Se describen a continuación las especificaciones RTSJ y SCJ.
 
 
 \bigskip
@@ -111,7 +111,7 @@ Modela una aplicación de tiempo real como un conjunto de tareas, cada una de las
 \textbf{Aperiódicas:} tareas cuya frecuencia y ejecución no pueden predecirse.
 \end{itemize}
 
-RTSJ utiliza información de los tipos de tarea para asegurar que las tareas críticas no incumplan sus metas. Permite asociarle a cada tarea un \textit{Handler} de Meta Incumplida, de manera que una tarea no se completa antes de su meta de tiempo, se invoca al \textit{handler} asociado para poder tomar medidas al respecto.
+RTSJ utiliza información de los tipos de tarea para asegurar que las tareas críticas no infrinjan sus metas temporales. Permite asociarle a cada tarea un \textit{Handler} de Meta Incumplida, de manera que una tarea no se completa antes de su meta de tiempo, se invoca al \textit{handler} asociado para poder tomar medidas al respecto.
 
 \medskip
 
@@ -139,7 +139,7 @@ La especificación está dirigida a una amplia variedad de paradigmas de certifica
 
 \medskip
 
-Esta especificación presenta un conjunto de clases Java que implementan soluciones \textit{Safety-Critical} para el inicio de la aplicación, concurrencia, planificación, sincronización, entrada/salida, gestión de memoria, gestión de temporización, procesamiento de interrupciones, interfaces nativas y excepciones.
+La misma presenta un conjunto de clases Java que implementan soluciones \textit{Safety-Critical} para el inicio de la aplicación, concurrencia, planificación, sincronización, entrada/salida, gestión de memoria, gestión de temporización, procesamiento de interrupciones, interfaces nativas y excepciones.
 Presenta un conjunto de \textit{annotations} que pueden ser utilizadas para garantizar que la aplicación exhibe ciertas propiedades de seguridad funcional, mediante comprobación estática, para mejorar la certificación de aplicaciones construidas para ajustarse a esta especificación.
 
 \medskip
@@ -153,7 +153,7 @@ En esta especificación solo se permiten \textbf{\textit{Threads Real-Time}} a di
 Un programa SCJ se organiza en \textbf{Misiones}\footnote{\textit{Missions} en su idioma original}. 
 Una misión encapsula una funcionalidad específica, o una fase, en el tiempo de vida de del sistema en tiempo real como un conjunto de \textbf{entidades planificables}\footnote{\textit{schedulable entities} en su idioma original.}. 
 Por ejemplo, un sistema de control de vuelo puede estar compuesto de despegue, crucero y aterrizaje; pudiendo dedicarse a cada una una misión.
-Una entidad planificable maneja una funcionalidad específica y tiene parámetros de liberación que describen el modelo de liberación y alcance temporal, por tiemplo tiempo de liberación y \textit{dedline}. 
+Una entidad planificabl,e maneja una funcionalidad específica y tiene parámetros de liberación que describen el modelo de liberación y alcance temporal, por tiemplo tiempo de liberación y \textit{dedline}. 
 El patrón de liberación es periódico o aperiódico.
 
 \medskip
@@ -190,9 +190,9 @@ SCJ presenta un modelo de memoria basado en el concepto de \textbf{ámbitos de me
 \item 
 \textbf{\textit{Memoria Privada.}} Se asocia a cada \textit{handler} de eventos \textit{real-time}. Esta memoria privada existe durante toda la duración del \textit{handler} y se borra al finalizar.
 \item 
-\textbf{\textit{Memoria Inmortal.}} Es el área deque perdura durante toda la vida útil del sistema quedando a cargo del programador.
+\textbf{\textit{Memoria Inmortal.}} Es el área que perdura durante toda la vida útil del sistema quedando a cargo del programador.
 \item 
-\textbf{\textit{Memoria de Misión.}} Se asocia con cada misión del sistema y como tal gestiona la memoria de todos los \textit{handlers} de tiempo real de la misión, así como los objetos compartidos entre \textit{handlers}. Cuando una misión completa su ejecución se borra su memoria asociada.
+\textbf{\textit{Memoria de Misión.}} Se asocia con cada misión del sistema y como tal, gestiona la memoria de todos los \textit{handlers} de tiempo real de la misión, así como los objetos compartidos entre \textit{handlers}. Cuando una misión completa su ejecución se borra su memoria asociada.
 \end{itemize}
 
 \begin{figure}[!htbp]

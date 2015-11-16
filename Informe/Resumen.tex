@@ -20,7 +20,7 @@ El propósito de este Trabajo Final es la incorporación de nuevas tecnologías en 
 Para llevarlo a cabo se ha escogido Java como lenguaje POO, y HVM\footnote{HVM desarrollado por Stephan Erbs Korsholm.}, que es un entorno de ejecución de \textit{Safety Critical Java}\footnote{La especificación \textit{Safety Critica Java} es una extensión a la especificación RTSJ, una especificación de java para aplicaciones en tiempo real.} (SCJ)[\ref{bib:HVMref}], de código abierto, diseñado para plataformas embebidas de bajos recursos. Este trabajo consiste entonces, en la implementación y validación de un ambiente de Firmware y Software, basado en HVM, para programar las plataformas CIAA-NXP y EDU-CIAA-NXP en lenguaje Java SCJ. 
 
 \medskip
-\noindent En particular, la implementación consiste en:
+\noindent Fundamentalmente, la implementación consiste en:
 
 \begin{itemize}
 \item 
@@ -28,7 +28,7 @@ La realización del \textit{port} de la máquina virtual de HVM para que corra sob
 \item 
 Un diseño e implementación de una API\footnote{\textit{Application Programming Interface}, es decir, una interfaz de programación de aplicaciones.} sencilla para permitir controlar el Hardware desde una aplicación Java, que funciona además, como HAL\footnote{\textit{Hardware Abstraction Layer}, significa: capa de abstracción de hardware.}.
 \item 
-El \textit{port} de la capa SCJ de la máquina virtual de HVM, para permitir desarrollar aplicaciones Java SCJ.
+El \textit{port} de la capa SCJ de la máquina virtual de HVM, para desarrollar aplicaciones Java SCJ.
 \item 
 La integración del \textit{port} para la CIAA al IDE de HVM, para completar un IDE de Java SCJ sobre la CIAA.
 \end{itemize}
@@ -41,13 +41,13 @@ Ejemplos de aplicaciones Java utilizando periféricos de la CIAA-NXP y EDU-CIAA-N
 \item
 Un ejemplo de aplicación Java SCJ utilizando el concepto de Proceso SCJ para demostrar el funcionamiento del cambio de contexto.
 \item
-Otro ejemplo de aplicación Java SCJ utilizando el concepto de Planificador SCJ.
+Otro ejemplo de aplicación Java SCJ que usa un Planificador SCJ.
 \item 
 Una aplicación SCJ completa.
 \end{itemize}
 
 %% Faltarían poner los resultados , que creo que sería la validación
 
-Finalmente, se obtiene de este Trabajo Final un entorno de desarrollo para aplicaciones Java SCJ sobre las plataformas CIAA-NXP y EDU-CIAA-NXP, que además de ser software libre, cubre las necesidades planteadas, tanto al ofrecer programación orientada a objetos, así como funcionalidades de tiempo real para entornos industriales, sobre sistemas embebidos.
+En conclusión, se obtiene de este Trabajo Final un entorno de desarrollo para aplicaciones Java SCJ sobre las plataformas CIAA-NXP y EDU-CIAA-NXP, que además de ser software libre, cubre las necesidades planteadas, tanto al ofrecer programación orientada a objetos, así como funcionalidades de tiempo real para entornos industriales, sobre sistemas embebidos.
 
 %\end{abstract}
