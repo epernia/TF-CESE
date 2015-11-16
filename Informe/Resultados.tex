@@ -11,7 +11,7 @@ En las siguientes secciones se exponen distintas aplicaciones que prueban el fun
 
 \begin{itemize}
 \item
-Ejemplos de aplicaciones Java utilizando periféricos de la CIAA-NXP y EDU-CIAA-NXP mediante la API desarrollada (sección [\ref{sec:appPeriph}]).
+Ejemplos de aplicaciones Java utilizando periféricos de la CIAA-NXP y EDU-CIAA-NXP mediante la biblioteca desarrollada (sección [\ref{sec:appPeriph}]).
 \item
 Un ejemplo de aplicación Java SCJ utilizando el concepto de Proceso SCJ para demostrar el funcionamiento del cambio de contexto (sección [\ref{sec:appProcess}]).
 \item
@@ -25,8 +25,148 @@ Finalmente se exponen las características del IDE desarrollado (sección [\ref{se
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 \section{Ejemplos de aplicaciones Java utilizando periféricos} \label{sec:appPeriph}
+
+\begin{lstlisting}[language=Java, numbers=left]
+package ar.edu.unq.embebidos;
+
+public class Main {
+   public static void main(String[] args) {
+
+	   // Instanciación de los objetos Led
+	   Led ledR = new Led(0);
+	   Led led1 = new Led(4);
+
+	   // Instanciación de los objetos Pulsador
+	   Pulsador tec1 = new Pulsador(0);
+	   Pulsador tec2 = new Pulsador(1);
+
+	   // Instanciación del objetos Uart
+	   Uart serialPort = new Uart();
+	   
+	   
+	   // Se configura la UART2
+       serialPort.config();
+
+       // Envío un caracter tipo prompt
+       serialPort.write('>');
+	   
+	   while (true) {
+
+         if ( tec1.isPulsado() ) {
+            ledR.on();
+         }else {
+            ledR.off();
+         }
+         
+         if ( tec2.isPulsado() ) {
+            led1.on();
+         }else {
+            led1.off();
+         }
+
+         // Recibo un caracter
+         serialPort.read();
+
+         // Si es distinto de Null lo envío
+         if( serialPort.getRxData() != 0 ){
+        	 // Envio un caracter
+        	 serialPort.write( serialPort.getRxData() );
+         }
+         
+      }
+   }
+}
+\end{lstlisting}
+
+
 \section{Ejemplo de Procesos SCJ} \label{sec:appProcess}
+
+La clase \textit{Process} implementa el concepto de proceso. Se puede utilizar para iniciar la ejecución concurrente del método \textit{run} de una instancia de \textit{Runnable} con una pila suministrada en la forma de un vector de enteros en Java.
+
+\medskip
+
+El siguiente ejemplo implementa un mecanismo de conmutación de co-rutina simple. Se utiliza para demostrar el correcto funcionamiento de las funciones nativas que implementan los procesos SCJ.
+
+\begin{lstlisting}[language=Java, numbers=left]
+
+// CODIGOOOOOOOOOOOOOOOOOOOO
+
+\end{lstlisting}
+
+Para cambiar de un proceso a otro, el proceso en ejecución llama \textit{TransferTo} con el siguiente proceso a ejecutar como parámetro. 
+
+\medskip
+
+La llamada a \textit{TransferTo} entra al espacio de código nativo, y mediante una secuencia  corta de instrucciones en \textit{assembler} inserta en la pila el estado actual de la CPU, el puntero de pila se almacena en el objeto proceso que se está ejecutando actualmente, se recupera un nuevo puntero de pila del próximo objeto proceso y se saca de la pila de este el nuevo estado.
+
+\medskip
+
+El efecto que se consigue es que cuando \textit{TransferTo} retorna, no retorna al proceso que lo llamo, sino al siguiente proceso en el punto en que llamó a \textit{TransferTo} previamente. 
+
+
 \section{Planificador SCJ} \label{sec:appScheduler}
+
+HVM permite implementar planificadores\footnote{\textit{Schedulers} en inglés.} directamente en Java. El planificador debe buscar el siguiente proceso a ejecutar y realizar una transferencia a dicho proceso. El planificador es llamado en los puntos de reprogramación\footnote{\textit{Reschedule points} en inglés.}
+
+\medskip
+
+El intérprete llama periódicamente a una función nativa \textit{yieldToScheduler}. Esta función (implementada en \textit{natives\_allOS.c}) chequea una variable global llamada \textit{systemTick} para no reprogramar las tareas muy seguido. La variable \textit{systemTick} debe ser actualizada a intervalos razonables.
+
+\medskip
+
+HVM SDK contiene tres tipos de planificadores: 
+
+\begin{enumerate}
+\item
+\textit{PriorityScheduler}
+\item
+\textit{CyclicScheduler}
+\item
+Un planificador que simula el planificador del paquete estándar \textit{Java Thread}. 
+\end{enumerate}
+
+En el siguiente ejemplo se prueba el funcionamiento de uno de ellos para comprobar el correcto funcionamiento de las funciones nativas que manejan la temporización a través del SysTick.
+
+\begin{lstlisting}[language=Java, numbers=left]
+
+// CODIGOOOOOOOOOOOOOOOOOOOO
+
+\end{lstlisting}
+
 \section{Ejemplo de aplicación SCJ completa} \label{sec:appFullSCJ}
 
-\section{Acerca del IDE obtenido} \label{sec:IDEhvm}
+Finalmente se expone un ejemplo de un programa SCJ completo para demostrar el correcto funcionamiento del sistema. 
+
+\begin{lstlisting}[language=Java, numbers=left]
+
+// CODIGOOOOOOOOOOOOOOOOOOOO
+
+\end{lstlisting}
+
+La aplicación SCJ está compuesta por un \textit{mission sequencer}, una \textit{mission} y un único \textit{handler} de eventos periódicos. Los \textit{handler} son objetos planificables\footnote{En inglés \textit{schedulable objects}.}, en este caso planificados por el \textit{PriorityScheduler} SCJ Nivel 1.
+
+\medskip
+
+El período del evento que lanza el \textit{handler} es de un segundo. Luego de ejecutarse cinco veces solicita un \textit{mission termination} para finalizar la misión.
+
+\medskip
+
+Se requieren los siguientes recursos de memoria:
+
+\begin{itemize}
+\item
+\textit{Immortal memory area}. Todas las aplicaciones SCJ utilizan memoria inmortal.
+\item
+El área de memoria privada del Secuenciador de misión y una pila de ejecución. Un secuenciador de misión SCJ es también un \textit{event handler}, entonces necesita una pila de ejecución.
+\item
+La memoria de misión.
+\item
+El área de memoria privada del \textit{handler} y su pila de ejecución. 
+\item
+La pila de ejecución del \textit{ priority scheduler}. Este planificador se invoca en los puntos de reprogramación. Corre utilizando su propia pila de ejecución aunque no es un verdadero \textit{handler}.
+\end{itemize}
+
+La cantidad de memoria correcta para cada una de las área es difícil de predecir. Para elegirlos correctamente primero se utilizan valores conservadores y luego se puede realizar un \textit{Memory Profiling} para identificar cuanta memoria se está utilizando verdaderamente.
+
+
+%\section{Acerca del IDE obtenido} \label{sec:IDEhvm}

@@ -16,7 +16,7 @@ En el presente Trabajo Final se ha logrado obtener un entorno de desarrollo para
 
 \medskip
 
-Como subproducto, se obtiene además una API sencilla para el manejo de periféricos de las plataformas CIAA-NXP y EDU-CIAA-NXP, que puede utilizarse en aplicaciones Java, o directamente en lenguaje C, debido a su diseño como módulo de Firmware de la CIAA. Se ha tenido especial cuidado en el diseño de esta API para que la misma sea lo más genérica posible logrando que además se comporte como una HAL.
+Como subproducto, se obtiene además una biblioteca con una API sencilla para el manejo de periféricos de las plataformas CIAA-NXP y EDU-CIAA-NXP, que puede utilizarse en aplicaciones Java, o directamente en lenguaje C, debido a su diseño como módulo de Firmware de la CIAA. Se ha tenido especial cuidado en el diseño de esta biblioteca para que la misma sea lo más genérica posible logrando que además se comporte como una HAL.
 
 % Metodología aplicada 
 	% --> Diseño iterativo con implementaciones de referencia.
@@ -58,13 +58,11 @@ Especificaciones de Java, entre ellas, RTSJ y SCJ.
 \item
 Programación de aplicaciones SCJ.
 \item
-Experiencia en construcción de planificadores expropiativos con restricciones de tiempo real.
+Experiencia en implementación de cambio de contexto, procesos y planificadores.
 \item
 Máquinas Virtuales de Java para sistemas embebidos y su funcionamiento interno.
 \item
-Desarrollo de API para sistemas embebidos.
-\item
-Desarrollo de \textit{plugins} para Eclipse y la aplicación de patrones de diseño orientado a objetos para lograr una exitosa solución.
+Desarrollo de una biblioteca Java para manejo de periféricos en sistemas embebidos. Conexión con bibliotecas nativas en lenguaje C.
 \end{itemize}
 
 \medskip
@@ -139,7 +137,7 @@ Programar los \textit{Launchers} para las plataformas CIAA y EDU-CIAA-NXP para p
 \item
 Completar una versión del IDE lista para instalar.
 \item
-Integrar el port de la CIAA al repositorio oficial de HVM.
+Integrar el \textit{port} de la CIAA al repositorio oficial de HVM.
 \item
 Investigar HVM-TP, el nuevo desarrollo de Stephan Erbs Korsholm. Es una máquina virtual de Java \textit{Time Predictable} y Portable para sistemas embebidos \textit{Hard Real-Time}, que toma como base a HVM, extendiéndola y mejorando sus capacidades.
 

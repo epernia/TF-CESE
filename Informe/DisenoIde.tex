@@ -1,1 +1,14 @@
-\section{Diseño de IDE para aplicaciones Java sobre HVM} \label{sec:disenoIDEhvm}
+\section{Integración del desarrollo} \label{sec:disenoIDEhvm}
+
+Tanto el \textit{port} para la CIAA como la biblioteca de periféricos son necesarios para el funcionamiento de HVM. Contando con estas partes ya se pueden realizar programas con HVM. Sin embargo, esto requiere de varias tareas manuales, entre ellas:
+
+\begin{itemize}
+\item
+Reemplazo manual de parte de los archivos generados de HVM por los nuevos archivos que dan soporte a la CIAA.
+\item
+Creación de un proyecto de Firmware de la CIAA.
+\item
+Integración al makefile de dicho proyecto de los archivos que conforman HVM.
+\end{itemize}
+
+Para llevar a cabo la automatización de estas tareas manuales es necesario modificar el \textit{plugin} de Eclipse \textit{Icecaptools}. Esta tarea excede el alcance del trabajo. La misma está siendo llevada a cabo en colaboración con el Ing. Leonardo Gassman. 
