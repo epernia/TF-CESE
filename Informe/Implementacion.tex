@@ -1,56 +1,29 @@
 \chapter{IMPLEMENTACIÓN} \label{cap:implementacion}
 % Cómo realicé concretamente el diseño
 
-La implementación consiste en:
+%La implementación consiste en:
+%
+%\begin{itemize}
+%\item 
+%La realización del \textit{port} de la máquina virtual de HVM para que corra sobre el microcontrolador NXP LPC4337, que contienen las plataformas CIAA-NXP y EDU-CIAA-NXP, permitiendo la programación de aplicaciones Java.
+%\item 
+%Una biblioteca sencilla para permitir controlar el Hardware desde una aplicación Java, que funciona además, como HAL\footnote{\textit{Hardware Abstraction Layer}, significa: capa de abstracción de hardware.}.
+%\item 
+%El \textit{port} de la capa SCJ de la máquina virtual de HVM, para permitir desarrollar aplicaciones Java SCJ.
+%\item 
+%La integración del \textit{port} para la CIAA al IDE de HVM, para completar un IDE de Java SCJ sobre la CIAA.
+%\end{itemize}
+%
+%En las siguientes secciones se describen cada una de sus partes.
 
-\begin{itemize}
-\item 
-La realización del \textit{port} de la máquina virtual de HVM para que corra sobre el microcontrolador NXP LPC4337, que contienen las plataformas CIAA-NXP y EDU-CIAA-NXP, permitiendo la programación de aplicaciones Java.
-\item 
-Una biblioteca sencilla para permitir controlar el Hardware desde una aplicación Java, que funciona además, como HAL\footnote{\textit{Hardware Abstraction Layer}, significa: capa de abstracción de hardware.}.
-\item 
-El \textit{port} de la capa SCJ de la máquina virtual de HVM, para permitir desarrollar aplicaciones Java SCJ.
-\item 
-La integración del \textit{port} para la CIAA al IDE de HVM, para completar un IDE de Java SCJ sobre la CIAA.
-\end{itemize}
+\input{implArqHVM}
 
-En las siguientes secciones se describen las herramientas utilizadas e implementaciones concretas del diseño propuesto.
+\input{HVMenLPC4337}
 
-%\input{Lenguajes}
+\input{implBiblioPerif}
 
-\section{Herramientas utilizadas} \label{sec:heramientas}
-
-%	\subsection{Lenguaje C}
-	
-%	\subsection{Lenguaje Java}
-	
-%	\subsection{Cygwin}
-	
-%	\subsection{Eclipse}
-   
-\section{Port de HVM al microcontrolador NXP LPC4337} \label{sec:HVMenLPC4337}
-
-\section{Implementación de la biblioteca para manejo de periféricos} \label{sec:lenguajesJavaYC}
-
-	\subsection{CIAA-NXP}
-         %Mapeo de pines
-         
-	\subsection{EDU-CIAA}
-         %Mapeo de pines
-         
-	\subsection{Java} %  ---> Como se ve la API desde Java Space
-
-\section{Port de HVM SCJ al microcontrolador NXPLPC4337} \label{sec:HVMscjEnLPC4337}
-
-	\subsection{Funciones para SCJ}
+\input{HVMenLPC4337scj}
    
 \section{Integración y uso de las herramientas desarrolladas} \label{sec:ImplIde}
 
 
-%Implementación de API para manejo de periféricos CIAA-NXP.
-
-%sAPI
-
-%Como subproducto, se obtiene además un nuevo módulo de Firmware para la CIAA nombrado sAPI (simple API) que permite mediante un conjunto de clases encapsular el manejo de periféricos con una interfaz muy sencilla pensada para el programador con perfil informático no experto en Sistemas embebidos. 
-
-%	Enumerar el hardware que permite atacar

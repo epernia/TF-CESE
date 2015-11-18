@@ -1,0 +1,43 @@
+\section{Arquitectura del \textit{port} de HVM para las plastaformas CIAA} \label{sec:implArqHVM}
+
+Para la implementación de este trabajo se utiliza una arquitectura en capas con responsabilidades e interfaces definidas. El esquema general se presenta en la figura  [\ref{fig:ArquitecturaPort10x9}]. 
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=10cm,height=9cm]{figuras/ArquitecturaPort10x9.png}
+\par\caption{Arquitectura del port de HVM para las plastaformas CIAA.}\label{fig:ArquitecturaPort10x9}
+\end{center}
+\end{figure}
+
+Las capas preexistentes son \textbf{icecap SDK}, \textbf{HVM}, \textbf{HVM SCJ} que corresponden a las distintas partes de que conforman HVM; y \textbf{LPCOpen}, la biblioteca provista por NXP para el microcontrolador LPC4337. Las capas desarrolladas se describen a continuación.
+
+\bigskip
+\titulo{Vector de interrupción}
+
+Esta capa se compone de un único archivo \(IsrVector.c\) que contiene el vector de interrupción. Para definir una nueva interrupción se debe agregar el nombre de la función correspondiente al \textit{handler} de la misma y luego definir dicha función. El único \textit{handler} utilizado es el de interrupción de \textbf{SysTick}.
+
+\newpage
+\titulo{Biblioteca de Periféricos C}
+
+La capa Biblioteca de Periféricos C, implementa la biblioteca de periféricos a bajo nivel, está diseñada para abstraer el hardware y presentar una API sencilla para el usuario. Se detalla en el apartado [\ref{sec:implBiblioPerif}]. Utiliza la biblioteca LPCOpen y el vector de interrupción.
+
+\bigskip
+\titulo{Capas que implementan la HAL de HVM para LPC4337}
+
+La HAL de HVM a bajo nivel se implementa en dos capas, una que solo puede acceder a la Biblioteca de Periféricos C, compuesta por los archivos,
+
+\begin{itemize}
+\item
+\textbf{LPC4337\_peripheral\_natives.c}. Esta capa simplemente implementa las funciones que respetan la firma de los métodos nativos y llaman a sus respectivas funciones de la Biblioteca de Periféricos C.
+\item
+\textbf{LPC4337\_natives.c}. Contiene las funciones necesarias para el funcionamiento básico de HVM, se detalla en la sección [\ref{sec:HVMenLPC4337}].
+\item
+\textbf{LPC4337\_natives\_SCJ.c}. Resuelve las funciones de temporización para el \textbf{Planificador SCJ}. Utiliza el módulo \textit{Tick.c} de la capa Biblioteca de Periféricos C. En la sección [\ref{sec:HVMscjEnLPC4337}] se comunica su implementación. 
+\end{itemize}
+
+y otra capa que accede directamente al hardware, implementada en \textit{assembler} (archivo LPC4337 \_interrupt.s). Está última que resuelve el cambio de \textit{threads} guardando el contexto y es la base del funcionamiento del módulo \textbf{Proceso SCJ}. 
+
+\bigskip
+\titulo{Biblioteca de Periféricos Java}
+
+Corresponde a la implementación de la biblioteca de periféricos en Java que finalmente dispondrá el usuario de HVM. Sus métodos nativos se encuentran implementados en \textit{LPC4337\_peripheral\_natives.c}.

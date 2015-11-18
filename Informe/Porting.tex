@@ -4,7 +4,7 @@ HVM genera código ANSI C independiente de la plataforma. Únicamente una pequeña 
 
 \begin{figure}[!htbp]
 \begin{center}
-\includegraphics*[width=9cm,height=4.5cm]{figuras/hvm_9_x_4,5.png}
+\includegraphics*[width=10cm,height=5cm]{figuras/hvm_10_x_5.png}
 \par\caption{Modelo de capas de HVM.}\label{fig:capasHVM}
 \end{center}
 \end{figure}
@@ -39,7 +39,7 @@ El port de HVM a una nueva plataforma puede implementarse en dos partes, una par
 Como se ha adelantado, se requiere agregar una \textbf{definición para la plataforma} en el archivo \textbf{ostypes.h}. 
 Esto se debe a que HVM utiliza su propia definición de tipos de datos básicos y de puntero para independizarse de la arquitectura donde se ejecuta. 
 Es por esto que la definición consiste en indicar correctamente los tipos de datos básicos, de punteros a memoria de programa de HVM, así como algunas macros para la plataforma. 
-Como ambas plataformas CIAA donde se porta HVM contienen el mismo microcontrolador. La definición de plataforma para la CIAA se nombra \textbf{CIAA\_NXP\_OSTYPES\_FOR\_HVM} en la implementación.
+Como ambas plataformas CIAA donde se porta HVM contienen el mismo microcontrolador. La definición de plataforma para la CIAA se nombra \textbf{LPC4337\_TYPES\_FOR\_HVM} en la implementación.
 
 \medskip
 
@@ -62,7 +62,7 @@ En el archivo \textbf{natives\_XX.c} deben definirse las siguientes funciones es
 \textbf{void sendbyte(unsigned char byte)}. Imprime un byte. Se utiliza para imprimir los mensajes de la consola. Se puede dejar vacía. Si la plataforma posee una UART disponible, se puede utilizar para la impresión. 
 \end{itemize}
 
-Este archivo para la plataforma CIAA se nombra \textbf{natives\_CIAA\_NXP.c} en la implementación.
+Este archivo para la plataforma CIAA se nombra \textbf{LPC4337\_natives.c} en la implementación.
 
 \medskip
 
@@ -70,7 +70,7 @@ Existen funciones adicionales para implementar \textit{debug} directo desde un p
 
 \subsection{Port de HVM para ejecutar Java SCJ}
 
-Para dar soporte a aplicaciones basadas en la especificación SCJ sobre HVM, debe construirse una HAL\footnote{Siglas de \textit{Hardware Abstraction Layer}.}. Esta HAL debe tener primitivas para planificación de tareas expropiativas\footnote{Una posible traducción al castellano de \textit{preemptive}, otra posible es apropiativa.}, manejo de memoria, acceso a dispositivos mediante \textit{Hardware Objects}, manejo de interrupciones de primer nivel, un programa monitor y \textit{real-time clock}. Esto se conoce generalmente como la construcción de un \textit{micro kernel}. En el caso particular de la HAL de Java SCJ para HVM se encuentra implementada en su mayoría en lenguaje Java. Esto da 2 beneficios importantes,
+Para dar soporte a aplicaciones basadas en la especificación SCJ sobre HVM, debe construirse una HAL\footnote{Siglas de \textit{Hardware Abstraction Layer}.}. Esta HAL debe tener primitivas para planificación de tareas expropiativas\footnote{Una posible traducción al castellano de \textit{preemptive}, otra posible es apropiativa.}, manejo de memoria, acceso a dispositivos mediante \textit{Hardware Objects}, manejo de interrupciones de primer nivel, un programa monitor y \textit{real-time clock}. Esto se conoce generalmente como la construcción de un \textit{micro kernel}. En el caso particular de la HAL de Java SCJ para HVM se encuentra implementada en su mayoría en lenguaje Java. Esto da 2 beneficios importantes:
 
 \begin{enumerate}
 \item 
@@ -97,6 +97,7 @@ Dejando una pequeña parte que debe implementarse en lenguaje C. Esta parte corre
 \textbf{int16 n\_vm\_RealtimeClock\_getNativeTime(int32 *sp)}. Devuelve el tiempo actual del reloj de tiempo real como un objeto AbsoluteTime con mili segundos y nano segundos.
 \end{itemize}
 
+Este archivo para la plataforma CIAA se nombra \textbf{LPC4337\_natives\_SCJ.c} en la implementación. \textbf{Nótese} que el archivo \textbf{natives\_XX.c} se ha separado en dos archivos en la implementación para mejorar la modularización.
 
 \medskip 
 
@@ -140,4 +141,4 @@ Como se establece un nuevo puntero a pila, la dirección de retorno correcta no s
 
 \medskip
 
-En la implementación este archivo se nombra \textbf{CIAA\_NXP\_interrupt.s}
+En la implementación este archivo se nombra \textbf{LPC4337\_interrupt.s}

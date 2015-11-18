@@ -1,0 +1,199 @@
+\section{Port básico de HVM al microcontrolador NXP LPC4337} \label{sec:HVMenLPC4337}
+
+Para realizar el \textit{port} de HVM se deben realizar una serie de tareas descriptas en la sección [\ref{sec:disenoPortHvm}], en esta sección se informa como han sido llevado a cabo el subconjunto de las mismas necesario para la primer etapa del \textit{port}, que consiste en poder ejecutar programas Java (no SCJ) en la CIAA.
+
+%--------------------------------------------------
+\bigskip
+\titulo{Obtención de un entorno de desarrollo de C para la plataforma}
+
+Para esta tarea se utilizaron las herramientas libres, provistas por el Proyecto CIAA, para el desarrollo en C sobre sus plataformas de hardware. Se utilizó el instalador sencillo para Windows \textbf{CIAA-IDE-Suite 1.2.2} disponible para su descarga en: \url{https://github.com/ciaa/Software-IDE/releases/tag/v1.2.2}. Este paquete de software incluye:
+
+\begin{itemize}
+\item
+\textbf{Consola cygwin} (incluye paquetes: PERL, PHP, gcc x86, arm-none-ebi-gcc y ruby). Esta consola permite compilar un programa en C, generando un ejecutable para el microcontrolador LPC4337.
+\item
+\textbf{openOCD 0.9 x86/x64}. Se utiliza tanto para al descarga del ejecutable al microcontrolador, como para depuración mediante comandos GDB.
+\item
+\textbf{FTDI drivers libusb 1.0}. Se debe instalar por única vez el \textit{driver} según la versión del sistema operativo. Reemplaza el driver que windows instala por defecto para el chip FTDI que contiene el \textit{debugger} de las plataformas.
+\item
+\textbf{Eclipse (Luna)}. IDE para desarrollo de programas en lenguaje C para la CIAA. Desde el mismo se pueden gestionar proyectos, y permite la compilación y \textit{debug} en un entono gráfico (utiliza cygwin por debajo).
+\item
+\textbf{Firmware 0.6.1}. Firmware para utilizar las plataformas CIAA.
+\item
+\textbf{IDE4PLC v1.0.2}. Software-PLC. No utilizado en este trabajo final.
+\item
+\textbf{Uninstaller}. Desinstalador del paquete.
+\end{itemize}
+
+Para probar su correcto funcionamiento, se debe crear un proyecto de CIAA Firmware. Pueden realizarse dos tipos de proyectos, los que utilizan \textbf{OSEK} (el RTOS\footnote{Siglas de Sistema Operativo de Tiempo Real.} de la CIAA, presentado en la sección [\ref{sec:disenoAPI}]) y los proyectos \textbf{\textit{bare-metal}} (programas que corren directo sobre el hardware sin la gestión de un Sistema Operativo). Como no se utiliza OSEK, se realizó un proyecto \textit{bare-metal}, este consiste en la utilización de una estructura definida de carpetas donde existe una carpeta principal que contiene el nombre del proyecto y con sub-carpetas:
+
+\begin{itemize}
+%\item
+\item
+\textbf{inc}. Aquí deben colocarse los \textit{headers} del proyecto (archivos \textit{.h}).
+\item
+\textbf{src}. En esta carpeta se alojan los archivos fuentes en del proyecto (de extensión \textit{.c}).
+\item
+\textbf{mak}. Contiene el \textit{makefile} del proyecto (archivo Makefile). En el mismo debe indicarse los módulos de Firmware de la CIAA que se desean agregar al proyecto así como los archivos a incluir en la compilación.
+\end{itemize}
+
+Para realizarlo, se parte del proyecto plantilla llamado \textit{bare-metal}, que se incluye entre los ejemplos provistos (ubicados en \textit{Firmware/examples}). Esta plantilla contiene un archivo que define la función \textit{main}, e incluye a la biblioteca del microcontrolador \textit{LPCOpen}, y otros archivos donde se define la tabla de vectores de interrupción y algunos \textit{handlers} por defecto de las mismas.
+
+\medskip
+
+Se crea un pequeño programa que hace destellar un \textit{led} (\textit{Blinky}) de la plataforma EDU-CIAA-NXP. Luego se modifica el archivo \textit{makefile.mine} (ubicado en la raiz de \textit{Firmware}) con los parámetros de plataforma a utilizar (\textit{BOARD}) y la ruta dle proyecto creado (\textit{PROJECT\_PATH}).
+Finalmente, mediante \textbf{cygwin}, se compila y descarga a la plataforma EDU-CIAA-NXP. 
+
+\medskip
+
+\noindent \textbf{NOTA:} Se cuenta con la plataforma EDU-CIAA-NXP desde el comienzo del trabajo. En el caso de la CIAA-NXP se obtuvo casi a la finalización del mismo. Sin embargo, esto sólo influye en la definición de la biblioteca de periféricos, para todas las demás tareas, el uso de cualquiera de las dos plataformas es indistinto.
+
+%--------------------------------------------------
+\bigskip
+\titulo{Construcción de un comando de compilación para compilar y \textit{linkear} los archivos generados por HVM}
+
+En el apartado [\ref{sec:disenoHVMutilizacion}] se introduce como realizar un proyecto básico con HVM. Partiendo del comando de compilación presentado, se observa cuales son los archivos que compila, así como las definiciones necesarias. 
+
+\medskip
+
+Se crea un nuevo proyecto \textit{bare-metal} y se ingresan los datos necesarios al \textit{makefile} obteniéndose: 
+
+\begin{lstlisting}[language=Bash, numbers=left]
+# Project Name: based on Project Path and used to define OSEK configuration file
+PROJECT_NAME  =  $(lastword $(subst $(DS), , $(PROJECT_PATH)))
+
+# Project path
+# Defined $(PROJECT_PATH) in makefile.mine
+
+#HVM files
+
+vpath classes.c ..
+vpath icecapvm.c ..
+vpath methodinterpreter.c ..
+vpath methods.c ..
+vpath icecapvm.c ..
+vpath gc.c ..
+vpath natives_allOS.c ..
+vpath allocation_point.c ..
+vpath print.c ..
+vpath $(PROJECT_PATH)$(DS)src
+
+HVM_PATH = $(PROJECT_PATH)$(DS)hvm
+
+HVM_SRC_FILES = $(HVM_PATH)$(DS)classes.c \
+$(HVM_PATH)$(DS)icecapvm.c \
+$(HVM_PATH)$(DS)methodinterpreter.c \
+$(HVM_PATH)$(DS)methods.c \
+$(HVM_PATH)$(DS)gc.c \
+$(HVM_PATH)$(DS)natives_allOS.c \
+$(HVM_PATH)$(DS)allocation_point.c \
+$(HVM_PATH)$(DS)print.c
+
+CFLAGS  +=  -DJAVA_HEAP_SIZE=$(JAVA_HEAP_SIZE) \
+-DJAVA_STACK_SIZE=$(JAVA_STACK_SIZE) $(ADDITIONAL_FLAGS)
+
+# source path
+$(PROJECT_NAME)_SRC_PATH  += $(PROJECT_PATH)$(DS)src
+
+# include path
+INC_FILES  +=  $(PROJECT_PATH)$(DS)inc
+
+# library source files
+SRC_FILES  +=  $(wildcard $($(PROJECT_NAME)_SRC_PATH)$(DS)*.c) \
+$(HVM_SRC_FILES)
+
+# Modules needed for this example
+MODS ?= externals$(DS)drivers   \
+        modules$(DS)sapi      
+\end{lstlisting}
+
+% vpath LPC4337_interrupt.s ..
+% $(PROJECT_PATH)$(DS)src$(DS)LPC4337_interrupt.s
+
+Nótese que los archivos generados por HVM deben estar en una carpeta llamada \textbf{hvm} dentro del proyecto.
+
+%--------------------------------------------------
+\bigskip
+\titulo{Definición de la plataforma en el archivo \textbf{ostypes.h}}
+
+Para la definición de la plataforma se investigó la arquitectura del microcontrolador LPC4337 y su compilador \textit{arm-none-eabi-gcc} para definir los distintos tipos de datos, resultando en:
+
+\begin{lstlisting}[language=C, numbers=left]
+#if defined(CIAA_NXP_TYPES_FOR_HVM)
+   #undef PACKED
+   #define PACKED
+   #define DATAMEM __attribute__ ((section (".data")))
+   #define PROGMEM
+   #define RANGE
+   #define pgm_read_byte(x) *((unsigned char*)x)
+   #define pgm_read_word(x) *((unsigned short*)x)
+   #define pgm_read_pointer(x, typeofx) *((typeofx)x)
+   #define pgm_read_dword(x) pgm_read_pointer(x, uint32*)
+   typedef int int32;
+   typedef unsigned int uint32;
+   typedef unsigned int pointer;
+#endif
+\end{lstlisting}
+
+%--------------------------------------------------
+\bigskip
+\titulo{Definición de las funciones específicas de la plataforma. Archivo \textbf{LPC4337\_natives.c}}
+
+Como ha sido adelantado, este archivo implementa la parte de la HAL de HVM para que funcionen los programas básicos de Java sobre esta máquina virtual.
+
+\begin{itemize}
+\item
+\textbf{void init\_compiler\_specifics(void)}. Esta función inicializa la plataforma CIAA. Primero se inicializa el \textbf{\textit{clock}} del sistema. Luego la \textbf{UART 2}. En ambas plataformas CIAA, la UART 2 del microcontolador LPC4337 se encuentra conectada al chip FTDI del \textit{debugger} y puede accederse vía USB en el mismo conector que se utiliza para depuración de la plataforma. De esta manera, es ideal para su utilización como salida de consola de HVM.
+\item
+\textbf{Pila de Java}. En este archivo se define la pila de Java como un vector cuyo tamaño será definido en el \textit{makefile.mine}, esto es: \textbf{int32 java\_stack[JAVA\_STACK\_SIZE];}
+\item
+\textbf{int32* get\_java\_stack\_base(int16 size)}. Devuelve un puntero a la pila de Java definida por el vector anterior: \textbf{return (int32*) java\_stack;}.
+\item
+\textbf{void initNatives(void)}. En esta función se inicializa el resto de los periféricos de la biblioteca de C incluyendo el \textbf{SysTick} para interrumpir cada 10ms. Este periférico lo utilizan las funciones SCJ para manejar el tiempo del sistema.
+\item
+\textbf{void mark\_error(void)}, \textbf{void mark\_success(void)}. Como no se utiliza el sistema de pruebas de regresión, en esta primera iteración se dejan vacías.
+\item
+\textbf{read/writeXXToIO}. No se utilizan objetos hardware para tratar con los registros debido a la implementación de la biblioteca de C para periféricos. En consecuencia no se requieren.
+\item
+\textbf{init\_memory\_lock, lock\_memory, unlock\_memory}. Para las pruebas iniciales se dejan vacías pues el único \textit{handler} de interrupción que hay es el de \textit{SysTick} que no asigna memoria.
+\item
+\textbf{void sendbyte(unsigned char byte)}. Imprime el \textit{byte} recibido como parámetro a través de la UART 2.
+\end{itemize}
+
+%--------------------------------------------------
+\bigskip
+\titulo{Comprobación inicial de funcionamiento}
+
+Una vez completado el \textit{port} básico se realiza una prueba inicial del sistema. Para llevarla a cabo, se utiliza el programa \textit{``Hola Mundo HVM''} dado en [\ref{sec:disenoHVMutilizacion}]. Luego se crea un nuevo proyecto y dentro una carpeta nombrada \textbf{hvm}, se copian los archivos generados por HVM. El archivo \textbf{LPC4337\_natives.c} se copia a la carpeta \textbf{src} del proyecto. En la figura [\ref{fig:pathsProjectoJavaFirmware}] se muestra la estructura de carpetas resultante.
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=16.5cm,height=6.5cm]{figuras/pathsProjectoJavaFirmware16,5x6,5.png}
+\par\caption{Estructura de proyecto de firmware CIAA ``Hola Mundo con HVM''.}\label{fig:pathsProjectoJavaFirmware}
+\end{center}
+\end{figure}
+
+Para poder ser compilado debe modificarse, además, el archivo \textit{makefile.mine}.
+Además de definir \textit{BOARD} y \textit{PROJECT\_PATH} se debe agregar,
+
+\begin{itemize}
+\item
+La cantidad de memoria para el \textit{Heap} de Java: \textbf{JAVA\_HEAP\_SIZE ?= 16384}.
+\item
+El tamaño de la Pila de Java: \textbf{JAVA\_STACK\_SIZE ?= 2048}.
+\item
+Algunos \textit{Flags} adicionales, siendo el más importante \textbf{-DLPC4337\_TYPES\_FOR\_HVM} que representa la arquitectura para la cual se va a compilar HVM.
+\end{itemize}
+
+obteniéndose:
+
+\begin{lstlisting}[language=Bash, numbers=left]
+BOARD	?=	edu_ciaa_nxp
+PROJECT_PATH ?= ..$(DS)HVM_Projects$(DS)holaMundoHVM
+
+JAVA_HEAP_SIZE ?= 16384
+JAVA_STACK_SIZE ?= 2048
+ADDITIONAL_FLAGS ?= -g -Os -DLPC4337_TYPES_FOR_HVM -I..
+\end{lstlisting}
+
+Se compila con \textbf{cygwin} y se descarga a la plataforma. Después se conecta a una Terminal Serie, se ingresan los parámetros de conexión y finalmente se resetea la EDU-CIAA-NXP placa para recibir el mensaje ``Hola Mundo HVM'' en la Terminal.

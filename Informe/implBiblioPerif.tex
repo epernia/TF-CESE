@@ -1,0 +1,39 @@
+\section{Implementación de la biblioteca para manejo de periféricos} \label{sec:implBiblioPerif}
+
+\section{Biblioteca para manejo de periféricos (C)} \label{sec:implBiblioC}
+
+%Implementación de API para manejo de periféricos CIAA-NXP.
+
+%sAPI
+
+%Como subproducto, se obtiene además un nuevo módulo de Firmware para la CIAA nombrado sAPI (simple API) que permite mediante un conjunto de clases encapsular el manejo de periféricos con una interfaz muy sencilla pensada para el programador con perfil informático no experto en Sistemas embebidos. 
+
+Módulo \textbf{sAPI}:
+Está compuesta por los módulos:
+
+\begin{verbatim}
+sAPI.h
+sAPI_Board.c, sAPI_Board.h
+sAPI_DataTypes.h
+sAPI_Delay.c, sAPI_Delay.h
+sAPI_DigitalIO.c, sAPI_DigitalIO.h
+sAPI_IsrVector.c, sAPI_IsrVector.h
+sAPI_Tick.c, sAPI_Tick.h
+\end{verbatim}
+
+Este actualiza una variable global y luego ejecuta una función cuya dirección está contenida en una variable global para permitir engancharse a la interrupción de tick.
+
+
+\section{Biblioteca para manejo de periféricos (Java)} \label{sec:implBiblioJava}
+
+Está formada por los módulos Device.Java, Pin.Java, Peripheral.Java, DigitalIO.Java, AnalogIO.Java, Uart.Java, Delay.Java, Button.Java y Led.Java. 
+
+
+
+	\subsection{CIAA-NXP}
+         %Mapeo de pines
+         
+	\subsection{EDU-CIAA}
+         %Mapeo de pines
+         
+	\subsection{Java} %  ---> Como se ve la API desde Java Space
