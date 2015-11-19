@@ -5,6 +5,7 @@
 \pagestyle{empty}
 % Caratula 2 - con \begin{titilepage}
 \include{Caratula} 
+
 \thispagestyle{empty}
 \include{Licencia} 
 %\maketitle - Estas 3 lineas van con caratula 1
@@ -14,9 +15,10 @@
 %Resumen
 \thispagestyle{empty}
 \input{Resumen}
+\input{abstract}
 
-\newpage
 % Agradecimientos
+\newpage
 \thispagestyle{empty}
 \input{Agradecimientos}
 
@@ -31,12 +33,10 @@
 % Indice general
 \thispagestyle{empty}
 \tableofcontents 
+\listoffigures % Indice de figuras
+\newpage
 
-% Indice de figuras
-\thispagestyle{empty}
-\listoffigures
-
-% Seteo el contador de páginas y capítulos a 0
+% Seteo el contador de páginas y capítulos a 
 \thispagestyle{empty}
 \pagestyle{fancy}
 \setcounter{page}{0}

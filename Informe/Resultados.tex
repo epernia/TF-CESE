@@ -25,7 +25,7 @@ La primera de ellas es un desarrollo original, mientras que las aplicaciones SCJ
 
 En el primer ejemplo se muestra el uso de dos leds, dos pulsadores y la UART 2 de la plataforma EDU-CIAA-NXP. El mismo enciende un led con cada tecla y realiza un eco de los caracteres que recibe desde la PC.
 
-\begin{lstlisting}
+\begin{lstlisting}[mathescape]
 package ar.edu.unq.embebidos;
 
 public class Main {
@@ -89,7 +89,7 @@ La clase \textit{Process} implementa el concepto de \textbf{proceso SCJ}. Se pue
 El siguiente ejemplo implementa un mecanismo de conmutación de co-rutina simple. Se utiliza para demostrar el correcto funcionamiento de las funciones nativas que implementan los procesos SCJ.
 
 
-\begin{lstlisting}
+\begin{lstlisting}[mathescape]
 package ar.edu.unq.embebidos;
 
 import icecaptools.IcecapCompileMe;
@@ -103,27 +103,27 @@ public class TestProcess {
    private static Process mainProcess;
    
    private static class P1 implements ProcessLogic {
-      $$Override
-      $$IcecapCompileMe
+      %%$\text{{\color{pgrey}@}}$Override%%
+      %%$\text{{\color{pgrey}@}}$IcecapCompileMe%%
       public void run() {
          devices.Console.println("Proceso 1. Transferenica a 
                                   Proceso 2.");
          p1.transferTo(p2);
       }
-      $$Override
+      %%$\text{{\color{pgrey}@}}$Override%%
       public void catchError(Throwable t) {
          devices.Console.println("Error en Proceso 1.");
       }
    }
    private static class P2 implements ProcessLogic {
-      $$Override
-      $$IcecapCompileMe
+      %%$\text{{\color{pgrey}@}}$Override%%
+      %%$\text{{\color{pgrey}@}}$IcecapCompileMe%%
       public void run() {
          devices.Console.println("Proceso 2. Transferenica a 
                                   Proceso Principal.");
          p2.transferTo(mainProcess);
       }
-      $$Override
+      %%$\text{{\color{pgrey}@}}$Override%%
       public void catchError(Throwable t) {
     	 devices.Console.println("Error en Proceso 2.");
       }
@@ -179,7 +179,7 @@ Un planificador que simula el planificador del paquete estándar \textit{Java Thr
 
 En el siguiente ejemplo se prueba el funcionamiento de uno de ellos para comprobar el correcto funcionamiento de las funciones nativas que manejan la temporización a través del periférico \textit{SysTick}.
 
-\begin{lstlisting}
+\begin{lstlisting}[mathescape]
 package ar.edu.unq.embebidos;
 
 import vm.Process;
@@ -204,7 +204,7 @@ public class TestProcessScheduler1 {
          p2.initialize();
          current = task1;
       }
-      $$Override
+      %%$\text{{\color{pgrey}@}}$Override%%
       public Process getNextProcess() {
          if (count > 100) {
             current.transferTo(mainProcess);
@@ -216,17 +216,17 @@ public class TestProcessScheduler1 {
          }
          return current;
       }    
-      $$Override
+      %%$\text{{\color{pgrey}@}}$Override%%
       public void wait(Object target) {
       }      
-      $$Override
+      %%$\text{{\color{pgrey}@}}$Override%%
       public void notify(Object target) {
       }
    }
    
    public static void main(String args[]) {
       Process p1 = new vm.Process(new vm.ProcessLogic() {
-         $$Override
+         %%$\text{{\color{pgrey}@}}$Override%%
          public void run() {
             while (true) {
                if ((count & 0x1) == 1) {
@@ -238,7 +238,7 @@ public class TestProcessScheduler1 {
             }
          }
          
-         $$Override
+         %%$\text{{\color{pgrey}@}}$Override%%
          public void catchError(Throwable t) {
             devices.Console.println("Process: exception -> " + t);
          }
@@ -247,7 +247,7 @@ public class TestProcessScheduler1 {
       
       Process p2 = new vm.Process(new vm.ProcessLogic() {
       
-         $$Override
+         %%$\text{{\color{pgrey}@}}$Override%%
          public void run() {
             while (true) {
                if ((count & 0x1) == 0) {
@@ -258,8 +258,8 @@ public class TestProcessScheduler1 {
                vm.ClockInterruptHandler.instance.enable();
             }
          }
-         
-         $$Override
+               
+         %%$\text{{\color{pgrey}@}}$Override%%
          public void catchError(Throwable t) {
             devices.Console.println("Process: exception -> " + t);
          }
@@ -291,7 +291,7 @@ public class TestProcessScheduler1 {
 
 Finalmente se expone una aplicación SCJ completa para demostrar el correcto funcionamiento del sistema. 
 
-\begin{lstlisting}
+\begin{lstlisting}[mathescape]
 package ar.edu.unq.embebidos;
 
 import javax.realtime.Clock;
@@ -403,7 +403,7 @@ public class TestSCJSimpleLowMemory {
       public Level1Launcher(MyApp myApp) {
          super(myApp, 1);
       }
-      $$Override
+      %%$\text{{\color{pgrey}@}}$Override%% 
       public void run() {
          startLevel1();
       }
