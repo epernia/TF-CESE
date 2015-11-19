@@ -6,7 +6,7 @@
 
 %sAPI
 
-Esta biblioteca se construye como módulo del Firmware CIAA logrando máxima compatibilidad con el sistema de \textit{makefiles} que se proveen para la compilación del mismo. De esta manera se obtiene como subproducto un nuevo módulo de Firmware para la CIAA nombrado \textbf{sAPI} (por \textit{simple API}) que permite mediante un conjunto de clases encapsular el manejo de periféricos con una interfaz muy sencilla. 
+Esta biblioteca se construye como módulo del Firmware para la CIAA, logrando máxima compatibilidad con el sistema de \textit{makefiles} que se proveen para la compilación del mismo. De esta manera, se obtiene como subproducto un nuevo módulo de Firmware nombrado \textbf{sAPI} (por \textit{simple API}) que permite encapsular el manejo de periféricos con una interfaz muy sencilla. 
 
 \medskip
 
@@ -18,9 +18,9 @@ Para realizar un nuevo módulo de Firmware existe una plantilla en la carpeta \te
 \item
 \textbf{mak}. Contiene el \textit{makefile} del módulo. Tiene una estructura predefinida donde debe indicarse el nombre del módulo, su versión actual y las rutas de acceso a sus archivos.
 \item
-\textbf{src}. Esta carpeta contiene los archivos fuente del módulo (archivos \textit{.c}) que implementan todas las funciones tanto públicas como privadas del módulo.
+\textbf{src}. Esta carpeta contiene los archivos fuente del módulo (archivos \textit{.c}) que implementan todas las funciones tanto públicas como privadas del mismo.
 \item
-\textbf{test}. Adicionalmente pueden agregarse \textit{tests} unitarios que prueben el correcto funcionamiento del módulo en la carpeta \textit{test}. Estos \textit{tests} escritos en lenguaje c, luego se ejecutarán mediante la herramienta \textit{Ceedling}, que se utiliza para TDD\footnote{Siglas de \textit{Test-Driven Development}, es decir, Desarrollo basado en \textit{tests}} en C y permite utilizar \textit{CMock}, \textit{Unity} y \textit{CException}.
+\textbf{test}. Adicionalmente pueden agregarse \textit{tests} unitarios que prueben el correcto funcionamiento del módulo en la carpeta \textit{test}. Estos \textit{tests}, escritos en lenguaje c, se ejecutan mediante la herramienta \textit{Ceedling}. Esta se utiliza para TDD\footnote{Siglas de \textit{Test-Driven Development}, es decir, Desarrollo basado en \textit{tests}.} en C y permite utilizar \textit{CMock}, \textit{Unity} y \textit{CException}.
 \end{itemize}
 
 \noindent El módulo \textbf{sAPI} se compone de los siguientes archivos:
@@ -37,15 +37,15 @@ Para realizar un nuevo módulo de Firmware existe una plantilla en la carpeta \te
 \item 
 \textbf{sAPI\_Tick.h, sAPI\_Tick.c}. Abstrae el periférico \textit{SysTick} e implementa el \textit{handler} de la interrución de este periférico. En el mismo se actualiza una variable global \textit{TickCounter} y luego ejecuta una función cuya dirección está contenida en otra variable global para permitir engancharse a la interrupción de tick.
 \item 
-\textbf{sAPI\_Delay.h, sAPI\_Delay.c}. Contiene funciones que, mediante el uso de \textit{sAPI\_Tick.c} implementa retados bloqueantes y no bloqueantes.
+\textbf{sAPI\_Delay.h, sAPI\_Delay.c}. Contiene funciones que implementan retados bloqueantes y no bloqueantes. Utiliza \textit{sAPI\_Tick.c}.
 \item 
 \textbf{sAPI\_PinMap.h, sAPI\_PinMap.c}. En estos archivos se definen los nombres y números de pines de ambas plataformas, que se utilizan en los siguientes archivos.
 \item 
 \textbf{sAPI\_DigitalIO.h, sAPI\_DigitalIO.c}. Incluye las funciones de manejo de entradas y salidas digitales y vectores con mapeos de pines para la configuración a bajo nivel de entradas y salidas, tanto para la plataforma EDU-CIAA-NXP, como para la CIAA-NXP.
 \item 
-\textbf{sAPI\_AnalogIO.h, sAPI\_AnalogIO.c}. Corresponden a las funciones para el manejo de entradas y salidas analógicas a través de los periférico ACD y DAC respectivamente. Al igual que el anterior, contiene los mapeos de pines para la configuración a bajo nivel. 
+\textbf{sAPI\_AnalogIO.h, sAPI\_AnalogIO.c}. Corresponden a las funciones para el manejo de entradas y salidas analógicas a través de los periféricos ACD y DAC respectivamente. Al igual que el anterior, contiene los mapeos de pines para la configuración a bajo nivel. 
 \item 
-\textbf{sAPI\_Uart.h, sAPI\_Uart.c}. Implementa las funciones para el manejo de los periféricos UART e incluye la configuración a bajo nivel de los pines utilizados.
+\textbf{sAPI\_Uart.h, sAPI\_Uart.c}. Implementa las funciones para el manejo de los periféricos UART e incluye la configuración a bajo nivel de los mismos.
 \end{itemize}
 
 
@@ -62,17 +62,17 @@ Corresponde a la parte escrita en lenguaje Java de la biblioteca cuyo diseño se 
 \textbf{Button}. Al igual que el anterior, abstrae el concepto de \textit{pulsador} e implementa el manejo de anti-rebotes del mismo. Utiliza Delay y DigitalIO.
 \end{itemize}
 
-Un aspecto saliente de la implementación es como deben ser realizados los métodos nativos para la conexión entre la biblioteca en Java y la biblioteca en C. Por ejemplo, en el módulo DigitalIO de Java está la definición del método nativo,
+Un aspecto saliente de la implementación es como deben ser realizados los métodos nativos para la conexión entre la biblioteca en Java y la biblioteca en C. Por ejemplo, en el módulo DigitalIO de Java está la declaración del método nativo,
 
 \begin{lstlisting}[language=Java, numbers=left]
 private native boolean digitalRead(int pinID);
 \end{lstlisting}
 
-mientras que en el módulo DigitalIO de C existe la definición de la función:
+mientras que en el módulo DigitalIO de C se encuentra la definición de la función:
 
 \begin{lstlisting}[language=C, numbers=left]
 bool_t digitalRead(int32_t pinID){
-	...
+   /* ... */
 }
 \end{lstlisting}
 
@@ -97,7 +97,7 @@ int16 n_ar_edu_unq_embebidos_sapi_DigitalIO_digitalRead(int32 *sp) {
 }
 \end{lstlisting}
 
-Como puede observarse, la firma se compone de \textit{n\_} seguido por el nombre del \textit{package} que contiene el método nativo de Java, cambiando puntos por guiones bajos (en este caso es \textit{ar.edu.unq.embebidos.sapi}); luego el nombre de la clase donde está definido el método (\textit{DigitalIO}) y finalmente el nombre del método (digitalRead).
+Como puede observarse, la firma se compone de \textit{n\_} seguido por el nombre del \textit{package} que contiene el método nativo de Java, cambiando puntos por guiones bajos (en este caso es \textit{ar.edu.unq. embebidos.sapi}); luego el nombre de la clase donde está definido el método (\textit{DigitalIO}) y finalmente el nombre del método nativo (digitalRead).
 
 \medskip
 

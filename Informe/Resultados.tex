@@ -1,17 +1,15 @@
-\chapter{VALIDACIÓN Y RESULTADOS}\label{cap:resultados}
+\chapter{VALIDACIÓN}\label{cap:resultados}
 %¿Funca?
 
 %\input{AcercaDelIdeObtenido}
 %\input{ComparacionesJavaC}
 %\input{AplicacionSCJ}
 
-En las siguientes secciones se exponen distintas aplicaciones que prueban el funcionamiento del desarrollo. Estas son:
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+En las siguientes secciones se exponen distintas aplicaciones que prueban el funcionamiento del sistema. Estas corresponden a:
 
 \begin{itemize}
 \item
-Ejemplos de aplicaciones Java utilizando periféricos de la EDU-CIAA-NXP mediante la biblioteca desarrollada (sección [\ref{sec:appPeriph}]).
+Una aplicación Java utilizando periféricos de la EDU-CIAA-NXP mediante la biblioteca desarrollada (sección [\ref{sec:appPeriph}]).
 \item
 Un ejemplo de aplicación Java SCJ utilizando el concepto de Proceso SCJ para demostrar el funcionamiento del cambio de contexto (sección [\ref{sec:appProcess}]).
 \item
@@ -20,57 +18,60 @@ Otro ejemplo de aplicación Java SCJ utilizando el concepto de Planificador SCJ (
 Una aplicación SCJ completa (sección [\ref{sec:appFullSCJ}]).
 \end{itemize}
 
-Finalmente se exponen las características del IDE desarrollado (sección [\ref{sec:IDEhvm}]).
+La primera de ellas es un desarrollo original, mientras que las aplicaciones SCJ son ejemplos propuestos en el manual de referencia de HVM [\ref{bib:HVMref}] con pequeñas modificaciones.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Ejemplos de aplicaciones Java utilizando periféricos} \label{sec:appPeriph}
+\section{Ejemplo de aplicación Java utilizando periféricos} \label{sec:appPeriph}
 
-\begin{lstlisting}[language=Java, numbers=left]
+En el primer ejemplo se muestra el uso de dos leds, dos pulsadores y la UART 2 de la plataforma EDU-CIAA-NXP. El mismo enciende un led con cada tecla y realiza un eco de los caracteres que recibe desde la PC.
+
+\begin{lstlisting}
 package ar.edu.unq.embebidos;
 
 public class Main {
    public static void main(String[] args) {
+		
+	   char data = 0;
 
 	   // Instanciación de los objetos Led
-	   Led ledR = new Led(0);
+	   Led ledRed = new Led(0);
 	   Led led1 = new Led(4);
 
-	   // Instanciación de los objetos Pulsador
-	   Pulsador tec1 = new Pulsador(0);
-	   Pulsador tec2 = new Pulsador(1);
+	   // Instanciación de los objetos Button
+	   Pulsador tec1 = new Button(0);
+	   Pulsador tec2 = new Button(1);
 
-	   // Instanciación del objetos Uart
+	   // Instanciación del objeto Uart
 	   Uart serialPort = new Uart();
 	   
-	   
 	   // Se configura la UART2
-       serialPort.config();
+       serialPort.config(2,9600);
 
        // Envío un caracter tipo prompt
        serialPort.write('>');
 	   
 	   while (true) {
 
-         if ( tec1.isPulsado() ) {
-            ledR.on();
+         if ( tec1.isPressed() ) {
+            ledRed.on();
          }else {
-            ledR.off();
+            ledRed.off();
          }
          
-         if ( tec2.isPulsado() ) {
+         if ( tec2.isPressed() ) {
             led1.on();
          }else {
             led1.off();
          }
 
          // Recibo un caracter
-         serialPort.read();
+         data = serialPort.read();
 
-         // Si es distinto de Null lo envío
-         if( serialPort.getRxData() != 0 ){
+         // Si es distinto de Null lo envío (eco)
+         if( data != 0 ){
         	 // Envio un caracter
-        	 serialPort.write( serialPort.getRxData() );
+        	 serialPort.write( data );
+        	 data = 0;
          }
          
       }
@@ -81,23 +82,74 @@ public class Main {
 
 \section{Ejemplo de Procesos SCJ} \label{sec:appProcess}
 
-La clase \textit{Process} implementa el concepto de proceso. Se puede utilizar para iniciar la ejecución concurrente del método \textit{run} de una instancia de \textit{Runnable} con una pila suministrada en la forma de un vector de enteros en Java.
+La clase \textit{Process} implementa el concepto de \textbf{proceso SCJ}. Se puede utilizar para iniciar la ejecución concurrente del método \textit{run} de una instancia de \textit{Runnable} con una pila suministrada en la forma de un vector de enteros en Java.
 
 \medskip
 
 El siguiente ejemplo implementa un mecanismo de conmutación de co-rutina simple. Se utiliza para demostrar el correcto funcionamiento de las funciones nativas que implementan los procesos SCJ.
 
-\begin{lstlisting}[language=Java, numbers=left]
 
-// CODIGOOOOOOOOOOOOOOOOOOOO
+\begin{lstlisting}
+package ar.edu.unq.embebidos;
 
+import icecaptools.IcecapCompileMe;
+import vm.Memory;
+import vm.Process;
+import vm.ProcessLogic;
+
+public class TestProcess {
+   private static Process p1;
+   private static Process p2;
+   private static Process mainProcess;
+   
+   private static class P1 implements ProcessLogic {
+      $$Override
+      $$IcecapCompileMe
+      public void run() {
+         devices.Console.println("Proceso 1. Transferenica a 
+                                  Proceso 2.");
+         p1.transferTo(p2);
+      }
+      $$Override
+      public void catchError(Throwable t) {
+         devices.Console.println("Error en Proceso 1.");
+      }
+   }
+   private static class P2 implements ProcessLogic {
+      $$Override
+      $$IcecapCompileMe
+      public void run() {
+         devices.Console.println("Proceso 2. Transferenica a 
+                                  Proceso Principal.");
+         p2.transferTo(mainProcess);
+      }
+      $$Override
+      public void catchError(Throwable t) {
+    	 devices.Console.println("Error en Proceso 2.");
+      }
+   }
+   public static void main(String[] args) {
+      devices.Console.println("Inicio de Proceso Principal.");
+      p1 = new vm.Process(new P1(), new int[512]);
+      p2 = new vm.Process(new P2(), new int[512]);
+      mainProcess = new vm.Process(null, null);
+      p1.initialize();
+      p2.initialize();
+      mainProcess.transferTo(p1);
+      devices.Console.println("Fin de Proceso Principal, se 
+                               deja en un loop infinito.");
+      while (true) {
+      	;
+      }
+   }
+}
 \end{lstlisting}
 
 Para cambiar de un proceso a otro, el proceso en ejecución llama \textit{TransferTo} con el siguiente proceso a ejecutar como parámetro. 
 
 \medskip
 
-La llamada a \textit{TransferTo} entra al espacio de código nativo, y mediante una secuencia  corta de instrucciones en \textit{assembler} inserta en la pila el estado actual de la CPU, el puntero de pila se almacena en el objeto proceso que se está ejecutando actualmente, se recupera un nuevo puntero de pila del próximo objeto proceso y se saca de la pila de este el nuevo estado.
+La llamada a \textit{TransferTo} inserta en la pila el estado actual de la CPU, el puntero de pila se almacena en el objeto \textit{proceso} que se está ejecutando actualmente, se recupera un nuevo puntero de pila del próximo objeto \textit{proceso} y se saca el nuevo estado de la pila de este último.
 
 \medskip
 
@@ -110,7 +162,7 @@ HVM permite implementar planificadores\footnote{\textit{Schedulers} en inglés.} 
 
 \medskip
 
-El intérprete llama periódicamente a una función nativa \textit{yieldToScheduler}. Esta función (implementada en \textit{natives\_allOS.c}) chequea una variable global llamada \textit{systemTick} para no reprogramar las tareas muy seguido. La variable \textit{systemTick} debe ser actualizada a intervalos razonables.
+El intérprete llama periódicamente a una función nativa \textit{yieldToScheduler}. Esta función (implementada en \textit{natives\_allOS.c}) utiliza la variable global \textit{systemTick} para su temporización.
 
 \medskip
 
@@ -125,25 +177,254 @@ HVM SDK contiene tres tipos de planificadores:
 Un planificador que simula el planificador del paquete estándar \textit{Java Thread}. 
 \end{enumerate}
 
-En el siguiente ejemplo se prueba el funcionamiento de uno de ellos para comprobar el correcto funcionamiento de las funciones nativas que manejan la temporización a través del SysTick.
+En el siguiente ejemplo se prueba el funcionamiento de uno de ellos para comprobar el correcto funcionamiento de las funciones nativas que manejan la temporización a través del periférico \textit{SysTick}.
 
-\begin{lstlisting}[language=Java, numbers=left]
+\begin{lstlisting}
+package ar.edu.unq.embebidos;
 
-// CODIGOOOOOOOOOOOOOOOOOOOO
+import vm.Process;
+import vm.Scheduler;
 
+public class TestProcessScheduler1 {
+   
+   static int count;
+   
+   private static class TwoProcessScheduler implements Scheduler {
+      private Process p1;
+      private Process p2;
+      private Process current;
+      private Process mainProcess;
+
+      public TwoProcessScheduler(Process task1, Process task2, 
+       Process mainProcess, int[] stack) {
+         this.p1 = task1;
+         this.p2 = task2;
+         this.mainProcess = mainProcess;
+         p1.initialize();
+         p2.initialize();
+         current = task1;
+      }
+      $$Override
+      public Process getNextProcess() {
+         if (count > 100) {
+            current.transferTo(mainProcess);
+         }
+         if (current == p1) {
+            current = p2;
+         } else {
+            current = p1;
+         }
+         return current;
+      }    
+      $$Override
+      public void wait(Object target) {
+      }      
+      $$Override
+      public void notify(Object target) {
+      }
+   }
+   
+   public static void main(String args[]) {
+      Process p1 = new vm.Process(new vm.ProcessLogic() {
+         $$Override
+         public void run() {
+            while (true) {
+               if ((count & 0x1) == 1) {
+                  count++;
+               }
+               vm.ClockInterruptHandler.instance.disable();
+               devices.Console.println("task1");
+               vm.ClockInterruptHandler.instance.enable();
+            }
+         }
+         
+         $$Override
+         public void catchError(Throwable t) {
+            devices.Console.println("Process: exception -> " + t);
+         }
+      }, new int[1024]);
+      
+      
+      Process p2 = new vm.Process(new vm.ProcessLogic() {
+      
+         $$Override
+         public void run() {
+            while (true) {
+               if ((count & 0x1) == 0) {
+                  count++;
+               }
+               vm.ClockInterruptHandler.instance.disable();
+               devices.Console.println("task2");
+               vm.ClockInterruptHandler.instance.enable();
+            }
+         }
+         
+         $$Override
+         public void catchError(Throwable t) {
+            devices.Console.println("Process: exception -> " + t);
+         }
+      }, new int[1024]);
+
+      count = 0;
+      
+      int[] sequencerStack = new int[1024];
+      Process mainProcess = new vm.Process(null, null);
+      Scheduler scheduler = 
+         new TwoProcessScheduler(p1, p2, mainProcess, sequencerStack);
+      
+      vm.ClockInterruptHandler.initialize(scheduler, sequencerStack);
+      vm.ClockInterruptHandler clockHandler =
+         vm.ClockInterruptHandler.instance;
+      
+      clockHandler.register();
+      clockHandler.enable();
+      clockHandler.startClockHandler(mainProcess);
+      clockHandler.yield();
+      
+      devices.Console.println("finished");
+      args = null;
+   }
+}
 \end{lstlisting}
 
 \section{Ejemplo de aplicación SCJ completa} \label{sec:appFullSCJ}
 
-Finalmente se expone un ejemplo de un programa SCJ completo para demostrar el correcto funcionamiento del sistema. 
+Finalmente se expone una aplicación SCJ completa para demostrar el correcto funcionamiento del sistema. 
 
-\begin{lstlisting}[language=Java, numbers=left]
+\begin{lstlisting}
+package ar.edu.unq.embebidos;
 
-// CODIGOOOOOOOOOOOOOOOOOOOO
+import javax.realtime.Clock;
+import javax.realtime.PeriodicParameters;
+import javax.realtime.PriorityParameters;
+import javax.realtime.RelativeTime;
+import javax.safetycritical.Launcher;
+import javax.safetycritical.Mission;
+import javax.safetycritical.MissionSequencer;
+import javax.safetycritical.PeriodicEventHandler;
+import javax.safetycritical.Safelet;
+import javax.safetycritical.StorageParameters;
+import javax.scj.util.Const;
+import javax.scj.util.Priorities;
 
+public class TestSCJSimpleLowMemory {
+
+   private static final int APP_STACK_SIZE = 2048;
+   
+   private static class MyPeriodicEvh extends PeriodicEventHandler {
+      Led light;
+      int count = 0;
+      private MissionSequencer<MyMission> missSeq;
+      
+      protected MyPeriodicEvh(
+         PriorityParameters priority, 
+         PeriodicParameters periodic, 
+         Led light, 
+         MissionSequencer<MyMission> missSeq
+      )
+         {
+            super( 
+               priority, periodic, 
+               new StorageParameters( 
+                  0, new long[] { APP_STACK_SIZE },0,0,0
+               )
+            );
+            this.light = light;
+            this.missSeq = missSeq;
+         }
+         
+      public void handleAsyncEvent() {
+         if (count % 2 == 0) { 
+        	light.on();
+         } else {
+            light.off();
+         }
+         count++;
+         if (count == 5) {
+            missSeq.requestSequenceTermination();
+         }
+      }
+   }
+         
+   private static class MyMission extends Mission {
+      MissionSequencer<MyMission> missSeq;
+      
+      public MyMission(MissionSequencer<MyMission> missSeq) {
+         this.missSeq = missSeq;
+      }
+      
+      public void initialize() {
+         
+         Led light = new Led(0);
+         
+         PeriodicEventHandler pevh1 = new MyPeriodicEvh(
+            new PriorityParameters(Priorities.PR97),
+            new PeriodicParameters( null, 
+               new RelativeTime(1000, 0,
+                  Clock.getRealtimeClock()
+               )
+            ), // period
+            light, missSeq            
+         );
+         pevh1.register();
+      }
+      public long missionMemorySize() {
+         return Const.MISSION_MEM_SIZE;
+      }
+   }
+   
+   private static class MyApp implements Safelet<MyMission> {
+      public MissionSequencer<MyMission> getSequencer() {
+         return new MySequencer();
+      }
+      public long immortalMemorySize() {
+         return Const.IMMORTAL_MEM_SIZE;
+      }
+      private static class MySequencer extends MissionSequencer<MyMission> {
+         private MyMission mission;
+         MySequencer() {
+            super(
+               new PriorityParameters(Priorities.PR95),
+               new StorageParameters(0, null, 2000, 0, Const.MISSION_MEM_SIZE)
+            );
+            mission = new MyMission(this);
+         }
+         public MyMission getNextMission() {
+            if (mission.terminationPending()) {
+               return null;
+            } else {
+               return mission;
+            }
+         }
+      }
+   }
+   
+   private static class Level1Launcher extends Launcher {
+      public Level1Launcher(MyApp myApp) {
+         super(myApp, 1);
+      }
+      $$Override
+      public void run() {
+         startLevel1();
+      }
+   }
+
+   public static void main(String[] args) {
+      Const.BACKING_STORE_SIZE = 5210;
+      Const.IMMORTAL_MEM_SIZE = 3500;
+      Const.MISSION_MEM_SIZE = 1650;
+      Const.PRIVATE_MEM_SIZE = 2 * 1000;
+      Const.PRIORITY_SCHEDULER_STACK_SIZE = 256;
+      Const.HANDLER_STACK_SIZE = 256;
+      Const.IDLE_PROCESS_STACK_SIZE = 256;
+      
+      new Level1Launcher(new MyApp());
+      args = null;
+   }
+}
 \end{lstlisting}
 
-La aplicación SCJ está compuesta por un \textit{mission sequencer}, una \textit{mission} y un único \textit{handler} de eventos periódicos. Los \textit{handler} son objetos planificables\footnote{En inglés \textit{schedulable objects}.}, en este caso planificados por el \textit{PriorityScheduler} SCJ Nivel 1.
+Esta aplicación SCJ está compuesta por un \textit{mission sequencer}, una \textit{mission} y un único \textit{handler} de eventos periódicos. Los \textit{handler} son objetos planificables\footnote{En inglés \textit{schedulable objects}.}, en este caso planificados por el \textit{PriorityScheduler} SCJ Nivel 1.
 
 \medskip
 
@@ -151,7 +432,7 @@ El período del evento que lanza el \textit{handler} es de un segundo. Luego de e
 
 \medskip
 
-Se requieren los siguientes recursos de memoria:
+Se utilizan los siguientes recursos de memoria:
 
 \begin{itemize}
 \item
@@ -166,7 +447,7 @@ El área de memoria privada del \textit{handler} y su pila de ejecución.
 La pila de ejecución del \textit{ priority scheduler}. Este planificador se invoca en los puntos de reprogramación. Corre utilizando su propia pila de ejecución aunque no es un verdadero \textit{handler}.
 \end{itemize}
 
-La cantidad de memoria correcta para cada una de las área es difícil de predecir. Para elegirlos correctamente primero se utilizan valores conservadores y luego se puede realizar un \textit{Memory Profiling} para identificar cuanta memoria se está utilizando verdaderamente.
+La cantidad de memoria correcta para cada una de las áreas es difícil de predecir. Para elegirlos correctamente primero se utilizan valores conservadores y luego se puede realizar un \textit{Memory Profiling} para identificar cuanta memoria se está utilizando verdaderamente.
 
 
 %\section{Acerca del IDE obtenido} \label{sec:IDEhvm}

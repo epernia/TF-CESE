@@ -10,11 +10,11 @@ Estas funciones utilizan las provistas en el archivo \textbf{sapi\_Tick.c} de la
 
 \begin{itemize}
 \item
-\textbf{void start\_system\_tick(void)}, \textbf{void stop\_system\_tick(void)}.  Estas funciones inician utilizan la función \textbf{void tickConfig(uint64_t tickRateHz)}, la misma recibe un parámetro que utiliza para configurar el periférico \textbf{SysTick}, si el mismo es 0, frena la interrupción de \textit{SysTick}. 
+\textbf{void start\_system\_tick(void)}, \textbf{void stop\_system\_tick(void)}.  Estas funciones inician utilizan la función \textbf{void tickConfig(uint64\_t tickRateHz)}, la misma recibe un parámetro que utiliza para configurar el periférico \textbf{SysTick}, si el mismo es 0, frena la interrupción de \textit{SysTick}. 
 \item
 \textbf{int16 n\_vm\_RealtimeClock\_awaitNextTick(int32 *sp)}. Esta función queda en un bucle hasta que cambie el valor de la variable global \textbf{systemTick}. 
 \item
-\textbf{int16 n\_vm\_RealtimeClock\_getNativeResolution(int32 *sp)}. La función \textbf{void tickConfig(uint32_t tickRateHz)} almacena el valor \textbf{tickRateHz} recibido como parámetro en un variable global, este valor es utilizado para calcular el tiempo entre dos \textit{ticks}.
+\textbf{int16 n\_vm\_RealtimeClock\_getNativeResolution(int32 *sp)}. La función \textbf{void tickConfig(uint32\_t tickRateHz)} almacena el valor \textbf{tickRateHz} recibido como parámetro en un variable global, este valor es utilizado para calcular el tiempo entre dos \textit{ticks}.
 \item
 \textbf{int16 n\_vm\_RealtimeClock\_getNativeTime(int32 *sp)}. Devuelve el tiempo actual del reloj de tiempo real como un objeto AbsoluteTime con mili segundos y nano segundos.
 \end{itemize}
@@ -24,45 +24,102 @@ Estas funciones utilizan las provistas en el archivo \textbf{sapi\_Tick.c} de la
 \bigskip
 \titulo{Archivo \textbf{LPC4337\_interrupt.s}}
 
-
-\noindent Luego, en el archivo \textbf{XX\_interrupt.s} deben realizarse tres funciones en \textit{assembler} necesarias para implementar los \textbf{procesos SCJ} y el cambio de \textit{threads} (cambio de contexto).
+Para la realización de estas funciones en \textit{assembler} se necesita conocer en detalle la arquitectura del microcontrolador. Las plataformas EDU-CIAA-NXP y CIAA-NXP contienen un LPC4337. Este microcontrolador ARM posee dos núcleos (como se adelanta en la sección [\ref{sec:proyectoCIAA}]) un núcleo Cortex-M0 y un Cortex-M4. Este \textit{port} de HVM utiliza únicamente le núcleo Cortex-M4.
 
 \medskip
 
-La función \textbf{\_yield}. Debe guardar todos los registros en la pila, guardar el puntero a pila en la variable global \textbf{stackPointer} (declarada en natives\_allOS.c) y llama a la función \textbf{transfer} (definida también en natives\_allOS.c). Cuando termina la ejecución de \textbf{transfer} debe guardar el valor de la variable global \textbf{stackPointer} al puntero a pila, restaurar todos los registros (en orden inverso) y retornar.
+El documento \textit{ARM Architecture Procedure Call Standard}, (AAPCS) especifica como debe comportarse un programa durante llamadas a procedimientos. Esta información es necesaria poder mezclar funciones en lenguaje C con funciones en \textit{assembler}. En [\ref{bib:YiuDefinitiveGuide}] se indica que para el Cortex-M4 los pasajes de parámetros se realizan mediante los registros \textbf{r0} a \textbf{r3}, mientras que el valor de retorno se envía por el registro \textbf{r0}. 
+
+\medskip
+
+Se muestra a continuación la implementación de las tres funciones en \textit{assembler} que se utilizan para el cambio de contexto.
+
+\medskip
+
+La función \textbf{\_yield}. Debe guardar todos los registros en la pila, guardar el puntero a pila en la variable global \textbf{stackPointer} y llama a la función \textbf{transfer}. Cuando termina la ejecución de \textbf{transfer} debe guardar el valor de la variable global \textbf{stackPointer} al puntero a pila, restaurar todos los registros y retornar.
+
+\begin{lstlisting}[language=C, numbers=left]
+.syntax unified
+
+/* --------------[ _yield ]-------------- */
+	.text
+	.thumb_func
+	.align	2
+	.word	stackPointer
+	.global	_yield
+_yield:
+
+	/* Guarda el msp en r0 */
+	mrs r0,msp
+
+	/* Guarda el contexto de FPU */
+	tst lr,0x10
+	it eq
+	vstmdbeq r0!,{s16-s31}
+
+	/* Guarda el contexto, enteros */
+	stmdb r0!,{r4-r11,lr}
+
+	/* Guarda el stack pointer del proceso actual en r0 */
+	ldr r1,=stackPointer
+	str r0,[r1]
+
+	/* Ejecuta una funcion externa que realiza el cambio de proceso */
+	bl	_transfer
+
+	/* Carga el stack pointer del nuevo proceso en r0 */
+	ldr r1,=stackPointer
+	ldr r0,[r1]
+
+	/* Recupera el contexto, enteros */
+	ldmia r0!,{r4-r11,lr}
+
+	/* Recupera contexto FPU si es necesario */
+	tst lr,0x10
+	it eq
+	vldmiaeq r0!,{s16-s31}
+
+	/* Guarda r0 en el msp */
+	msr msp,r0
+   
+	bx lr
+\end{lstlisting}
+
 
 \medskip
    
-Cuando se llama a la función \textbf{pointer* get\_stack\_pointer(void)} debe retornar el valor del puntero a pila. Los pasos para llevarlo a cabo son:
+Cuando se llama a la función \textbf{pointer* get\_stack\_pointer(void)} debe retornar el valor del puntero a pila. 
 
-\begin{enumerate}
-\item
-Mover el valor del puntero a pila al registro utilizado por el compilador para el valor de retorno de funciones.
-\item
-El valor actual del puntero a pila es el valor del \textit{frame} actual. Se debe ajustar el valor de retorno ya que se requiere el valor del \textit{frame} que llamó a esta función.
-\item
-Devolver este último valor de retorno.
-\end{enumerate}
+\begin{lstlisting}[language=C, numbers=left]
+/* --------------[ get_stack_pointer ]-------------- */
+	.text
+	.thumb_func
+	.align	2
+	.global	get_stack_pointer
+get_stack_pointer:
 
-La función \textbf{set\_stack\_pointer(void)} Debe establecer el valor de la variable global \textbf{stackPointer} en el puntero a pila y retornar a la función invocante. Concretamente:
+	/* Guarda el msp en r0 */
+	mrs r0,msp
 
-\begin{enumerate}
-\item
-Mover el valor de retorno de la pila a algún registro.
-\item
-Mover el valor de la variable global \textbf{stackPointer} al registro puntero a pila.
-\item
-Mover el valor de retorno guardado en 1 a la pila.
-\item
-Retornar.
-\end{enumerate}
+	bx lr
+\end{lstlisting}
 
-Por lo general (en la mayoría de las arquitecturas) al llamar a una función se inserta en la pila la dirección de retorno. Esta es la dirección donde debe continuar al ejecución cuando termine de ejecutar la función que ha llamado.
-Luego cuando se retorna de la función, se saca de la pila la dirección de retorno y se realiza un salto a dicha dirección.
-Esto provoca que la ejecución continúe en la dirección correcta al terminar de ejecutar la función. 
-En la función \textbf{set\_stack\_pointer} se utiliza una nueva pila, sin embargo, se necesita de todas formas retornar la dirección de donde se ha llamado a la función \textbf{set\_stack\_pointer}. 
-Como se establece un nuevo puntero a pila, la dirección de retorno correcta no se encuentra en esta nueva pila. Por esto, es necesario que en el paso 1 se mueva la dirección de retorno a la nueva pila para poder retornar correctamente a donde se ejecutó \textbf{set\_stack\_pointer}.
+La función \textbf{set\_stack\_pointer(void)} Debe establecer el valor de la variable global \textbf{stackPointer} en el puntero a pila y retornar a la función invocante.
 
-\medskip
+\begin{lstlisting}[language=C, numbers=left]
+/* --------------[ set_stack_pointer ]-------------- */
+	.text
+	.thumb_func
+	.align	2
+	.global	set_stack_pointer
+set_stack_pointer:
 
-En la implementación este archivo se nombra \textbf{LPC4337\_interrupt.s}
+	/* Carga el stack pointer del nuevo proceso en r0 */
+	ldr r1,=stackPointer
+	ldr r0,[r1]
+   
+	/* Guarda r0 en el msp */
+	msr msp,r0
+
+	bx lr
+\end{lstlisting}

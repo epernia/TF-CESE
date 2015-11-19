@@ -1,6 +1,6 @@
 \section{Port básico de HVM al microcontrolador NXP LPC4337} \label{sec:HVMenLPC4337}
 
-Para realizar el \textit{port} de HVM se deben realizar una serie de tareas descriptas en la sección [\ref{sec:disenoPortHvm}], en esta sección se informa como han sido llevado a cabo el subconjunto de las mismas necesario para la primer etapa del \textit{port}, que consiste en poder ejecutar programas Java (no SCJ) en la CIAA.
+Para realizar el \textit{port} de HVM se deben realizar una serie de tareas descriptas en la sección [\ref{sec:disenoPortHvm}]. En esta sección se informa como ha sido llevado a cabo el subconjunto de las mismas, necesario para la primer etapa del \textit{port}, que consiste en poder ejecutar programas Java (no SCJ) en la CIAA.
 
 %--------------------------------------------------
 \bigskip
@@ -10,11 +10,11 @@ Para esta tarea se utilizaron las herramientas libres, provistas por el Proyecto
 
 \begin{itemize}
 \item
-\textbf{Consola cygwin} (incluye paquetes: PERL, PHP, gcc x86, arm-none-ebi-gcc y ruby). Esta consola permite compilar un programa en C, generando un ejecutable para el microcontrolador LPC4337.
+\textbf{Consola cygwin} (con paquetes: PERL, PHP, gcc x86, arm-none-ebi-gcc y ruby). Esta consola permite compilar un programa en C, generando un ejecutable para el microcontrolador LPC4337. También habilita la utilización de openOCD.
 \item
 \textbf{openOCD 0.9 x86/x64}. Se utiliza tanto para al descarga del ejecutable al microcontrolador, como para depuración mediante comandos GDB.
 \item
-\textbf{FTDI drivers libusb 1.0}. Se debe instalar por única vez el \textit{driver} según la versión del sistema operativo. Reemplaza el driver que windows instala por defecto para el chip FTDI que contiene el \textit{debugger} de las plataformas.
+\textbf{FTDI drivers libusb 1.0}. Se debe instalar por única vez el \textit{driver} según la versión del sistema operativo. Reemplaza el \textit{driver} que Windows instala por defecto para el chip FTDI que se utilizan para \textit{debugger} en ambas plataformas.
 \item
 \textbf{Eclipse (Luna)}. IDE para desarrollo de programas en lenguaje C para la CIAA. Desde el mismo se pueden gestionar proyectos, y permite la compilación y \textit{debug} en un entono gráfico (utiliza cygwin por debajo).
 \item
