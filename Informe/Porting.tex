@@ -17,7 +17,7 @@ Para portar HVM a una nueva plataforma se deben realizar las siguientes tareas:
 \item
 Obtener un entorno de desarrollo de C para la plataforma y probar su correcto funcionamiento.
 \item
-Construir un comando de compilación para compilar y linkear los archivos generados de HVM.
+Construir un comando de compilación para compilar y \textit{linkear} los archivos generados de HVM.
 \item
 Agregar una definición para la plataforma en el archivo \textbf{ostypes.h}.
 \item
@@ -76,7 +76,7 @@ Esto da 2 beneficios importantes:
 
 \begin{enumerate}
 \item 
-\textbf{Protabilidad}. Todas las partes de la HAL de Java escritas en Java pueden ejecutarse sobre HVM.
+\textbf{Portabilidad}. Todas las partes de la HAL de Java escritas en Java pueden ejecutarse sobre HVM.
 \item 
 \textbf{Especialización de programa}. En este contexto se refiere a incluir únicamente las partes utilizadas de la HAL de Java, excluyendo las partes no utilizadas del ejecutable final.
 La adaptación de la HAL para una aplicación en particular no requiere ningún esfuerzo para las partes de la HAL escritas en Java.

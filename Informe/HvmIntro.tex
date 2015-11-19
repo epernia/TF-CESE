@@ -234,7 +234,7 @@ Cada método de ejecución tiene sus ventajas: Los métodos interpretados ocupan me
 \bigskip
 \titulo{Manejo de memoria}
 
-HVM no soporta el \textit{Garbage Collerctor} estándar de Java. Para la gestión de la asignación y liberación de recursos de memoria utiliza el modelo de ámbitos de memoria de SCJ. 
+HVM no soporta el \textit{Garbage Collector} estándar de Java. Para la gestión de la asignación y liberación de recursos de memoria utiliza el modelo de ámbitos de memoria de SCJ. 
 
 \medskip
 
@@ -242,11 +242,11 @@ Para los programas no SCJ esto significa que los datos se asignan consecutivamen
 
 \medskip
 
-El uso de áreas de memoria requiere más cuidado que el uso del \textit{Garbage Collerctor} estándar. En este esquema el manejo de memoria es responsabilidad del programador y pueden ocurrir todos los problemas habituales que suceden cuando se utiliza la gestión de la memoria explícita (por ejemplo, punteros colgantes [\ref{bib:Dangling_pointer}]). El concepto de área de memoria para Java es una violación de la seguridad de Java que el desarrollador HVM debe comprender y utilizar con cuidado.
+El uso de áreas de memoria requiere más cuidado que el uso del \textit{Garbage Collector} estándar. En este esquema el manejo de memoria es responsabilidad del programador y pueden ocurrir todos los problemas habituales que suceden cuando se utiliza la gestión de la memoria explícita (por ejemplo, punteros colgantes [\ref{bib:Dangling_pointer}]). El concepto de área de memoria para Java es una violación de la seguridad de Java que el desarrollador HVM debe comprender y utilizar con cuidado.
 
 \medskip
 
-En la práctica la mayoría de las aplicaciones para sistemas embebidos (en especial los de bajos recursos) tienen requisitos muy sencillos de asignación de memoria. En tales escenarios no se requiere un \textit{Garbage Collerctor} completo y el concepto de área de memoria es suficiente.
+En la práctica la mayoría de las aplicaciones para sistemas embebidos (en especial los de bajos recursos) tienen requisitos muy sencillos de asignación de memoria. En tales escenarios no se requiere un \textit{Garbage Collector} completo y el concepto de área de memoria es suficiente.
 
 
 \bigskip
