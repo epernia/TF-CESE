@@ -1,6 +1,6 @@
 \section{Port de HVM a una nueva plataforma de Hardware} \label{sec:disenoPortHvm} 
 
-HVM genera código ANSI C independiente de la plataforma. Únicamente una pequeña parte de la infraestructura es dependiente de la plataforma. En la figura [\ref{fig:capasHVM}] se da ofrece esquema en capas de HVM.
+HVM genera código ANSI C independiente de la plataforma. Únicamente una pequeña parte de la infraestructura es dependiente de la plataforma. En la figura [\ref{fig:capasHVM}] se ofrece un esquema en capas de HVM.
 
 \begin{figure}[!htbp]
 \begin{center}
@@ -70,7 +70,9 @@ Existen funciones adicionales para implementar \textit{debug} directo desde un p
 
 \subsection{Port de HVM para ejecutar Java SCJ}
 
-Para dar soporte a aplicaciones basadas en la especificación SCJ sobre HVM, debe construirse una HAL\footnote{Siglas de \textit{Hardware Abstraction Layer}.}. Esta HAL debe tener primitivas para planificación de tareas expropiativas\footnote{Una posible traducción al castellano de \textit{preemptive}, otra posible es apropiativa.}, manejo de memoria, acceso a dispositivos mediante \textit{Hardware Objects}, manejo de interrupciones de primer nivel, un programa monitor y \textit{real-time clock}. Esto se conoce generalmente como la construcción de un \textit{micro kernel}. En el caso particular de la HAL de Java SCJ para HVM se encuentra implementada en su mayoría en lenguaje Java. Esto da 2 beneficios importantes:
+Para dar soporte a aplicaciones basadas en la especificación SCJ sobre HVM, debe construirse una HAL\footnote{Siglas de \textit{Hardware Abstraction Layer}.}. Esta HAL debe tener primitivas para planificación de tareas expropiativas\footnote{Una posible traducción al castellano de \textit{preemptive}, otra posible es apropiativa.}, manejo de memoria, acceso a dispositivos mediante \textit{Hardware Objects}, manejo de interrupciones de primer nivel, un programa monitor y \textit{real-time clock}. Esto se conoce generalmente como la construcción de un \textit{micro kernel}. En el caso particular de la HAL de Java SCJ para HVM se encuentra implementada en su mayoría en lenguaje Java.
+
+Esto da 2 beneficios importantes:
 
 \begin{enumerate}
 \item 
@@ -80,7 +82,16 @@ Para dar soporte a aplicaciones basadas en la especificación SCJ sobre HVM, debe
 La adaptación de la HAL para una aplicación en particular no requiere ningún esfuerzo para las partes de la HAL escritas en Java.
 \end{enumerate}
 
-Dejando una pequeña parte que debe implementarse en lenguaje C. Esta parte corresponde a las siguientes funciones. 
+En la figura [\ref{fig:HVM_SCJ}] se muestra el diagrama de Clases que conforman la HAL de HVM.
+
+\begin{figure}[!htbp]
+\begin{center}
+\includegraphics*[width=16cm,height=11cm]{figuras/HVM_SCJ.png}
+\par\caption{Diagrama de Clases que conforman la HAL de HVM. Imagen de obtenida de [\ref{bib:HVMref}].}\label{fig:HVM_SCJ}
+\end{center}
+\end{figure}
+
+Una pequeña parte de la misma debe implementarse en lenguaje C. Esta parte es la que se debe portar a diferentes arquitecturas y corresponde a las siguientes funciones. 
 
 \medskip 
 

@@ -1,39 +1,112 @@
 \section{Implementación de la biblioteca para manejo de periféricos} \label{sec:implBiblioPerif}
 
-\section{Biblioteca para manejo de periféricos (C)} \label{sec:implBiblioC}
+\subsection{Biblioteca para manejo de periféricos (C)} \label{sec:implBiblioC}
 
 %Implementación de API para manejo de periféricos CIAA-NXP.
 
 %sAPI
 
-%Como subproducto, se obtiene además un nuevo módulo de Firmware para la CIAA nombrado sAPI (simple API) que permite mediante un conjunto de clases encapsular el manejo de periféricos con una interfaz muy sencilla pensada para el programador con perfil informático no experto en Sistemas embebidos. 
+Esta biblioteca se construye como módulo del Firmware CIAA logrando máxima compatibilidad con el sistema de \textit{makefiles} que se proveen para la compilación del mismo. De esta manera se obtiene como subproducto un nuevo módulo de Firmware para la CIAA nombrado \textbf{sAPI} (por \textit{simple API}) que permite mediante un conjunto de clases encapsular el manejo de periféricos con una interfaz muy sencilla. 
 
-Módulo \textbf{sAPI}:
-Está compuesta por los módulos:
+\medskip
 
-\begin{verbatim}
-sAPI.h
-sAPI_Board.c, sAPI_Board.h
-sAPI_DataTypes.h
-sAPI_Delay.c, sAPI_Delay.h
-sAPI_DigitalIO.c, sAPI_DigitalIO.h
-sAPI_IsrVector.c, sAPI_IsrVector.h
-sAPI_Tick.c, sAPI_Tick.h
-\end{verbatim}
+Para realizar un nuevo módulo de Firmware existe una plantilla en la carpeta \textit{Firmware/modules/template}. Un módulo se compone de las siguientes carpetas:
 
-Este actualiza una variable global y luego ejecuta una función cuya dirección está contenida en una variable global para permitir engancharse a la interrupción de tick.
+\begin{itemize}
+\item
+\textbf{inc}. Aquí deben ubicarse los \textit{heades} del módulo (archivos \textit{.h}), en los mismos se implementan las funciones públicas que forman la API del mismo así como las definiciones de los diferentes tipos de datos. 
+\item
+\textbf{mak}. Contiene el \textit{makefile} del módulo. Tiene una estructura predefinida donde debe indicarse el nombre del módulo, su versión actual y las rutas de acceso a sus archivos.
+\item
+\textbf{src}. Esta carpeta contiene los archivos fuente del módulo (archivos \textit{.c}) que implementan todas las funciones tanto públicas como privadas del módulo.
+\item
+\textbf{test}. Adicionalmente pueden agregarse \textit{tests} unitarios que prueben el correcto funcionamiento del módulo en la carpeta \textit{test}. Estos \textit{tests} escritos en lenguaje c, luego se ejecutarán mediante la herramienta \textit{Ceedling}, que se utiliza para TDD\footnote{Siglas de \textit{Test-Driven Development}, es decir, Desarrollo basado en \textit{tests}} en C y permite utilizar \textit{CMock}, \textit{Unity} y \textit{CException}.
+\end{itemize}
+
+\noindent El módulo \textbf{sAPI} se compone de los siguientes archivos:
+
+\begin{itemize}
+\item 
+\textbf{sAPI.h}. Mediante su inclusión en un proyecto se incluyen todos los archivos necesarios para utilizar la biblioteca.
+\item 
+\textbf{sAPI\_DataTypes.h}. Contiene los tipos de datos básicos de la biblioteca.
+\item 
+\textbf{sAPI\_IsrVector.h, sAPI\_IsrVector.c}. Como se adelanta en la sección [\ref{sec:implArqHVM}], contiene el vector de interrupciones.
+\item 
+\textbf{sAPI\_Board.h, sAPI\_Board.c}. Provee las funciones de inicialización de las plataformas CIAA. 
+\item 
+\textbf{sAPI\_Tick.h, sAPI\_Tick.c}. Abstrae el periférico \textit{SysTick} e implementa el \textit{handler} de la interrución de este periférico. En el mismo se actualiza una variable global \textit{TickCounter} y luego ejecuta una función cuya dirección está contenida en otra variable global para permitir engancharse a la interrupción de tick.
+\item 
+\textbf{sAPI\_Delay.h, sAPI\_Delay.c}. Contiene funciones que, mediante el uso de \textit{sAPI\_Tick.c} implementa retados bloqueantes y no bloqueantes.
+\item 
+\textbf{sAPI\_PinMap.h, sAPI\_PinMap.c}. En estos archivos se definen los nombres y números de pines de ambas plataformas, que se utilizan en los siguientes archivos.
+\item 
+\textbf{sAPI\_DigitalIO.h, sAPI\_DigitalIO.c}. Incluye las funciones de manejo de entradas y salidas digitales y vectores con mapeos de pines para la configuración a bajo nivel de entradas y salidas, tanto para la plataforma EDU-CIAA-NXP, como para la CIAA-NXP.
+\item 
+\textbf{sAPI\_AnalogIO.h, sAPI\_AnalogIO.c}. Corresponden a las funciones para el manejo de entradas y salidas analógicas a través de los periférico ACD y DAC respectivamente. Al igual que el anterior, contiene los mapeos de pines para la configuración a bajo nivel. 
+\item 
+\textbf{sAPI\_Uart.h, sAPI\_Uart.c}. Implementa las funciones para el manejo de los periféricos UART e incluye la configuración a bajo nivel de los pines utilizados.
+\end{itemize}
 
 
-\section{Biblioteca para manejo de periféricos (Java)} \label{sec:implBiblioJava}
+\subsection{Biblioteca para manejo de periféricos (Java)} \label{sec:implBiblioJava}
 
-Está formada por los módulos Device.Java, Pin.Java, Peripheral.Java, DigitalIO.Java, AnalogIO.Java, Uart.Java, Delay.Java, Button.Java y Led.Java. 
+Corresponde a la parte escrita en lenguaje Java de la biblioteca cuyo diseño se introduce en la sección [\ref{sec:disenoModeloBib}]. Está formada por los siguientes módulos Device, Pin, Peripheral, PeripheralConfig, DigitalIO, DigitalIOConfig, AnalogIO, AnalogIOConfig, Uart y UartConfig. En la implementación se agregan:
 
+\begin{itemize}
+\item
+\textbf{Delay}. Permite implementar retardos en el programa Java.
+\item
+\textbf{Led.Java}. Provee una abstracción para trabajar directamente con el concepto de \textit{Led} en lugar de salida digital. Utiliza DigitalIO.
+\item
+\textbf{Button}. Al igual que el anterior, abstrae el concepto de \textit{pulsador} e implementa el manejo de anti-rebotes del mismo. Utiliza Delay y DigitalIO.
+\end{itemize}
 
+Un aspecto saliente de la implementación es como deben ser realizados los métodos nativos para la conexión entre la biblioteca en Java y la biblioteca en C. Por ejemplo, en el módulo DigitalIO de Java está la definición del método nativo,
 
-	\subsection{CIAA-NXP}
-         %Mapeo de pines
-         
-	\subsection{EDU-CIAA}
-         %Mapeo de pines
-         
-	\subsection{Java} %  ---> Como se ve la API desde Java Space
+\begin{lstlisting}[language=Java, numbers=left]
+private native boolean digitalRead(int pinID);
+\end{lstlisting}
+
+mientras que en el módulo DigitalIO de C existe la definición de la función:
+
+\begin{lstlisting}[language=C, numbers=left]
+bool_t digitalRead(int32_t pinID){
+	...
+}
+\end{lstlisting}
+
+Para conectar ambas, se debe declarar una función en C de la siguiente forma: 
+
+\begin{lstlisting}[language=C, numbers=left]
+/* digitalRead
+ * param : [int]
+ * return: [boolean]
+ */
+int16 n_ar_edu_unq_embebidos_sapi_DigitalIO_digitalRead(int32 *sp) {
+   
+   pointer self = (pointer)sp[0];
+   int32 pinID = sp[1];
+   
+   int8 returnValue;
+   
+   returnValue = (int8)( digitalRead(pinID) );
+
+   sp[0] = (int8) returnValue;
+   return -1;
+}
+\end{lstlisting}
+
+Como puede observarse, la firma se compone de \textit{n\_} seguido por el nombre del \textit{package} que contiene el método nativo de Java, cambiando puntos por guiones bajos (en este caso es \textit{ar.edu.unq.embebidos.sapi}); luego el nombre de la clase donde está definido el método (\textit{DigitalIO}) y finalmente el nombre del método (digitalRead).
+
+\medskip
+
+La línea \textbf{returnValue = (int8)( digitalRead(pinID) );} muestra la ejecución de la función de la biblioteca en C.
+
+\medskip
+
+Tanto el pasaje de parámetros, como el valor de retorno, se debe realizar a través de la pila de Java. De esta manera, el único parámetro que recibe la función que implementa el método nativo es un puntero a dicha pila. En la primer dirección de la pila (\textit{sp[0]}) se recibe un puntero, mientras que en la segunda (\textit{sp[1]}), se encuentra el primer parámetro, y así consecutivamente si existieran otros. El valor de retorno se debe guardar en la primer dirección de la pila (\textit{sp[0]}). Finalmente, si el método nativo se ejecutó de forma correcta debe retornar el valor -1, en caso contrario, 0.
+
+\medskip
+
+Este y los demás métodos nativos para el acceso a periféricos se encuentran definidos en el archivo \textit{LPC4337\_peripheral\_natives.c}. HVM genera, además, un archivo nombrado \textit{user\_natives.c} destinado a guardar los métodos nativos que realice el usuario de Java.

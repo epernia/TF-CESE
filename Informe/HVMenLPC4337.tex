@@ -119,7 +119,7 @@ Nótese que los archivos generados por HVM deben estar en una carpeta llamada \te
 Para la definición de la plataforma se investigó la arquitectura del microcontrolador LPC4337 y su compilador \textit{arm-none-eabi-gcc} para definir los distintos tipos de datos, resultando en:
 
 \begin{lstlisting}[language=C, numbers=left]
-#if defined(CIAA_NXP_TYPES_FOR_HVM)
+#if defined(LPC4337_TYPES_FOR_HVM)
    #undef PACKED
    #define PACKED
    #define DATAMEM __attribute__ ((section (".data")))
@@ -173,7 +173,8 @@ Una vez completado el \textit{port} básico se realiza una prueba inicial del sis
 \end{center}
 \end{figure}
 
-Para poder ser compilado debe modificarse, además, el archivo \textit{makefile.mine}.
+\newpage
+Para su compilación se debe modificar el archivo \textit{makefile.mine}.
 Además de definir \textit{BOARD} y \textit{PROJECT\_PATH} se debe agregar,
 
 \begin{itemize}

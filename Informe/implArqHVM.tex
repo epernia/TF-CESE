@@ -12,9 +12,9 @@ Para la implementación de este trabajo se utiliza una arquitectura en capas con 
 Las capas preexistentes son \textbf{icecap SDK}, \textbf{HVM}, \textbf{HVM SCJ} que corresponden a las distintas partes de que conforman HVM; y \textbf{LPCOpen}, la biblioteca provista por NXP para el microcontrolador LPC4337. Las capas desarrolladas se describen a continuación.
 
 \bigskip
-\titulo{Vector de interrupción}
+\titulo{Vector de interrupciones}
 
-Esta capa se compone de un único archivo \(IsrVector.c\) que contiene el vector de interrupción. Para definir una nueva interrupción se debe agregar el nombre de la función correspondiente al \textit{handler} de la misma y luego definir dicha función. El único \textit{handler} utilizado es el de interrupción de \textbf{SysTick}.
+Esta capa se compone de un único archivo \(IsrVector.c\) que contiene el vector de interrupciones. Para definir una nueva interrupción se debe agregar el nombre de la función correspondiente al \textit{handler} de la misma en el vector, y luego definir dicha función. El único \textit{handler} utilizado es el de interrupción de \textbf{SysTick}.
 
 \newpage
 \titulo{Biblioteca de Periféricos C}

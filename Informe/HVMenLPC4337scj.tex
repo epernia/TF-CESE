@@ -1,12 +1,68 @@
 \section{Port de HVM SCJ al microcontrolador NXPLPC4337} \label{sec:HVMscjEnLPC4337}
 
+En esta etapa final del \textit{port} se definen las funciones nativas de la HAL de HVM, necesarias para poder realizar programas SCJ.
+
 %--------------------------------------------------
 \bigskip
-\titulo{Definir las funciones específicas de la plataforma}
+\titulo{Archivo \textbf{LPC4337\_natives\_SCJ.c}}
 
-\textbf{LPC4337\_natives\_SCJ.c}
+Estas funciones utilizan las provistas en el archivo \textbf{sapi\_Tick.c} de la biblioteca de C.
+
+\begin{itemize}
+\item
+\textbf{void start\_system\_tick(void)}, \textbf{void stop\_system\_tick(void)}.  Estas funciones inician utilizan la función \textbf{void tickConfig(uint64_t tickRateHz)}, la misma recibe un parámetro que utiliza para configurar el periférico \textbf{SysTick}, si el mismo es 0, frena la interrupción de \textit{SysTick}. 
+\item
+\textbf{int16 n\_vm\_RealtimeClock\_awaitNextTick(int32 *sp)}. Esta función queda en un bucle hasta que cambie el valor de la variable global \textbf{systemTick}. 
+\item
+\textbf{int16 n\_vm\_RealtimeClock\_getNativeResolution(int32 *sp)}. La función \textbf{void tickConfig(uint32_t tickRateHz)} almacena el valor \textbf{tickRateHz} recibido como parámetro en un variable global, este valor es utilizado para calcular el tiempo entre dos \textit{ticks}.
+\item
+\textbf{int16 n\_vm\_RealtimeClock\_getNativeTime(int32 *sp)}. Devuelve el tiempo actual del reloj de tiempo real como un objeto AbsoluteTime con mili segundos y nano segundos.
+\end{itemize}
 
 
-\textbf{LPC4337\_interrupt.s}
+%--------------------------------------------------
+\bigskip
+\titulo{Archivo \textbf{LPC4337\_interrupt.s}}
 
-	\subsection{Funciones para SCJ}
+
+\noindent Luego, en el archivo \textbf{XX\_interrupt.s} deben realizarse tres funciones en \textit{assembler} necesarias para implementar los \textbf{procesos SCJ} y el cambio de \textit{threads} (cambio de contexto).
+
+\medskip
+
+La función \textbf{\_yield}. Debe guardar todos los registros en la pila, guardar el puntero a pila en la variable global \textbf{stackPointer} (declarada en natives\_allOS.c) y llama a la función \textbf{transfer} (definida también en natives\_allOS.c). Cuando termina la ejecución de \textbf{transfer} debe guardar el valor de la variable global \textbf{stackPointer} al puntero a pila, restaurar todos los registros (en orden inverso) y retornar.
+
+\medskip
+   
+Cuando se llama a la función \textbf{pointer* get\_stack\_pointer(void)} debe retornar el valor del puntero a pila. Los pasos para llevarlo a cabo son:
+
+\begin{enumerate}
+\item
+Mover el valor del puntero a pila al registro utilizado por el compilador para el valor de retorno de funciones.
+\item
+El valor actual del puntero a pila es el valor del \textit{frame} actual. Se debe ajustar el valor de retorno ya que se requiere el valor del \textit{frame} que llamó a esta función.
+\item
+Devolver este último valor de retorno.
+\end{enumerate}
+
+La función \textbf{set\_stack\_pointer(void)} Debe establecer el valor de la variable global \textbf{stackPointer} en el puntero a pila y retornar a la función invocante. Concretamente:
+
+\begin{enumerate}
+\item
+Mover el valor de retorno de la pila a algún registro.
+\item
+Mover el valor de la variable global \textbf{stackPointer} al registro puntero a pila.
+\item
+Mover el valor de retorno guardado en 1 a la pila.
+\item
+Retornar.
+\end{enumerate}
+
+Por lo general (en la mayoría de las arquitecturas) al llamar a una función se inserta en la pila la dirección de retorno. Esta es la dirección donde debe continuar al ejecución cuando termine de ejecutar la función que ha llamado.
+Luego cuando se retorna de la función, se saca de la pila la dirección de retorno y se realiza un salto a dicha dirección.
+Esto provoca que la ejecución continúe en la dirección correcta al terminar de ejecutar la función. 
+En la función \textbf{set\_stack\_pointer} se utiliza una nueva pila, sin embargo, se necesita de todas formas retornar la dirección de donde se ha llamado a la función \textbf{set\_stack\_pointer}. 
+Como se establece un nuevo puntero a pila, la dirección de retorno correcta no se encuentra en esta nueva pila. Por esto, es necesario que en el paso 1 se mueva la dirección de retorno a la nueva pila para poder retornar correctamente a donde se ejecutó \textbf{set\_stack\_pointer}.
+
+\medskip
+
+En la implementación este archivo se nombra \textbf{LPC4337\_interrupt.s}
