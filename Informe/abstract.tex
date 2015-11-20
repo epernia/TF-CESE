@@ -7,20 +7,20 @@ The purpose of this final work is the incorporation of new technologies in indus
 
 \medskip
 
-In this work it was chosen Java as OOP language, and HVM \footnote{acronym for \textit{Hardware near Virtual Machine}, development of Stephan Erbs Korsholm, Denmark.}, a runtime environment \textit{Safety-Critical Java} \footnote{The Java Safety-Critical specification is an extension to the RTSJ specification, a Java specification for real-time applications} (SCJ) [\ref{bib:HVMref}], open source, designed for low resorurces embedded platforms. This work consists in the implementation and validation of a Firmware and Software environment, based on HVM, for programming the CIAA-NXP and EDU-CIAA-NXP platforms in Java SCJ language.
+In this work it was chosen Java as OOP language, and HVM \footnote{acronym for \textit{Hardware near Virtual Machine}, development of Stephan Erbs Korsholm, Denmark.}, a \textit{Safety-Critical Java}\footnote{The Java Safety-Critical specification is an extension to the RTSJ specification, a Java specification for real-time applications} (SCJ)[\ref{bib:HVMref}] execution environment, open source, designed for low resorurces embedded platforms. This work consists in the implementation and validation of a Firmware and Software environment, based on HVM, for programming the CIAA-NXP and EDU-CIAA-NXP platforms in Java SCJ language.
 
 \medskip
 \noindent Essentially, the implementation is:
 
 \begin{itemize}
 \item 
-The port of HVM to run on NXP LPC4337 microcontroller, which contain the CIAA-NXP and NXP EDU-CIAA-platforms, to allow Java applications programming.
+The port of HVM to run on NXP LPC4337 microcontroller, which contain the CIAA-NXP and EDU-CIAA-NXP platforms, to allow Java applications programming.
 \item 
-Design and implementation of a library with a simple API\footnote{Application Programming Interface.} to allow hardware directly in Java space, the library also works as HAL\footnote{Hardware Abstraction Layer.}.
+Design and implementation of a library with a simple API\footnote{Application Programming Interface.} to allow hardware use directly in Java space, the library also works as HAL\footnote{Hardware Abstraction Layer.}.
 \item 
 The port of HVM SCJ layer to allow Java SCJ applications development.
 \item 
-The manual integration of CIAA port in HVM's IDE by description of necessary steps to carry to work with HVM.
+The manual integration of CIAA port in HVM's IDE by description of necessary steps to work with HVM.
 \end{itemize}
 
 \noindent To validate this development it presents:

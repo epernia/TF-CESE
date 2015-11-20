@@ -23,7 +23,7 @@ La primera de ellas es un desarrollo original, mientras que las aplicaciones SCJ
 
 \section{Ejemplo de aplicación Java utilizando periféricos} \label{sec:appPeriph}
 
-En el primer ejemplo se muestra el uso de dos leds, dos pulsadores y la UART 2 de la plataforma EDU-CIAA-NXP. El mismo enciende un led con cada tecla y realiza un eco de los caracteres que recibe desde la PC.
+En el primer ejemplo se muestra el uso de dos leds, dos pulsadores y la UART 2 de la plataforma EDU-CIAA-NXP. Se enciende un led con cada tecla y realiza un eco de los caracteres que recibe desde la PC.
 
 \begin{lstlisting}[mathescape]
 package ar.edu.unq.embebidos;
@@ -31,26 +31,26 @@ package ar.edu.unq.embebidos;
 public class Main {
    public static void main(String[] args) {
 		
-	   char data = 0;
+       char data = 0;
 
-	   // Instanciación de los objetos Led
-	   Led ledRed = new Led(0);
-	   Led led1 = new Led(4);
+       // Instanciación de los objetos Led
+       Led ledRed = new Led(0);
+       Led led1 = new Led(4);
 
-	   // Instanciación de los objetos Button
-	   Pulsador tec1 = new Button(0);
-	   Pulsador tec2 = new Button(1);
+       // Instanciación de los objetos Button
+       Button tec1 = new Button(0);
+       Button tec2 = new Button(1);
 
-	   // Instanciación del objeto Uart
-	   Uart serialPort = new Uart();
+       // Instanciación del objeto Uart
+       Uart serialPort = new Uart();
 	   
-	   // Se configura la UART2
+       // Se configura la UART2
        serialPort.config(2,9600);
 
        // Envío un caracter tipo prompt
        serialPort.write('>');
 	   
-	   while (true) {
+       while (true) {
 
          if ( tec1.isPressed() ) {
             ledRed.on();
@@ -69,11 +69,10 @@ public class Main {
 
          // Si es distinto de Null lo envío (eco)
          if( data != 0 ){
-        	 // Envio un caracter
-        	 serialPort.write( data );
-        	 data = 0;
+            // Envio un caracter
+            serialPort.write( data );
+            data = 0;
          }
-         
       }
    }
 }
@@ -106,7 +105,7 @@ public class TestProcess {
       %%$\text{{\color{pgrey}@}}$Override%%
       %%$\text{{\color{pgrey}@}}$IcecapCompileMe%%
       public void run() {
-         devices.Console.println("Proceso 1. Transferenica a 
+         devices.Console.println("Proceso 1. Transferencia a 
                                   Proceso 2.");
          p1.transferTo(p2);
       }
@@ -119,7 +118,7 @@ public class TestProcess {
       %%$\text{{\color{pgrey}@}}$Override%%
       %%$\text{{\color{pgrey}@}}$IcecapCompileMe%%
       public void run() {
-         devices.Console.println("Proceso 2. Transferenica a 
+         devices.Console.println("Proceso 2. Transferencia a 
                                   Proceso Principal.");
          p2.transferTo(mainProcess);
       }
@@ -153,7 +152,18 @@ La llamada a \textit{TransferTo} inserta en la pila el estado actual de la CPU, 
 
 \medskip
 
-El efecto que se consigue es que cuando \textit{TransferTo} retorna, no retorna al proceso que lo llamo, sino al siguiente proceso en el punto en que llamó a \textit{TransferTo} previamente. 
+El efecto que se consigue es que cuando \textit{TransferTo} retorna, no retorna al proceso que lo llamó, sino al siguiente proceso en el punto en que llamó a \textit{TransferTo} previamente. 
+
+\medskip
+
+Cuando se ejecuta la aplicación, se puede observar en la Terminal Serie el paso por cada uno de los procesos:
+
+\begin{verbatim}
+Inicio de Proceso Principal.
+Proceso 1. Transferencia a Proceso 2.
+Proceso 2. Transferencia a Proceso Principal.
+Fin de Proceso Principal, se deja en un loop infinito.
+\end{verbatim}
 
 
 \section{Planificador SCJ} \label{sec:appScheduler}
@@ -287,6 +297,31 @@ public class TestProcessScheduler1 {
 }
 \end{lstlisting}
 
+Si se  ejecuta esta aplicación en una Terminal Serie, se puede ver el siguiente partón de ejecución de las tareas manejadas por el planificador:
+
+\begin{verbatim}
+task2
+...
+task2
+task1
+...
+task1
+task2
+...
+task2
+task1
+...
+task1
+
+...
+
+task2
+finished
+SUCCESS
+\end{verbatim}
+
+Los puntos suspensivos indican que se reciben múltiples lineas iguales y se indican las conmutaciones entre las tareas 1 y 2 hasta que termina la ejecución.
+
 \section{Ejemplo de aplicación SCJ completa} \label{sec:appFullSCJ}
 
 Finalmente se expone una aplicación SCJ completa para demostrar el correcto funcionamiento del sistema. 
@@ -335,8 +370,10 @@ public class TestSCJSimpleLowMemory {
          
       public void handleAsyncEvent() {
          if (count % 2 == 0) { 
-        	light.on();
+            devices.Console.println("Light on");
+            light.on();
          } else {
+            devices.Console.println("Light off");
             light.off();
          }
          count++;
@@ -403,20 +440,20 @@ public class TestSCJSimpleLowMemory {
       public Level1Launcher(MyApp myApp) {
          super(myApp, 1);
       }
-      %%$\text{{\color{pgrey}@}}$Override%% 
+      %%$\text{{\color{pgrey}@}}$Override%%
       public void run() {
          startLevel1();
       }
    }
 
    public static void main(String[] args) {
-      Const.BACKING_STORE_SIZE = 5210;
-      Const.IMMORTAL_MEM_SIZE = 3500;
       Const.MISSION_MEM_SIZE = 1650;
-      Const.PRIVATE_MEM_SIZE = 2 * 1000;
+      Const.HANDLER_STACK_SIZE = 512;
+      Const.IMMORTAL_MEM_SIZE = 6 * 1024;
+      Const.PRIVATE_MEM_SIZE = 0; /* Only used by idle process */
+      Const.IDLE_PROCESS_STACK_SIZE = 128;
       Const.PRIORITY_SCHEDULER_STACK_SIZE = 256;
-      Const.HANDLER_STACK_SIZE = 256;
-      Const.IDLE_PROCESS_STACK_SIZE = 256;
+      Const.BACKING_STORE_SIZE = 13 * 1024;
       
       new Level1Launcher(new MyApp());
       args = null;
@@ -424,11 +461,11 @@ public class TestSCJSimpleLowMemory {
 }
 \end{lstlisting}
 
-Esta aplicación SCJ está compuesta por un \textit{mission sequencer}, una \textit{mission} y un único \textit{handler} de eventos periódicos. Los \textit{handler} son objetos planificables\footnote{En inglés \textit{schedulable objects}.}, en este caso planificados por el \textit{PriorityScheduler} SCJ Nivel 1.
+La aplicación SCJ está compuesta por un \textit{mission sequencer}, una \textit{mission} y un único \textit{handler} de eventos periódicos. Los \textit{handlers} son objetos planificables\footnote{En inglés \textit{schedulable objects}.}, planificados, en este caso, por el \textit{PriorityScheduler} SCJ Nivel 1.
 
 \medskip
 
-El período del evento que lanza el \textit{handler} es de un segundo. Luego de ejecutarse cinco veces solicita un \textit{mission termination} para finalizar la misión.
+El período del evento que lanza el \textit{handler} es de un segundo. Luego de ejecutarse cinco veces, solicita un \textit{mission termination} para finalizar la misión.
 
 \medskip
 
@@ -444,10 +481,24 @@ La memoria de misión.
 \item
 El área de memoria privada del \textit{handler} y su pila de ejecución. 
 \item
-La pila de ejecución del \textit{ priority scheduler}. Este planificador se invoca en los puntos de reprogramación. Corre utilizando su propia pila de ejecución aunque no es un verdadero \textit{handler}.
+La pila de ejecución del \textit{priority scheduler}. Este planificador se invoca en los puntos de reprogramación. Corre utilizando su propia pila de ejecución.
 \end{itemize}
 
-La cantidad de memoria correcta para cada una de las áreas es difícil de predecir. Para elegirlos correctamente primero se utilizan valores conservadores y luego se puede realizar un \textit{Memory Profiling} para identificar cuanta memoria se está utilizando verdaderamente.
+La cantidad de memoria correcta para cada una de las áreas es difícil de predecir. Para elegir los valores correctamente, se utilizan primero valores conservadores y luego se puede realizar un \textit{Memory Profiling} para identificar cuanta memoria se está utilizando verdaderamente.
 
+\medskip
+
+Al ejecutar el programa se obtiene en la Terminal Serie las siguientes líneas (una por segundo):
+
+\begin{verbatim}
+Light on
+Light off
+Light on
+Light off
+Light on
+SUCCESS
+\end{verbatim}
+
+Mientras que en la placa se enciende y se apaga el led, con duración de 1 segundo en cada estado, siguiendo la misma secuencia.
 
 %\section{Acerca del IDE obtenido} \label{sec:IDEhvm}
