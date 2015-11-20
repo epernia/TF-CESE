@@ -53,7 +53,7 @@ En el archivo \textbf{natives\_XX.c} deben definirse las siguientes funciones es
 \item
 \textbf{void initNatives(void)}. Esta función se llama antes de iniciar la máquina virtual. Si la máquina virtual se reinicia, la misma vuelve a ser llamada. Se puede dejar vacía.
 \item
-\textbf{ void mark\_error(void)}, \textbf{void mark\_success(void)}. Sólo las utiliza el sistema de pruebas de regresión. Si el mismo no es utilizado se puede dejar vacío.
+\textbf{void mark\_error(void)}, \textbf{void mark\_success(void)}. Sólo las utiliza el sistema de pruebas de regresión. Si el mismo no es utilizado se puede dejar vacío.
 \item
 \textbf{void writeByteToIO(pointer address, unsigned short offset, unsigned char lsb)}. Esta función se utiliza para la implementación de objetos hardware. Se debe implementar para escribir lsb a la dirección + \textit{offset}. El \textit{offset} es en bits. En la mayoría de las arquitecturas esto puede implementarse muy fácilmente como una deferencia normal de puntero. En otras arquitecturas, en cambio, se deben ejecutar instrucciones de propósito especial para la lectura y escritura de registros I/O. Existen varias otras funciones similares \textit{read/writeXXToIO} para otros tipos de datos.
 \item
@@ -108,7 +108,7 @@ Una pequeña parte de la misma debe implementarse en lenguaje C. Esta parte es la
 \textbf{int16 n\_vm\_RealtimeClock\_getNativeTime(int32 *sp)}. Devuelve el tiempo actual del reloj de tiempo real como un objeto AbsoluteTime con mili segundos y nano segundos.
 \end{itemize}
 
-Este archivo para la plataforma CIAA se nombra \textbf{LPC4337\_natives\_SCJ.c} en la implementación. \textbf{Nótese} que el archivo \textbf{natives\_XX.c} se ha separado en dos archivos en la implementación para mejorar la modularización.
+Este archivo para las plataformas CIAA se nombra \textbf{LPC4337\_natives\_SCJ.c} en la implementación. \textbf{Nótese} que el archivo \textbf{natives\_XX.c} se ha separado en dos archivos para mejorar la modularización.
 
 \medskip 
 
@@ -135,20 +135,20 @@ La función \textbf{set\_stack\_pointer(void)} Debe establecer el valor de la var
 
 \begin{enumerate}
 \item
-Mover el valor de retorno de la pila a algún registro.
+Guardar el valor de retorno de la pila a algún registro.
 \item
 Mover el valor de la variable global \textbf{stackPointer} al registro puntero a pila.
 \item
-Mover el valor de retorno guardado en 1 a la pila.
+Desplazar el valor de retorno guardado en 1 a la pila.
 \item
 Retornar.
 \end{enumerate}
 
-Por lo general (en la mayoría de las arquitecturas) al llamar a una función se inserta en la pila la dirección de retorno. Esta es la dirección donde debe continuar al ejecución cuando termine de ejecutar la función que ha llamado.
+Por lo general (en la mayoría de las arquitecturas) al llamar a una función se inserta en la pila la dirección de retorno. Esta es la dirección donde debe continuar la ejecución cuando se complete la función que ha llamado.
 Luego cuando se retorna de la función, se saca de la pila la dirección de retorno y se realiza un salto a dicha dirección.
 Esto provoca que la ejecución continúe en la dirección correcta al terminar de ejecutar la función. 
 En la función \textbf{set\_stack\_pointer} se utiliza una nueva pila, sin embargo, se necesita de todas formas retornar la dirección de donde se ha llamado a la función \textbf{set\_stack\_pointer}. 
-Como se establece un nuevo puntero a pila, la dirección de retorno correcta no se encuentra en esta nueva pila. Por esto, es necesario que en el paso 1 se mueva la dirección de retorno a la nueva pila para poder retornar correctamente a donde se ejecutó \textbf{set\_stack\_pointer}.
+Como se establece un nuevo puntero a pila, la dirección de retorno correcta no se encuentra en esta nueva pila. Por esto, es necesario que en el paso 1 se mueva la dirección de retorno a la nueva pila para poder volver correctamente a donde se ejecutó \textbf{set\_stack\_pointer}.
 
 \medskip
 
