@@ -153,7 +153,7 @@ En esta especificación solo se permiten \textbf{\textit{Threads Real-Time}} a di
 Un programa SCJ se organiza en \textbf{Misiones}\footnote{\textit{Missions} en su idioma original}. 
 Una misión encapsula una funcionalidad específica, o una fase, en el tiempo de vida de del sistema en tiempo real como un conjunto de \textbf{entidades planificables}\footnote{\textit{schedulable entities} en su idioma original.}. 
 Por ejemplo, un sistema de control de vuelo puede estar compuesto de despegue, crucero y aterrizaje; pudiendo dedicarse a cada una una misión.
-Una entidad planificabl,e maneja una funcionalidad específica y tiene parámetros de liberación que describen el modelo de liberación y alcance temporal, por tiemplo tiempo de liberación y \textit{dedline}. 
+Una entidad planificable maneja una funcionalidad específica y tiene parámetros de liberación que describen el modelo de liberación y alcance temporal, por tiemplo tiempo de liberación y \textit{dedline}. 
 El patrón de liberación es periódico o aperiódico.
 
 \medskip
@@ -162,7 +162,7 @@ El concepto de misión se representa en la figura [\ref{fig:missionsSCJ}] y conti
 
 \begin{itemize}
 \item 
-\textbf{Configuración:} donde se asignan en memoria los objetos de la misión. Esto se hace durante el arranque del sistema y no se considera de tiempo critico.
+\textbf{Configuración:} donde se asignan en memoria los objetos de la misión. Esto se hace durante el arranque del sistema y no se considera de tiempo crítico.
 \item 
 \textbf{Inicialización:} donde se realizan todas las asignaciones de objetos relacionados con la misión o de la totalidad de la aplicación. Esta fase no es de tiempo crítico.
 \item 
