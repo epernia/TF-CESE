@@ -80,8 +80,8 @@ Como en las plataformas de hardware existe más de un periférico de cada tipo, se
 Cada periférico utiliza uno o más de pines del microcontrolador. 
 En la plataforma CIAA-NXP esta relación es fija por diseño y no tiene sentido configurar cada pin para otra funcionalidad que no sea la asociada a su hardware de salida. 
 En la EDU-CIAA-NXP, en cambio, esto es distinto porque se dispone de los pines directos que salen del microcontrolador pudiéndose utilizar para cualquier propósito. 
-Un pin puede ser compartido por varios periféricos. Es por esto que se agrega al modelo el concepto de \textbf{Pin} de un periférico, que sirve para mantener la relación física del periférico con el microcontrolador. 
-El Pin también sirve para determinar si un pin está en uso por un periférico cuando se intente usar dos periféricos distintos que utilicen los mismos pines físicos.
+Un pin puede ser compartido por varios periféricos. Es por ello que se agrega al modelo el concepto de \textbf{Pin} de un periférico, que sirve para mantener la relación física del periférico con el microcontrolador. 
+El Pin también sirve para determinar si un pin está en uso por un periférico cuando se intente emplear dos periféricos distintos que utilicen los mismos pines físicos.
 
 \medskip
 
@@ -105,16 +105,15 @@ En la figura [\ref{fig:ModeloPeriferico}] se ofrece el modelo de Periférico (se 
 \end{center}
 \end{figure}
 
-Una clase \textbf{\textit{Peripheral}} define los métodos propuestos para el acceso, que luego son redefinidos en cada una de las subclases las cuales contienen la implementación concreta de cada tipo de periférico. Esta implementación incluye los métodos nativos que se deben implementar en C. En el métod constructor del objeto Periférico se deben establecer un identificador de dispositivo constante (id) y los pines físicos que usará el dispositivo (también definidos como constantes).
+Una clase \textbf{\textit{Peripheral}} define los métodos propuestos para el acceso, que luego son redefinidos en cada una de las subclases las cuales contienen la implementación concreta de cada tipo de periférico. Esta implementación incluye los métodos nativos que se deben implementar en C. En el método constructor del objeto Periférico se deben establecer un identificador de dispositivo constante (id) y los pines físicos que usará el dispositivo (también definidos como constantes).
 
 \medskip
 
 Existe una jerarquía de clases similar para \textbf{\textit{PeripheralConfig}}, que se utilizan como parámetros para la configuración de los periféricos.
 
-\medskip
-
-El diagrama de como se articula un periférico con las otra clases se muestra en la figura [\ref{fig:ModeloDevice}].
-Un \textbf{\textit{Device}} contiene una colección de pines y una de periféricos. Contiene métodos para añadir tanto periféricos como pines, y consultar si está en uso un pin. Contiene métodos estáticos para la construcción de instancias para cada plataforma (EDU-CIAA-NXP y CIAA-NXP) con todos sus periféricos y pines construidos.
+\newpage
+En la figura [\ref{fig:ModeloDevice}] se expone cómo interactúa un periférico con las otra clases.
+Un \textbf{\textit{Device}} contiene una colección de pines y una de periféricos. Provee métodos para añadir tanto periféricos como pines, y consultar si está en uso un pin. Contiene métodos estáticos para la construcción de instancias para cada plataforma (EDU-CIAA-NXP y CIAA-NXP) con todos sus periféricos y pines construidos.
 
 \begin{figure}[!htbp]
 \begin{center}
@@ -131,7 +130,7 @@ El \textbf{\textit{Pin}} contiene varios atributos constantes, que se asignan en
 
 \subsection{Mapeo de pines de las plataformas} \label{sec:disenoMapeo}
 
-Con el diseño propuesto se debe mapear los pines de las plataformas. En este se deciden los números de pines, sus identificadores y se asignan las posibles funciones. En la figura [\ref{fig:MapeoCiaa}] se muestra el mapeo de pines de la CIAA-NXP, mientras que en la figura  [\ref{fig:MapeoEduCiaa}] se ilustra el de la EDU-CIAA-NXP.
+Con el diseño propuesto se debe mapear los pines de las plataformas. En este se deciden los números de pines, sus identificadores y se asignan las posibles funciones. En la figuras [\ref{fig:MapeoCiaa}] y [\ref{fig:MapeoEduCiaa}] se muestran los mapeos de pines de la CIAA-NXP y EDU-CIAA-NXP respectivamente.
 
 \begin{figure}[!htbp]
 \begin{center}
@@ -139,9 +138,6 @@ Con el diseño propuesto se debe mapear los pines de las plataformas. En este se 
 \par\caption{Mapeo de pines de la plataforma CIAA-NXP.}\label{fig:MapeoCiaa}
 \end{center}
 \end{figure}
-
-Debido a que los pines de la EDU-CIAA-NXP tienen muchas funcionalidades posibles se resumieron como DI (\textit{Digital Input}), DO (\textit{Digital Output}), AI (\textit{Analog Input}), AO (\textit{Analog Output}) y U (Uart).
-
 \begin{figure}[!htbp]
 \begin{center}
 \includegraphics*[width=17.5cm,height=9cm]{figuras/MapeoEduCiaa.png}
@@ -149,10 +145,11 @@ Debido a que los pines de la EDU-CIAA-NXP tienen muchas funcionalidades posibles
 \end{center}
 \end{figure}
 
-\newpage
+Debido a que los pines de la EDU-CIAA-NXP poseen muchas funcionalidades posibles se resumen como DI (\textit{Digital Input}), DO (\textit{Digital Output}), AI (\textit{Analog Input}), AO (\textit{Analog Output}) y U (Uart).
+
 \subsection{Modelo de la biblioteca en C} \label{sec:disenoModeloBibC}
 
-Debido a que readaptar el Firmware de la CIAA era una tarea muy ardua se optó por crear una biblioteca en C que de el soporte necesario para los métodos nativos.
+Debido a que readaptar el Firmware de la CIAA era una tarea muy ardua se optó por crear una biblioteca en C que brinde el soporte necesario para los métodos nativos.
 
 \medskip
 

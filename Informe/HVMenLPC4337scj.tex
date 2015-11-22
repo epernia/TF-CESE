@@ -10,11 +10,11 @@ Estas funciones utilizan las provistas en el archivo \textbf{sapi\_Tick.c} de la
 
 \begin{itemize}
 \item
-\textbf{void start\_system\_tick(void)}, \textbf{void stop\_system\_tick(void)}.  Estas funciones inician utilizan la función \textbf{void tickConfig(uint64\_t tickRateHz)}, la misma recibe un parámetro que utiliza para configurar el periférico \textbf{SysTick}, si el mismo es 0, frena la interrupción de \textit{SysTick}. 
+\textbf{void start\_system\_tick(void)}, \textbf{void stop\_system\_tick(void)}.  Estas funciones utilizan la función \textbf{void tickConfig(uint64\_t tickRateHz)}, la misma recibe un parámetro que usa para configurar el periférico \textbf{SysTick}, si el mismo es 0, frena la interrupción de \textit{SysTick}. 
 \item
 \textbf{int16 n\_vm\_RealtimeClock\_awaitNextTick(int32 *sp)}. Esta función queda en un bucle hasta que cambie el valor de la variable global \textbf{systemTick}. 
 \item
-\textbf{int16 n\_vm\_RealtimeClock\_getNativeResolution(int32 *sp)}. La función \textbf{void tickConfig(uint32\_t tickRateHz)} almacena el valor \textbf{tickRateHz} recibido como parámetro en un variable global, este valor es utilizado para calcular el tiempo entre dos \textit{ticks}.
+\textbf{int16 n\_vm\_RealtimeClock\_getNativeResolution(int32 *sp)}. La función \textbf{void tickConfig(uint32\_t tickRateHz)} almacena el valor \textbf{tickRateHz} recibido como parámetro en una variable global, con ésta se puede calcular el tiempo entre dos \textit{ticks}.
 \item
 \textbf{int16 n\_vm\_RealtimeClock\_getNativeTime(int32 *sp)}. Devuelve el tiempo actual del reloj de tiempo real como un objeto AbsoluteTime con mili segundos y nano segundos.
 \end{itemize}
@@ -32,7 +32,7 @@ El documento \textit{ARM Architecture Procedure Call Standard}, (AAPCS) especifi
 
 \medskip
 
-Se muestra a continuación la implementación de las tres funciones en \textit{assembler} que se utilizan para el cambio de contexto.
+Se muestra a continuación, la implementación de las tres funciones en \textit{assembler} que se utilizan para el cambio de contexto.
 
 \medskip
 

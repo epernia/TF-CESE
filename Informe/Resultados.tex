@@ -13,7 +13,7 @@ Una aplicación Java utilizando periféricos de la EDU-CIAA-NXP mediante la biblio
 \item
 Un ejemplo de aplicación Java SCJ utilizando el concepto de Proceso SCJ para demostrar el funcionamiento del cambio de contexto (sección [\ref{sec:appProcess}]).
 \item
-Otro ejemplo de aplicación Java SCJ utilizando el concepto de Planificador SCJ (sección [\ref{sec:appScheduler}]).
+Otro ejemplo de aplicación Java SCJ usando el concepto de Planificador SCJ (sección [\ref{sec:appScheduler}]).
 \item 
 Una aplicación SCJ completa (sección [\ref{sec:appFullSCJ}]).
 \end{itemize}
@@ -85,7 +85,7 @@ La clase \textit{Process} implementa el concepto de \textbf{proceso SCJ}. Se pue
 
 \medskip
 
-El siguiente ejemplo implementa un mecanismo de conmutación de co-rutina simple. Se utiliza para demostrar el correcto funcionamiento de las funciones nativas que implementan los procesos SCJ.
+El siguiente ejemplo implementa un mecanismo de conmutación de co-rutina simple. Mediante el mismo se valida el correcto funcionamiento de las funciones nativas que implementan los procesos SCJ.
 
 
 \begin{lstlisting}[mathescape]
@@ -152,7 +152,7 @@ La llamada a \textit{TransferTo} inserta en la pila el estado actual de la CPU, 
 
 \medskip
 
-El efecto que se consigue es que cuando \textit{TransferTo} retorna, no retorna al proceso que lo llamó, sino al siguiente proceso en el punto en que llamó a \textit{TransferTo} previamente. 
+El efecto que se consigue es que cuando \textit{TransferTo} retorna, no lo hace al proceso que lo llamó, sino al siguiente proceso en el punto en que llamó previamente a \textit{TransferTo}. 
 
 \medskip
 
@@ -297,7 +297,7 @@ public class TestProcessScheduler1 {
 }
 \end{lstlisting}
 
-Si se  ejecuta esta aplicación en una Terminal Serie, se puede ver el siguiente partón de ejecución de las tareas manejadas por el planificador:
+Si se  ejecuta esta aplicación en una Terminal Serie, se puede ver el siguiente patrón de ejecución de las tareas manejadas por el planificador:
 
 \begin{verbatim}
 task2
@@ -320,7 +320,7 @@ finished
 SUCCESS
 \end{verbatim}
 
-Los puntos suspensivos indican que se reciben múltiples lineas iguales y se indican las conmutaciones entre las tareas 1 y 2 hasta que termina la ejecución.
+Los puntos suspensivos indican que se reciben múltiples líneas iguales y se indican las conmutaciones entre las tareas 1 y 2 hasta que termina la ejecución.
 
 \section{Ejemplo de aplicación SCJ completa} \label{sec:appFullSCJ}
 
@@ -461,7 +461,7 @@ public class TestSCJSimpleLowMemory {
 }
 \end{lstlisting}
 
-La aplicación SCJ está compuesta por un \textit{mission sequencer}, una \textit{mission} y un único \textit{handler} de eventos periódicos. Los \textit{handlers} son objetos planificables\footnote{En inglés \textit{schedulable objects}.}, planificados, en este caso, por el \textit{PriorityScheduler} SCJ Nivel 1.
+La aplicación SCJ está compuesta por un \textit{mission sequencer}, una \textit{mission} y un único \textit{handler} de eventos periódicos. Los \textit{handlers} son objetos planificables\footnote{En inglés \textit{schedulable objects}.}, que en este caso son planificados, por el \textit{PriorityScheduler} SCJ Nivel 1.
 
 \medskip
 

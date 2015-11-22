@@ -14,11 +14,11 @@ Para realizar un nuevo módulo de Firmware existe una plantilla en la carpeta \te
 
 \begin{itemize}
 \item
-\textbf{inc}. Aquí deben ubicarse los \textit{heades} del módulo (archivos \textit{.h}), en los mismos se implementan las funciones públicas que forman la API del mismo así como las definiciones de los diferentes tipos de datos. 
+\textbf{inc}. Aquí deben ubicarse los \textit{heades} del módulo (archivos \textit{.h}), en éstos se implementan las funciones públicas que forman la API del mismo así como las definiciones de los diferentes tipos de datos. 
 \item
 \textbf{mak}. Contiene el \textit{makefile} del módulo. Tiene una estructura predefinida donde debe indicarse el nombre del módulo, su versión actual y las rutas de acceso a sus archivos.
 \item
-\textbf{src}. Esta carpeta contiene los archivos fuente del módulo (archivos \textit{.c}) que implementan todas las funciones tanto públicas como privadas del mismo.
+\textbf{src}. Esta carpeta contiene los archivos fuente del módulo (archivos \textit{.c}) que implementan todas las funciones tanto públicas como privadas.
 \item
 \textbf{test}. Adicionalmente pueden agregarse \textit{tests} unitarios que prueben el correcto funcionamiento del módulo en la carpeta \textit{test}. Estos \textit{tests}, escritos en lenguaje c, se ejecutan mediante la herramienta \textit{Ceedling}. Esta se utiliza para TDD\footnote{Siglas de \textit{Test-Driven Development}, es decir, Desarrollo basado en \textit{tests}.} en C y permite utilizar \textit{CMock}, \textit{Unity} y \textit{CException}.
 \end{itemize}
@@ -35,9 +35,9 @@ Para realizar un nuevo módulo de Firmware existe una plantilla en la carpeta \te
 \item 
 \textbf{sAPI\_Board.h, sAPI\_Board.c}. Provee las funciones de inicialización de las plataformas CIAA. 
 \item 
-\textbf{sAPI\_Tick.h, sAPI\_Tick.c}. Abstrae el periférico \textit{SysTick} e implementa el \textit{handler} de la interrución de este periférico. En el mismo se actualiza una variable global \textit{TickCounter} y luego ejecuta una función cuya dirección está contenida en otra variable global para permitir engancharse a la interrupción de tick.
+\textbf{sAPI\_Tick.h, sAPI\_Tick.c}. Abstrae el periférico \textit{SysTick} e implementa el \textit{handler} de la interrupción de este periférico. Este actualiza una variable global \textit{TickCounter} y luego ejecuta una función cuya dirección está contenida en otra variable global para permitir engancharse a la interrupción de tick.
 \item 
-\textbf{sAPI\_Delay.h, sAPI\_Delay.c}. Contiene funciones que implementan retados bloqueantes y no bloqueantes. Utiliza \textit{sAPI\_Tick.c}.
+\textbf{sAPI\_Delay.h, sAPI\_Delay.c}. Contiene funciones que implementan retardos bloqueantes y no bloqueantes. Utiliza \textit{sAPI\_Tick.c}.
 \item 
 \textbf{sAPI\_PinMap.h, sAPI\_PinMap.c}. En estos archivos se definen los nombres y números de pines de ambas plataformas, que se utilizan en los siguientes archivos.
 \item 
@@ -105,8 +105,8 @@ La línea \textbf{returnValue = (int8)( digitalRead(pinID) );} muestra la ejecuci
 
 \medskip
 
-Tanto el pasaje de parámetros, como el valor de retorno, se debe realizar a través de la pila de Java. De esta manera, el único parámetro que recibe la función que implementa el método nativo es un puntero a dicha pila. En la primer dirección de la pila (\textit{sp[0]}) se recibe un puntero, mientras que en la segunda (\textit{sp[1]}), se encuentra el primer parámetro, y así consecutivamente si existieran otros. El valor de retorno se debe guardar en la primer dirección de la pila (\textit{sp[0]}). Finalmente, si el método nativo se ejecutó de forma correcta debe retornar el valor -1, en caso contrario, 0.
+Tanto el pasaje de parámetros como el valor de retorno, se debe realizar a través de la pila de Java. De esta manera, el único parámetro que recibe la función que implementa el método nativo es un puntero a dicha pila. En la primer dirección de la pila (\textit{sp[0]}) se recibe un puntero, mientras que en la segunda (\textit{sp[1]}), se encuentra el primer parámetro, y así sucesivamente si existieran otros. El valor de retorno se debe guardar en la primer dirección de la pila (\textit{sp[0]}). Finalmente, si el método nativo se ejecutó de forma correcta debe retornar el valor -1, en caso contrario, 0.
 
 \medskip
 
-Este y los demás métodos nativos para el acceso a periféricos se encuentran definidos en el archivo \textit{LPC4337\_peripheral\_natives.c}. HVM genera, además, un archivo nombrado \textit{user\_natives.c} destinado a guardar los métodos nativos que realice el usuario de Java.
+Este y los demás métodos nativos para el acceso a periféricos se encuentran definidos en el archivo \textit{LPC4337\_peripheral\_natives.c}. HVM genera, además, otro archivo nombrado \textit{user\_natives.c} destinado a guardar los métodos nativos que realice el usuario de Java.

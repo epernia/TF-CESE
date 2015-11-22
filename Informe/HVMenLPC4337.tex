@@ -1,18 +1,18 @@
 \section{Port básico de HVM al microcontrolador NXP LPC4337} \label{sec:HVMenLPC4337}
 
-Para realizar el \textit{port} de HVM se deben realizar una serie de tareas descriptas en la sección [\ref{sec:disenoPortHvm}]. En esta sección se informa como ha sido llevado a cabo el subconjunto de las mismas, necesario para la primer etapa del \textit{port}, que consiste en poder ejecutar programas Java (no SCJ) en la CIAA.
+Para realizar el \textit{port} de HVM se deben efectuar una serie de tareas las cuales se han descripto en la sección [\ref{sec:disenoPortHvm}]. Se informa a continuación cómo ha sido llevado a cabo el subconjunto de las mismas, necesarias para la primer etapa del \textit{port}, que consiste en poder ejecutar programas Java (no SCJ) en la CIAA.
 
 %--------------------------------------------------
 \bigskip
 \titulo{Obtención de un entorno de desarrollo de C para la plataforma}
 
-Para esta tarea se utilizaron las herramientas libres, provistas por el Proyecto CIAA, para el desarrollo en C sobre sus plataformas de hardware. Se utilizó el instalador sencillo para Windows \textbf{CIAA-IDE-Suite 1.2.2} disponible para su descarga en: \url{https://github.com/ciaa/Software-IDE/releases/tag/v1.2.2}. Este paquete de software incluye:
+Para esta tarea se utilizaron las herramientas libres, provistas por el Proyecto CIAA, para el desarrollo en C sobre sus plataformas de hardware. Existe un instalador sencillo para Windows \textbf{CIAA-IDE-Suite 1.2.2} disponible para su descarga en: \url{https://github.com/ciaa/Software-IDE/releases/tag/v1.2.2}. Este paquete de software incluye:
 
 \begin{itemize}
 \item
 \textbf{Consola cygwin} (con paquetes: PERL, PHP, gcc x86, arm-none-ebi-gcc y ruby). Esta consola permite compilar un programa en C, generando un ejecutable para el microcontrolador LPC4337. También habilita la utilización de openOCD.
 \item
-\textbf{openOCD 0.9 x86/x64}. Se utiliza tanto para al descarga del ejecutable al microcontrolador, como para depuración mediante comandos GDB.
+\textbf{openOCD 0.9 x86/x64}. Se emplea tanto para al descarga del ejecutable al microcontrolador, como para depuración mediante comandos GDB.
 \item
 \textbf{FTDI drivers libusb 1.0}. Se debe instalar por única vez el \textit{driver} según la versión del sistema operativo. Reemplaza el \textit{driver} que Windows instala por defecto para el chip FTDI que se utilizan para \textit{debugger} en ambas plataformas.
 \item
@@ -25,7 +25,7 @@ Para esta tarea se utilizaron las herramientas libres, provistas por el Proyecto
 \textbf{Uninstaller}. Desinstalador del paquete.
 \end{itemize}
 
-Para probar su correcto funcionamiento, se debe crear un proyecto de CIAA Firmware. Pueden realizarse dos tipos de proyectos, los que utilizan \textbf{OSEK} (el RTOS\footnote{Siglas de Sistema Operativo de Tiempo Real.} de la CIAA, presentado en la sección [\ref{sec:disenoAPI}]) y los proyectos \textbf{\textit{bare-metal}} (programas que corren directo sobre el hardware sin la gestión de un Sistema Operativo). Como no se utiliza OSEK, se realizó un proyecto \textit{bare-metal}, este consiste en la utilización de una estructura definida de carpetas donde existe una carpeta principal que contiene el nombre del proyecto y con sub-carpetas:
+Para probar su correcto funcionamiento, se debe crear un proyecto de CIAA Firmware. Pueden realizarse dos tipos de proyectos, los que incluyen \textbf{OSEK} (el RTOS\footnote{Siglas de Sistema Operativo de Tiempo Real.} de la CIAA, presentado en la sección [\ref{sec:disenoAPI}]) y los proyectos \textbf{\textit{bare-metal}} (programas que corren directo sobre el hardware sin la gestión de un Sistema Operativo). Como no se necesita OSEK, se realizó un proyecto \textit{bare-metal}, este consiste en la utilización de una estructura definida de carpetas donde existe una carpeta principal que contiene el nombre del proyecto y sub-carpetas:
 
 \begin{itemize}
 %\item
@@ -143,15 +143,15 @@ Como ha sido adelantado, este archivo implementa la parte de la HAL de HVM para 
 
 \begin{itemize}
 \item
-\textbf{void init\_compiler\_specifics(void)}. Esta función inicializa la plataforma CIAA. Primero se inicializa el \textbf{\textit{clock}} del sistema. Luego la \textbf{UART 2}. En ambas plataformas CIAA, la UART 2 del microcontolador LPC4337 se encuentra conectada al chip FTDI del \textit{debugger} y puede accederse vía USB en el mismo conector que se utiliza para depuración de la plataforma. De esta manera, es ideal para su utilización como salida de consola de HVM.
+\textbf{void init\_compiler\_specifics(void)}. Esta función inicializa la plataforma CIAA. Primero se inicializa el \textbf{\textit{clock}} del sistema. Luego la \textbf{UART 2}. En ambas plataformas CIAA, la UART 2 del microcontolador LPC4337 se encuentra conectada al chip FTDI del \textit{debugger} y puede accederse vía USB en el mismo conector que se usa para depuración de la plataforma. De esta manera, es ideal para su utilización como salida de consola de HVM.
 \item
 \textbf{Pila de Java}. En este archivo se define la pila de Java como un vector cuyo tamaño será definido en el \textit{makefile.mine}, esto es: \textbf{int32 java\_stack[JAVA\_STACK\_SIZE];}
 \item
 \textbf{int32* get\_java\_stack\_base(int16 size)}. Devuelve un puntero a la pila de Java definida por el vector anterior: \textbf{return (int32*) java\_stack;}.
 \item
-\textbf{void initNatives(void)}. En esta función se inicializa el resto de los periféricos de la biblioteca de C incluyendo el \textbf{SysTick} para interrumpir cada 10ms. Este periférico lo utilizan las funciones SCJ para manejar el tiempo del sistema.
+\textbf{void initNatives(void)}. En esta función se configura el resto de los periféricos de la biblioteca de C incluyendo el \textbf{SysTick} para interrumpir cada 10ms. Este periférico lo utilizan las funciones SCJ para manejar el tiempo del sistema.
 \item
-\textbf{void mark\_error(void)}, \textbf{void mark\_success(void)}. Como no se utiliza el sistema de pruebas de regresión, en esta primera iteración se dejan vacías.
+\textbf{void mark\_error(void)}, \textbf{void mark\_success(void)}. Como no se emplea el sistema de pruebas de regresión en esta primera iteración, se dejan vacías.
 \item
 \textbf{read/writeXXToIO}. No se utilizan objetos hardware para tratar con los registros debido a la implementación de la biblioteca de C para periféricos. En consecuencia no se requieren.
 \item
@@ -173,7 +173,6 @@ Una vez completado el \textit{port} básico se realiza una prueba inicial del sis
 \end{center}
 \end{figure}
 
-\newpage
 Para su compilación se debe modificar el archivo \textit{makefile.mine}.
 Además de definir \textit{BOARD} y \textit{PROJECT\_PATH} se debe agregar,
 
