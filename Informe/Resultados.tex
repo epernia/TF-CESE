@@ -165,6 +165,56 @@ Proceso 2. Transferencia a Proceso Principal.
 Fin de Proceso Principal, se deja en un loop infinito.
 \end{verbatim}
 
+En este ejemplo se comprueba HVM en sus dos modalidades. Una con los todos métodos marcados como \textbf{interpretados} (opción por defecto), resultando en los siguientes valores en su compilación:
+
+\begin{itemize}
+\item 
+\textbf{\textit{text}}: 30716 bytes. Este área muestra el código de programa y datos de solo lectura.
+\item 
+\textbf{\textit{data}}: 192 bytes. Contiene los datos de lectura y escritura. 
+\item 
+\textbf{\textit{bss}}: 21036 bytes. Corresponde a los datos inicializados en cero (\textit{bss} y \textit{common}).
+\item 
+\textbf{Total}: 51944 bytes.
+\end{itemize}
+
+En la otra modalidad se marcan todos los métodos como \textbf{compilados}, obteniéndose:
+
+\begin{itemize}
+\item 
+\textbf{\textit{text}}: 32436 bytes.
+\item 
+\textbf{\textit{data}}: 192 bytes.
+\item 
+\textbf{\textit{bss}}: 21040 bytes.
+\item 
+\textbf{Total}: 53668 bytes.
+\end{itemize}
+
+En ambas el tamaño del \textbf{\textit{Heap}} de Java es de 16384, mientras que el \textbf{\textit{Stack}} es de 1024.
+
+\medskip
+
+Típicamente el consumo de memoria Flash en la aplicación está dado por la suma de \textit{text} + \textit{data}, mientras que el consumo de RAM es \textit{data} + \textit{bss}. De esta forma con los métodos interpretados hay un consumo de,
+
+\begin{itemize}
+\item 
+\textbf{Flash}: 30908 bytes.
+\item 
+\textbf{RAM}: 21228 bytes.
+\end{itemize}
+
+mientras que con los métodos compilados es:
+
+\begin{itemize}
+\item 
+\textbf{Flash}: 32628 bytes.
+\item 
+\textbf{RAM}: 21232 bytes.
+\end{itemize}
+
+Concluyendo que, como era de esperarse, existe un 5,27\% de aumento en el consumo de Flash en la modalidad compilado, mientras que el aumento de RAM es despreciable (4 bytes). 
+
 
 \section{Planificador SCJ} \label{sec:appScheduler}
 
