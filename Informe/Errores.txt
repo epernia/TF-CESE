@@ -1,0 +1,7 @@
+pagina 22. 
+
+void mark error(void), void mark success(void). S ́olo las utiliza el sistema de pruebas
+de regresi ́on. Si el mismo no es utilizado se puede dejar vac ́ıo.  <--- PUEDEN DEJAR VACIAS
+
+
+
